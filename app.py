@@ -11,14 +11,19 @@ def pagina_inicial():
     return render_template('index.html')
 
 
-@app.route('/autor')
-def autor():
-    return render_template('autor.html')
+@app.route('/autores/listar')
+def listar_autores():
+    return render_template('autores/listar_autores.html')
 
 
-@app.route('/livro')
-def livro():
-    return render_template('livro.html')
+@app.route('/livros/listar')
+def listar_livros():
+    return render_template('livros/listar_livros.html')
+
+
+@app.route('/sobre_equipe')
+def sobre_equipe():
+    return render_template('sobre_equipe.html')
 
 
 @app.route('/usuario/<nome>')
