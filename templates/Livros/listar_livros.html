@@ -1,66 +1,53 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Autores</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block titulo %}Livros — Biblion{% endblock %}
 
-  <h1>Autores — Biblioteca Virtual</h1>
+{% block conteudo %}
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="page-title"><i class="bi bi-journal-text me-2"></i>Livros</h2>
+    <p class="page-sub mb-0">Acervo completo de títulos</p>
+  </div>
+  <a href="{{ url_for('inserir_livro') }}" class="btn btn-amber">
+    <i class="bi bi-plus-lg me-1"></i> Novo Livro
+  </a>
+</div>
 
-  <table border="1">
-    <!-- table = contêiner da tabela inteira.
-         border="1" adiciona bordas visíveis para visualizarmos a estrutura.
-         Nas próximas aulas usaremos Bootstrap para estilizar com elegância. -->
-
-    <thead>
-      <!-- thead = agrupa a linha de cabeçalho: visualmente separada do corpo -->
-      <tr>
-        <!-- tr = "table row" = uma linha da tabela (horizontal) -->
-        <th>Nome do Livro</th>
-        <!-- th = "table header" = célula de cabeçalho: negrito e centralizado -->
-        <th>Data de publicação</th>
-        <th>Preço</th>
-        <th>Genero</th>
-        <th>Autor</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <!-- tbody = agrupa todas as linhas de dados da tabela -->
-      <tr>
-        <td>Estudo de caso</td>
-        <!-- td = "table data" = célula de dado comum -->
-        <td>2015</td>
-        <td>45,90</td>
-        <th>Suspense</th>
-        <th>Fernanda</th>
-      </tr>
-      <tr>
-        <td>Programação para Internet</td>
-        <td>2023</td>
-        <td>57,00</td>
-        <th>Educativo</th>
-        <th>Luciana</th>
-      </tr>
-      <tr>
-        <td>A Internet</td>
-        <td>1999</td>
-        <td>39,45</td>
-        <th>Ficção</th>
-        <th>Carlos</th>
-      </tr>
-      <tr>
-        <td>Animais virtuais</td>
-        <td>2023</td>
-        <td>57,00</td>
-        <th>Ação</th>
-        <th>Fernanda</th>
-      </tr>
-    </tbody>
-
-  </table>
-
-</body>
-</html>
+<div class="card table-card">
+  <div class="card-body p-0">
+    <table class="table table-hover table-bordered mb-0 biblion-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Gênero</th>
+          <th>Ano</th>
+          <th>Páginas</th>
+          <th class="text-center">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in livros %}
+        <tr>
+          <td>{{ l.id }}</td>
+          <td><strong>{{ l.titulo }}</strong></td>
+          <td>{{ l.autor }}</td>
+          <td><span class="badge-genero">{{ l.genero }}</span></td>
+          <td>{{ l.ano }}</td>
+          <td>{{ l.paginas }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-secondary me-1" title="Editar">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" title="Excluir"
+                    onclick="confirmarExclusao(event, '{{ l.titulo }}')">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

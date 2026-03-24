@@ -1,55 +1,51 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Autores</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block titulo %}Autores — Biblion{% endblock %}
 
-  <h1>Autores — Biblioteca Virtual</h1>
+{% block conteudo %}
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="page-title"><i class="bi bi-person-lines-fill me-2"></i>Autores</h2>
+    <p class="page-sub mb-0">Catálogo de autores do acervo</p>
+  </div>
+  <a href="{{ url_for('inserir_autor') }}" class="btn btn-amber">
+    <i class="bi bi-plus-lg me-1"></i> Novo Autor
+  </a>
+</div>
 
-  <table border="1">
-    <!-- table = contêiner da tabela inteira.
-         border="1" adiciona bordas visíveis para visualizarmos a estrutura.
-         Nas próximas aulas usaremos Bootstrap para estilizar com elegância. -->
-
-    <thead>
-      <!-- thead = agrupa a linha de cabeçalho: visualmente separada do corpo -->
-      <tr>
-        <!-- tr = "table row" = uma linha da tabela (horizontal) -->
-        <th>Nome</th>
-        <!-- th = "table header" = célula de cabeçalho: negrito e centralizado -->
-        <th>Data de publicação</th>
-        <th>Livros do Autor</th>
-        
-      </tr>
-    </thead>
-
-    <tbody>
-      <!-- tbody = agrupa todas as linhas de dados da tabela -->
-      <tr>
-        <td>Fernanda</td>
-        <!-- td = "table data" = célula de dado comum -->
-        <td>2015</td>
-        <td>Estudo de caso, Animais virtuais</td>
-        
-      </tr>
-      <tr>
-        <td>Luciana</td>
-        <td>2023</td>
-        <td>Programação para Internet, Mundo digital</td>
-        
-      </tr>
-      <tr>
-        <td>Carlos</td>
-        <td>1999</td>
-        <td>Redes de Computadores, a Internet</td>
-        
-      </tr>
-    </tbody>
-
-  </table>
-
-</body>
-</html>
+<div class="card table-card">
+  <div class="card-body p-0">
+    <table class="table table-hover table-bordered mb-0 biblion-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Nacionalidade</th>
+          <th>Nascimento</th>
+          <th>Obras</th>
+          <th class="text-center">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in autores %}
+        <tr>
+          <td>{{ a.id }}</td>
+          <td><strong>{{ a.nome }}</strong></td>
+          <td>{{ a.nacionalidade }}</td>
+          <td>{{ a.nascimento }}</td>
+          <td><span class="badge bg-secondary">{{ a.obras }}</span></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-secondary me-1" title="Editar">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" title="Excluir"
+                    onclick="confirmarExclusao(event, '{{ a.nome }}')">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
