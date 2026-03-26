@@ -1,0 +1,66 @@
+/* static/css/estilo.css */
+/* Estilos personalizados do Sistema de Gestão */
+/* Estes estilos complementam o Bootstrap — nunca substituem */
+
+/* ── Variáveis de cor do sistema ─────────────────────────────────── */
+/* Variáveis CSS permitem reutilizar valores e facilitar manutenção */
+:root {
+    --cor-primaria: #2c3e50;   /* azul-petróleo escuro para cabeçalhos */
+    --cor-destaque: #e74c3c;   /* vermelho para alertas e ênfase */
+    --cor-fundo: #f8f9fa;      /* cinza muito claro para fundos */
+}
+
+/* ── Estilo da navbar ─────────────────────────────────────────────── */
+/* Sobrescreve a cor padrão bg-dark do Bootstrap */
+.navbar {
+    background-color: var(--cor-primaria) !important;
+    /* !important garante que este estilo prevaleça sobre o Bootstrap */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    /* sombra sutil para dar profundidade */
+}
+
+/* ── Rodapé personalizado ─────────────────────────────────────────── */
+footer {
+    background-color: var(--cor-primaria);
+    color: #ccc;
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+/* ── Cards com hover ──────────────────────────────────────────────── */
+/* Efeito sutil ao passar o mouse sobre os cards */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* transition: define a animação suave ao mudar os valores */
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    /* sobe levemente ao passar o mouse */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    /* sombra mais pronunciada */
+}
+
+/* ── Tabelas ──────────────────────────────────────────────────────── */
+/* Cabeçalho de tabela com a cor primária do sistema */
+.tabela-sistema thead {
+    background-color: var(--cor-primaria);
+    color: white;
+}
+
+/* ── Mensagens de boas-vindas ─────────────────────────────────────── */
+.boas-vindas {
+    background: linear-gradient(135deg, var(--cor-primaria), #34495e);
+    color: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.boas-vindas h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
