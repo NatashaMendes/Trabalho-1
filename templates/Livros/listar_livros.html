@@ -1,21 +1,35 @@
 {% extends 'base.html' %}
-{% block titulo %}Livros — Biblion{% endblock %}
+<!-- Este template herda de 'base.html', que contém a estrutura padrão da aplicação (menu, cabeçalho, rodapé etc). -->
+
+{% block titulo %}Livros — Livraria Digital{% endblock %}
+<!-- Define o título da aba/navegador como "Livros — Biblion". -->
 
 {% block conteudo %}
+<!-- Início do bloco principal de conteúdo da página. -->
+
 <div class="page-header d-flex justify-content-between align-items-center mb-4">
+  <!-- Cabeçalho da página com título e botão de adicionar novo livro. 
+       As classes Bootstrap alinham os elementos lado a lado. -->
   <div>
     <h2 class="page-title"><i class="bi bi-journal-text me-2"></i>Livros</h2>
+    <!-- Ícone + título principal da página -->
     <p class="page-sub mb-0">Acervo completo de títulos</p>
   </div>
   <a href="{{ url_for('inserir_livro') }}" class="btn btn-amber">
+    <!-- Botão que leva para a rota 'inserir_livro', ou seja, para o formulário de cadastro -->
     <i class="bi bi-plus-lg me-1"></i> Novo Livro
   </a>
 </div>
 
 <div class="card table-card">
+  <!-- Cartão visual que contém a tabela -->
   <div class="card-body p-0">
+    <!-- Corpo do cartão sem padding -->
+
     <table class="table table-hover table-bordered mb-0 biblion-table">
+      <!-- Tabela estilizada com Bootstrap: hover (realce ao passar o mouse), bordas, sem margem inferior -->
       <thead>
+        <!-- Cabeçalho da tabela -->
         <tr>
           <th>#</th>
           <th>Título</th>
@@ -27,27 +41,34 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Corpo da tabela onde os dados serão renderizados dinamicamente -->
         {% for l in livros %}
+        <!-- Loop Jinja2 que percorre a lista 'livros' enviada pelo Flask -->
         <tr>
-          <td>{{ l.id }}</td>
-          <td><strong>{{ l.titulo }}</strong></td>
-          <td>{{ l.autor }}</td>
-          <td><span class="badge-genero">{{ l.genero }}</span></td>
-          <td>{{ l.ano }}</td>
-          <td>{{ l.paginas }}</td>
+          <td>{{ l.id }}</td> <!-- Mostra o ID do livro -->
+          <td><strong>{{ l.titulo }}</strong></td> <!-- Mostra o título em negrito -->
+          <td>{{ l.autor }}</td> <!-- Mostra o autor -->
+          <td><span class="badge-genero">{{ l.genero }}</span></td> <!-- Mostra o gênero com estilo -->
+          <td>{{ l.ano }}</td> <!-- Mostra o ano de publicação -->
+          <td>{{ l.paginas }}</td> <!-- Mostra o número de páginas -->
           <td class="text-center">
+            <!-- Coluna de ações (editar/excluir) -->
             <button class="btn btn-sm btn-outline-secondary me-1" title="Editar">
+              <!-- Botão de editar (ainda sem ação definida) -->
               <i class="bi bi-pencil"></i>
             </button>
             <button class="btn btn-sm btn-outline-danger" title="Excluir"
                     onclick="confirmarExclusao(event, '{{ l.titulo }}')">
+              <!-- Botão de excluir que chama a função JavaScript 'confirmarExclusao' passando o título do livro -->
               <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
         {% endfor %}
+        <!-- Fim do loop: cada livro da lista gera uma linha na tabela -->
       </tbody>
     </table>
   </div>
 </div>
 {% endblock %}
+<!-- Fim do bloco de conteúdo -->

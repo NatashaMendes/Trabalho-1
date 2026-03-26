@@ -1,39 +1,63 @@
-{% extends 'base.html' %}
-{% block titulo %}Novo Livro — Biblion{% endblock %}
+{% extends 'base.html' %} 
+<!-- Diz que este template herda de outro chamado 'base.html'. 
+     Isso evita repetir cabeçalho, rodapé e estrutura padrão em todas as páginas. -->
+
+{% block titulo %}Novo Livro — Livraria Digital{% endblock %}
+<!-- Define o conteúdo do bloco 'titulo' que será inserido no layout base. 
+     Aqui o título da aba/navegador será "Novo Livro — Biblion". -->
 
 {% block conteudo %}
+<!-- Início do bloco 'conteudo', onde vai o corpo principal da página. -->
+
 <div class="page-header mb-4">
+  <!-- Cabeçalho da página com título e subtítulo -->
   <h2 class="page-title"><i class="bi bi-journal-plus me-2"></i>Novo Livro</h2>
+  <!-- Ícone + título principal -->
   <p class="page-sub mb-0">Adicione um novo título ao acervo</p>
 </div>
 
 <div class="card form-card">
+  <!-- Cartão visual que contém o formulário -->
   <div class="card-body">
+    <!-- Corpo do cartão -->
+
+    <!-- Formulário que envia dados via método POST para a rota 'inserir_livro' -->
     <form method="POST" action="{{ url_for('inserir_livro') }}">
       <div class="row g-3">
+        <!-- Linha com espaçamento entre colunas -->
+
         <div class="col-md-8">
+          <!-- Campo de texto para o título do livro -->
           <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
           <input type="text" id="titulo" name="titulo" class="form-control"
                  placeholder="Título do livro" required>
         </div>
+
         <div class="col-md-4">
+          <!-- Campo de texto para ISBN -->
           <label for="isbn" class="form-label">ISBN</label>
           <input type="text" id="isbn" name="isbn" class="form-control"
                  placeholder="978-XXXXXXXXXX">
         </div>
+
         <div class="col-md-6">
+          <!-- Campo de seleção para escolher autor -->
           <label for="autor" class="form-label">Autor <span class="text-danger">*</span></label>
           <select id="autor" name="autor" class="form-select" required>
             <option value="" disabled selected>Selecione o autor</option>
             {% for a in autores %}
+            <!-- Loop Jinja2 que percorre a lista 'autores' enviada pelo Flask -->
             <option value="{{ a.nome }}">{{ a.nome }}</option>
             {% endfor %}
           </select>
         </div>
+
         <div class="col-md-6">
+          <!-- Campo de seleção para gênero literário -->
           <label for="genero" class="form-label">Gênero <span class="text-danger">*</span></label>
           <select id="genero" name="genero" class="form-select" required>
             <option value="" disabled selected>Selecione o gênero</option>
+            <!-- Lista fixa de opções -->
             <option>Romance</option>
             <option>Ficção Científica</option>
             <option>Novela</option>
@@ -46,22 +70,30 @@
             <option>Outro</option>
           </select>
         </div>
+
         <div class="col-md-4">
+          <!-- Campo numérico para ano de publicação -->
           <label for="ano" class="form-label">Ano de publicação <span class="text-danger">*</span></label>
           <input type="number" id="ano" name="ano" class="form-control"
                  placeholder="Ex: 1980" min="1000" max="2099" required>
         </div>
+
         <div class="col-md-4">
+          <!-- Campo numérico para número de páginas -->
           <label for="paginas" class="form-label">Número de páginas <span class="text-danger">*</span></label>
           <input type="number" id="paginas" name="paginas" class="form-control"
                  placeholder="Ex: 320" min="1" required>
         </div>
+
         <div class="col-md-4">
+          <!-- Campo de texto para editora -->
           <label for="editora" class="form-label">Editora</label>
           <input type="text" id="editora" name="editora" class="form-control"
                  placeholder="Nome da editora">
         </div>
+
         <div class="col-12">
+          <!-- Campo de texto longo (textarea) para sinopse -->
           <label for="sinopse" class="form-label">Sinopse</label>
           <textarea id="sinopse" name="sinopse" class="form-control" rows="3"
                     placeholder="Breve descrição do livro..."></textarea>
@@ -69,12 +101,16 @@
       </div>
 
       <hr class="my-4">
+      <!-- Linha divisória para separar formulário dos botões -->
 
       <div class="d-flex gap-2 justify-content-end">
+        <!-- Botões alinhados à direita -->
         <a href="{{ url_for('listar_livros') }}" class="btn btn-outline-secondary">
+          <!-- Botão de cancelar que leva para a página de listagem de livros -->
           <i class="bi bi-x-lg me-1"></i> Cancelar
         </a>
         <button type="submit" class="btn btn-amber">
+          <!-- Botão de salvar que envia o formulário -->
           <i class="bi bi-check-lg me-1"></i> Salvar
         </button>
       </div>
@@ -82,3 +118,4 @@
   </div>
 </div>
 {% endblock %}
+<!-- Fim do bloco 'conteudo' -->
