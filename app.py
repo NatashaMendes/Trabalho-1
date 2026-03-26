@@ -1,5 +1,5 @@
 # Importa Flask e também a função render_template
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 
 app = Flask(__name__)
 
@@ -25,9 +25,6 @@ def listar_livros():
 def sobre_equipe():
     return render_template('sobre_equipe.html')
 
-@app.route('/sobre_equipe')
-def sobre_equipe():
-    return render_template('sobre_equipe')
 
 
 @app.route('/usuario/<nome>')

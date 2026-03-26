@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}📚 Livraria Digital 📚{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+  <!-- 2º: CSS próprio — carregado DEPOIS do Bootstrap para poder sobrescrever -->
+  <!-- url_for('static', filename=...) gera o caminho correto automaticamente -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+  <!-- navbar: barra de navegação -->
+  <!-- navbar-expand-lg: em telas grandes (lg) a navbar fica expandida; em telas menores, colapsa -->
+  <!-- navbar-dark bg-dark: texto claro sobre fundo escuro -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <!-- container: centraliza o conteúdo da navbar -->
+    <div class="container">
+
+<!-- Dentro da tag <nav>, substitua o texto do navbar-brand pela imagem -->
+    
+<!-- height="32": define a altura; a largura se ajusta proporcionalmente -->
+      
+      <!-- é o link da “marca” da navbar que leva o usuário para a página inicial do site. -->
+      <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">📚 Livrária Digital 📚</a>
+
+      <!-- navbar-toggler: o botão hamburguer que aparece em telas pequenas -->
+      <!-- data-bs-toggle e data-bs-target: conectam o botão ao menu colapsável -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- collapse navbar-collapse: o conjunto de links que colapsa em telas pequenas -->
+      <!-- id="navbarNav": deve bater com o data-bs-target do botão acima -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <!-- navbar-nav ms-auto: lista de links, ms-auto empurra para a direita -->
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <!-- nav-link active: link ativo (página atual) fica destacado -->
+           <a class="nav-link" href="{{ url_for('index') }}">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('autores') }}">Autores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('livros') }}">Catálogo de Livros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('usuarios') }}">Usuarios</a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('sobre_equipe') }}">Sobre a equipe</a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo principal da página -->
+  <div class="container mt-5">
+    <h1 class="display-4">Bem-vindx a nossa Livrária Digital!</h1>
+    <p class="lead">
+      Este site foi criado com o intuito de servir exatamente como uma livraria fisica, portanto aproveitem!
+    </p>
+
+    <!-- alert alert-info: caixa de informação azul -->
+    <div class="alert alert-info">
+      <strong>Não deixe de se cadastrar no site para salvar seus livros e autores favoritos!!</strong>
+    </div>
+
+    <a href="/sobre_equipe" class="btn btn-primary btn-lg">Saiba Mais sobre a nossa equipe clicando aqui!</a>
+  </div>
+   
+  <!--o JavaScript do Bootstrap (necessário para componentes interativos como menus e modais):-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+  </script>
+</body>
+</html>
