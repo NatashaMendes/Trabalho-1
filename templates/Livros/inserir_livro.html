@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block titulo %}Novo Livro — Biblion{% endblock %}
+
+{% block conteudo %}
+<div class="page-header mb-4">
+  <h2 class="page-title"><i class="bi bi-journal-plus me-2"></i>Novo Livro</h2>
+  <p class="page-sub mb-0">Adicione um novo título ao acervo</p>
+</div>
+
+<div class="card form-card">
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('inserir_livro') }}">
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
+          <input type="text" id="titulo" name="titulo" class="form-control"
+                 placeholder="Título do livro" required>
+        </div>
+        <div class="col-md-4">
+          <label for="isbn" class="form-label">ISBN</label>
+          <input type="text" id="isbn" name="isbn" class="form-control"
+                 placeholder="978-XXXXXXXXXX">
+        </div>
+        <div class="col-md-6">
+          <label for="autor" class="form-label">Autor <span class="text-danger">*</span></label>
+          <select id="autor" name="autor" class="form-select" required>
+            <option value="" disabled selected>Selecione o autor</option>
+            {% for a in autores %}
+            <option value="{{ a.nome }}">{{ a.nome }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="genero" class="form-label">Gênero <span class="text-danger">*</span></label>
+          <select id="genero" name="genero" class="form-select" required>
+            <option value="" disabled selected>Selecione o gênero</option>
+            <option>Romance</option>
+            <option>Ficção Científica</option>
+            <option>Novela</option>
+            <option>Conto</option>
+            <option>Poesia</option>
+            <option>Filosofia</option>
+            <option>História</option>
+            <option>Ficção</option>
+            <option>Biografia</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="ano" class="form-label">Ano de publicação <span class="text-danger">*</span></label>
+          <input type="number" id="ano" name="ano" class="form-control"
+                 placeholder="Ex: 1980" min="1000" max="2099" required>
+        </div>
+        <div class="col-md-4">
+          <label for="paginas" class="form-label">Número de páginas <span class="text-danger">*</span></label>
+          <input type="number" id="paginas" name="paginas" class="form-control"
+                 placeholder="Ex: 320" min="1" required>
+        </div>
+        <div class="col-md-4">
+          <label for="editora" class="form-label">Editora</label>
+          <input type="text" id="editora" name="editora" class="form-control"
+                 placeholder="Nome da editora">
+        </div>
+        <div class="col-12">
+          <label for="sinopse" class="form-label">Sinopse</label>
+          <textarea id="sinopse" name="sinopse" class="form-control" rows="3"
+                    placeholder="Breve descrição do livro..."></textarea>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="d-flex gap-2 justify-content-end">
+        <a href="{{ url_for('listar_livros') }}" class="btn btn-outline-secondary">
+          <i class="bi bi-x-lg me-1"></i> Cancelar
+        </a>
+        <button type="submit" class="btn btn-amber">
+          <i class="bi bi-check-lg me-1"></i> Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
