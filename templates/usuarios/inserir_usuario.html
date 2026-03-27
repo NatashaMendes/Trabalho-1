@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block titulo %}Novo Usuário — Biblion{% endblock %}
+
+{% block conteudo %}
+<div class="page-header mb-4">
+  <h2 class="page-title"><i class="bi bi-person-plus me-2"></i>Novo Usuário</h2>
+  <p class="page-sub mb-0">Preencha os dados para cadastrar um novo usuário</p>
+</div>
+
+<div class="card form-card">
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('inserir_usuario') }}">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="nome" class="form-label">Nome completo <span class="text-danger">*</span></label>
+          <input type="text" id="nome" name="nome" class="form-control"
+                 placeholder="Nome do usuário" required>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
+          <input type="email" id="email" name="email" class="form-control"
+                 placeholder="usuario@email.com" required>
+        </div>
+        <div class="col-md-6">
+          <label for="perfil" class="form-label">Perfil de acesso <span class="text-danger">*</span></label>
+          <select id="perfil" name="perfil" class="form-select" required>
+            <option value="" disabled selected>Selecione um perfil</option>
+            <option value="Admin">Admin</option>
+            <option value="Editor">Editor</option>
+            <option value="Leitor">Leitor</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
+          <input type="password" id="senha" name="senha" class="form-control"
+                 placeholder="Mínimo 6 caracteres" required>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="d-flex gap-2 justify-content-end">
+        <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline-secondary">
+          <i class="bi bi-x-lg me-1"></i> Cancelar
+        </a>
+        <button type="submit" class="btn btn-amber">
+          <i class="bi bi-check-lg me-1"></i> Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
