@@ -1,78 +1,79 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+{% extends 'base_publica.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block titulo %}📚 Livraria Digital 📚{% endblock %}</title>
-  
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet">
-  
-  <!-- CSS próprio — carregado DEPOIS do Bootstrap -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
+{% block titulo %}Biblion — Sua Biblioteca Digital{% endblock %}
 
-<body>
+{% block conteudo %}
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
+<!-- Hero -->
+<section class="hero-section">
+  <div class="container text-center">
+    <div class="hero-badge mb-3">✦ Acervo Literário Digital ✦</div>
+    <h1 class="hero-title">Leia mais.<br>Descubra sempre.</h1>
+    <p class="hero-subtitle">
+      Biblion é uma plataforma de gestão de acervo literário digital. Organize livros,
+      cataloguem autores e conecte leitores ao conhecimento com elegância e simplicidade.
+    </p>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <a href="{{ url_for('cadastro') }}" class="btn btn-amber btn-lg px-4">Criar conta grátis</a>
+      <a href="{{ url_for('login') }}"    class="btn btn-outline-amber btn-lg px-4">Entrar</a>
+    </div>
+  </div>
+</section>
 
-      <!-- Marca da navbar com logo -->
-      <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
-        <img src="{{ url_for('static', filename='imgs/logo.png') }}"
-             alt="Logo SistemaGestão"
-             height="32">
-        <span class="fw-bold">📚 Livraria Digital 📚</span>
-      </a>
-
-      <!-- Botão hamburguer para telas pequenas -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Links da navbar -->
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('index') }}">Início</a>
-          </li>
-          <li class="nav-item">
-            <!-- Corrigido: faltava fechar aspas no url_for -->
-            <a class="nav-link" href="{{ url_for('listar_autor') }}">Autores</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('listar_livro') }}">Catálogo de Livros</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('sobre_equipe') }}">Sobre a equipe</a>
-          </li>
-        </ul>
+<!-- Funcionalidades -->
+<section class="features-section">
+  <div class="container">
+    <h2 class="section-title text-center mb-5">O que você encontra aqui</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card h-100">
+          <div class="feature-icon"><i class="bi bi-journal-text"></i></div>
+          <h5>Catálogo de Livros</h5>
+          <p>Cadastre e gerencie títulos com informações completas: título, autor, gênero, ano e número de páginas.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card h-100">
+          <div class="feature-icon"><i class="bi bi-person-lines-fill"></i></div>
+          <h5>Gestão de Autores</h5>
+          <p>Mantenha um registro detalhado dos autores do acervo, com nacionalidade e obras catalogadas.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card h-100">
+          <div class="feature-icon"><i class="bi bi-people"></i></div>
+          <h5>Controle de Usuários</h5>
+          <p>Gerencie leitores, editores e administradores com diferentes perfis de acesso ao sistema.</p>
+        </div>
       </div>
     </div>
-  </nav>
-
-  <!-- Conteúdo principal -->
-  <div class="container mt-5">
-    <h1 class="display-4">Bem-vindx à nossa Livraria Digital!</h1>
-    <p class="lead">
-      Este site foi criado com o intuito de servir exatamente como uma livraria física, portanto aproveitem!
-    </p>
-
-    <!-- Caixa de informação -->
-    <div class="alert alert-info">
-      <strong>Não deixe de se cadastrar no site para salvar seus livros e autores favoritos!</strong>
-    </div>
-
-    <a href="{{ url_for('sobre_equipe') }}" class="btn btn-primary btn-lg">
-      Saiba Mais sobre a nossa equipe clicando aqui!
-    </a>
   </div>
-   
-  <!-- JavaScript do Bootstrap -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</section>
 
-</body>
-</html>
+<!-- Destaques / géneros -->
+<section class="genres-section">
+  <div class="container">
+    <h2 class="section-title text-center mb-5">Gêneros em destaque</h2>
+    <div class="row g-3 justify-content-center">
+      {% for genero, icone in [('Romance', 'bi-heart'), ('Ficção Científica', 'bi-rocket'), ('Poesia', 'bi-feather'), ('Filosofia', 'bi-lightbulb'), ('História', 'bi-hourglass-split'), ('Novela', 'bi-book')] %}
+      <div class="col-6 col-md-2">
+        <div class="genre-chip">
+          <i class="bi {{ icone }}"></i>
+          <span>{{ genero }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA final -->
+<section class="cta-section text-center">
+  <div class="container">
+    <h2 class="cta-title">Pronto para organizar seu acervo?</h2>
+    <p class="cta-sub">Cadastre-se gratuitamente e comece a catalogar hoje mesmo.</p>
+    <a href="{{ url_for('cadastro') }}" class="btn btn-amber btn-lg mt-2 px-5">Começar agora</a>
+  </div>
+</section>
+
+{% endblock %}
