@@ -1,337 +1,375 @@
-/* static/css/estilo.css */
-/* Estilos personalizados do Sistema de Gestão */
-/* Estes estilos complementam o Bootstrap — nunca substituem */
+/* ── Livraria Virtual — styles.css ── */
 
-/* ── Variáveis de cor do sistema ─────────────────────────────────── */
-/* Variáveis CSS permitem reutilizar valores e facilitar manutenção */
-
-/* ── Variáveis ──────────────────────────────────────────────── */
+/* ── Variáveis globais de cor, fonte e transição ── */
 :root {
-  --amber:        #c9a84c;
-  --amber-light:  #e8c96a;
-  --amber-dark:   #8a6b2e;
-  --bg-dark:      #0d1117;
-  --bg-card:      #161b22;
-  --bg-surface:   #1e2530;
-  --text-primary: #e8dcc8;
-  --text-muted:   #9e8e7a;
-  --border:       #2a2a2a;
-  --font-serif:   'Playfair Display', serif;
-  --font-body:    'Lora', serif;
+  /* Tons de âmbar (dourado) usados em botões, bordas e destaques */
+  --amber:       #C8860A;
+  --amber-light: #E8A020;
+  --amber-pale:  #F5C84A;
+  --amber-glow:  rgba(200,134,10,.15); /* usado em hover de fundo */
+
+  /* Tons de mogno (marrom escuro) para fundos e navbar */
+  --mogno:       #1A0E05;
+
+  /* Tons de creme (bege claro) para fundos e textos em área pública */
+  --creme:       #F5EDD8;
+  --creme-soft:  #FAF5E9; /* fundo da área do sistema */
+  --creme-warm:  #EDE0C4; /* bordas e separadores */
+
+  /* Cores de texto */
+  --text-body:   #3D2510; /* texto padrão */
+  --text-muted:  #7A5C3A; /* texto secundário / subtítulos */
+  --text-light:  #C8B08A; /* texto em fundo escuro */
+
+  /* Fontes: Playfair para títulos, Lora para corpo */
+  --font-display:'Playfair Display', Georgia, serif;
+  --font-body:   'Lora', Georgia, serif;
 }
 
-/* ── Reset / base ───────────────────────────────────────────── */
-body {
-  font-family: var(--font-body);
-}
+/* Fonte padrão e cor de texto para todo o site */
+body { font-family: var(--font-body); color: var(--text-body); }
 
-/* ── PÁGINAS PÚBLICAS ───────────────────────────────────────── */
+
+/* ════════════════════════════════════════════
+   ÁREA PÚBLICA (index, login, cadastro)
+   Fundo escuro mogno com navbar transparente
+   ════════════════════════════════════════════ */
+
+/* Corpo da área pública: fundo escuro, altura mínima de tela inteira */
 .publica-body {
-  background: var(--bg-dark);
-  color: var(--text-primary);
+  background: var(--mogno);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column; /* empilha navbar + main + footer */
 }
-.publica-main { flex: 1; }
 
-/* Navbar pública */
+/* Navbar da área pública: fundo semitransparente com desfoque */
 .navbar-publica {
-  background: rgba(13, 17, 23, 0.95);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-  padding: 14px 0;
+  background: rgba(26,14,5,.92);
+  backdrop-filter: blur(10px); /* efeito vidro fosco */
+  border-bottom: 1px solid rgba(200,134,10,.3); /* linha âmbar sutil */
 }
 
-/* ── SISTEMA (pós-login) ────────────────────────────────────── */
+
+/* ════════════════════════════════════════════
+   ÁREA DO SISTEMA (usuários, livros, autores)
+   Fundo claro creme com navbar mogno
+   ════════════════════════════════════════════ */
+
+/* Corpo do sistema: fundo creme claro */
 .sistema-body {
-  background: #111418;
-  color: var(--text-primary);
+  background: var(--creme-soft);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
 }
+
+/* Navbar do sistema: fundo mogno sólido */
+.navbar-sistema {
+  background: var(--mogno);
+  border-bottom: 2px solid rgba(200,134,10,.3);
+}
+
+/* Área principal ocupa o espaço restante entre navbar e footer */
 .sistema-main { flex: 1; }
 
-/* Navbar sistema */
-.navbar-sistema {
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-  padding: 10px 0;
+
+/* ════════════════════════════════════════════
+   BRAND / LOGO
+   ════════════════════════════════════════════ */
+
+/* Logo/nome do site na navbar */
+.brand-logo {
+  font-family: var(--font-display); font-weight: 700;
+  color: var(--amber-light) !important; text-decoration: none;
+  transition: color .2s; /* suaviza a mudança de cor no hover */
 }
+.brand-logo:hover { color: var(--amber-pale) !important; }
 
 
-/* ── Links de navegação ─────────────────────────────────────── */
+/* ════════════════════════════════════════════
+   LINKS DE NAVEGAÇÃO (sistema)
+   ════════════════════════════════════════════ */
+
+/* Links do menu interno (Usuários, Livros, Autores...) */
 .nav-link-sistema {
-  color: var(--text-muted) !important;
-  border-radius: 8px;
-  padding: 6px 14px !important;
-  transition: color .2s, background .2s;
-  font-size: .9rem;
+  color: var(--text-light) !important;
+  border-radius: 7px; padding: .4rem .85rem !important;
+  transition: background .2s, color .2s;
 }
-.nav-link-sistema:hover,
-.nav-link-sistema.active {
-  color: var(--amber) !important;
-  background: rgba(201, 168, 76, 0.08);
-}
+/* Hover: fundo âmbar translúcido */
+.nav-link-sistema:hover { background: var(--amber-glow); color: var(--creme) !important; }
+/* Active: página atual destacada */
+.nav-link-sistema.active { background: rgba(200,134,10,.15); color: var(--amber-pale) !important; font-weight: 600; }
 
-/* ── Botões personalizados ──────────────────────────────────── */
+
+/* ════════════════════════════════════════════
+   BOTÕES
+   ════════════════════════════════════════════ */
+
+/* Botão principal (âmbar dourado com gradiente) */
 .btn-amber {
-  background: var(--amber);
-  color: #0d1117;
-  border: none;
-  font-weight: 600;
-  letter-spacing: .3px;
-  transition: background .2s, transform .15s;
+  background: linear-gradient(135deg, var(--amber), var(--amber-light));
+  color: var(--mogno) !important; border: none;
+  font-family: var(--font-body); font-weight: 600; border-radius: 6px;
+  transition: filter .2s, transform .2s;
 }
-.btn-amber:hover {
-  background: var(--amber-light);
-  color: #0d1117;
-  transform: translateY(-1px);
-}
+/* Hover: levemente mais claro e levantado */
+.btn-amber:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
+/* Botão contornado âmbar (área pública: Entrar) */
 .btn-outline-amber {
-  border: 1.5px solid var(--amber);
-  color: var(--amber);
-  background: transparent;
-  transition: background .2s, color .2s;
+  color: var(--amber-light); border: 1.5px solid rgba(200,134,10,.4);
+  background: transparent; border-radius: 6px; transition: background .2s, color .2s;
 }
-.btn-outline-amber:hover {
-  background: var(--amber);
-  color: #0d1117;
-}
+.btn-outline-amber:hover { background: var(--amber-glow); color: var(--amber-pale); }
 
+/* Botão contornado âmbar menor (navbar sistema: Sair) */
 .btn-outline-amber-nav {
-  border: 1px solid rgba(201,168,76,.5);
-  color: var(--amber);
-  background: transparent;
-  font-size: .85rem;
-  transition: background .2s, color .2s;
+  color: var(--amber-light); border: 1.5px solid rgba(200,134,10,.35);
+  background: transparent; border-radius: 6px;
+  font-size: .82rem; padding: .3rem .75rem; transition: background .2s;
 }
-.btn-outline-amber-nav:hover {
-  background: var(--amber);
-  color: #0d1117;
-}
+.btn-outline-amber-nav:hover { background: var(--amber-glow); color: var(--amber-pale); }
 
-/* ── Texto âmbar na navbar ──────────────────────────────────── */
-.text-amber-light { color: var(--text-muted); font-size: .87rem; }
 
-/* ── HERO (página inicial) ──────────────────────────────────── */
-.hero-section {
-  padding: 100px 0 80px;
-  background:
-    radial-gradient(ellipse at 60% 0%, rgba(201,168,76,.12) 0%, transparent 65%),
-    var(--bg-dark);
-}
+/* ════════════════════════════════════════════
+   HERO (seção principal da index.html)
+   ════════════════════════════════════════════ */
+
+/* Espaçamento generoso acima e abaixo do hero */
+.hero-section { padding: 6rem 0 4rem; }
+
+/* Pequena etiqueta decorativa acima do título */
 .hero-badge {
-  display: inline-block;
-  font-size: .8rem;
-  letter-spacing: 3px;
-  color: var(--amber);
-  text-transform: uppercase;
+  font-family: var(--font-display); font-size: .78rem;
+  font-style: italic; letter-spacing: .18em; color: var(--amber-light);
 }
+
+/* Título grande em Playfair, responsivo com clamp() */
 .hero-title {
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-}
-.hero-subtitle {
-  font-family: var(--font-body);
-  font-size: 1.15rem;
-  color: var(--text-muted);
-  max-width: 520px;
-  margin: 0 auto;
-  line-height: 1.8;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 5rem); /* mínimo 2.8rem, ideal 7vw, máximo 5rem */
+  font-weight: 700; color: var(--creme); line-height: 1.1;
 }
 
-/* ── Features ───────────────────────────────────────────────── */
-.features-section {
-  padding: 80px 0;
-  background: var(--bg-dark);
-}
-.section-title {
-  font-family: var(--font-serif);
-  font-size: 2rem;
-  color: var(--text-primary);
-}
+/* Subtítulo em itálico, centralizado e com largura limitada */
+.hero-subtitle { color: var(--text-light); font-style: italic; max-width: 540px; margin: 0 auto; }
+
+
+/* ════════════════════════════════════════════
+   FEATURES (cards de funcionalidades, index.html)
+   ════════════════════════════════════════════ */
+
+.features-section { padding: 4rem 0; }
+/* Título da seção em Playfair sobre fundo escuro */
+.section-title { font-family: var(--font-display); color: var(--creme); }
+
+/* Card de funcionalidade com borda âmbar e hover animado */
 .feature-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 32px 28px;
-  transition: border-color .25s, transform .25s;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(200,134,10,.3);
+  border-radius: 12px; padding: 1.75rem; text-align: center;
+  transition: background .3s, transform .3s, box-shadow .3s;
 }
-.feature-card:hover {
-  border-color: var(--amber);
-  transform: translateY(-4px);
-}
-.feature-icon {
-  font-size: 2rem;
-  color: var(--amber);
-  margin-bottom: 16px;
-}
-.feature-card h5 {
-  font-family: var(--font-serif);
-  color: var(--text-primary);
-  margin-bottom: 12px;
-}
-.feature-card p { color: var(--text-muted); font-size: .95rem; margin: 0; }
+/* Hover: sobe levemente e ganha brilho âmbar */
+.feature-card:hover { background: rgba(200,134,10,.08); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(200,134,10,.2); }
 
-/* ── CTA ────────────────────────────────────────────────────── */
-.cta-section { padding: 80px 0; background: var(--bg-dark); }
-.cta-title {
-  font-family: var(--font-serif);
-  font-size: 2.2rem;
-  color: var(--text-primary);
-}
-.cta-sub { color: var(--text-muted); }
+/* Ícone do card (Bootstrap Icons) */
+.feature-icon { font-size: 2rem; color: var(--amber-light); margin-bottom: .75rem; display: block; }
 
-/* ── AUTH (login / cadastro) ────────────────────────────────── */
+/* Título e texto do card */
+.feature-card h5 { font-family: var(--font-display); color: var(--creme); }
+.feature-card p  { color: var(--text-light); font-size: .93rem; }
+
+
+/* ════════════════════════════════════════════
+   CTA (chamada para ação no final da index.html)
+   ════════════════════════════════════════════ */
+
+.cta-section { padding: 4rem 0 5rem; }
+.cta-title { font-family: var(--font-display); color: var(--creme); font-size: 2rem; }
+.cta-sub   { color: var(--text-light); font-style: italic; }
+
+
+/* ════════════════════════════════════════════
+   AUTH (login.html e cadastro.html)
+   Card centralizado sobre fundo escuro
+   ════════════════════════════════════════════ */
+
+/* Wrapper centraliza o card vertical e horizontalmente */
 .auth-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 140px);
-  padding: 40px 16px;
+  min-height: calc(100vh - 120px); /* desconta a navbar */
+  display: flex; align-items: center; justify-content: center; padding: 2rem 1rem;
 }
+
+/* Card do formulário com efeito vidro escuro */
 .auth-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 48px 40px;
-  width: 100%;
-  max-width: 440px;
-}
-.auth-icon { font-size: 2.5rem; color: var(--amber); }
-.auth-title {
-  font-family: var(--font-serif);
-  font-size: 1.8rem;
-  color: var(--text-primary);
-  margin: 12px 0 4px;
-}
-.auth-sub { color: var(--text-muted); font-size: .95rem; }
-.auth-link { color: var(--text-muted); font-size: .9rem; }
-.auth-link a { color: var(--amber); text-decoration: none; }
-.auth-link a:hover { color: var(--amber-light); }
-
-/* Inputs dentro do auth */
-.auth-card .form-control,
-.auth-card .form-select {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  border-radius: 10px;
-  padding: 10px 14px;
-}
-.auth-card .form-control:focus,
-.auth-card .form-select:focus {
-  background: var(--bg-surface);
-  border-color: var(--amber);
-  color: var(--text-primary);
-  box-shadow: 0 0 0 3px rgba(201,168,76,.15);
-}
-.auth-card .form-label { color: var(--text-muted); font-size: .88rem; }
-.senha-progress { background: var(--border); border-radius: 4px; }
-
-/* ── SISTEMA — cards / tabelas ──────────────────────────────── */
-.page-title {
-  font-family: var(--font-serif);
-  font-size: 1.6rem;
-  color: var(--text-primary);
-  margin: 0;
-}
-.page-sub { color: var(--text-muted); font-size: .9rem; }
-
-.table-card,
-.form-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(200,134,10,.3);
+  border-radius: 14px; padding: 2.25rem; width: 100%; max-width: 420px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.3);
 }
 
-.biblion-table thead th {
-  background: var(--bg-surface);
-  color: var(--text-muted);
-  font-size: .8rem;
-  text-transform: uppercase;
-  letter-spacing: .8px;
-  border-color: var(--border);
-  padding: 12px 16px;
-  font-weight: 600;
-  font-family: var(--font-body);
-}
-.biblion-table tbody td {
-  color: var(--text-primary);
-  border-color: var(--border);
-  padding: 12px 16px;
-  vertical-align: middle;
-  font-size: .92rem;
-}
-.biblion-table tbody tr:hover td { background: rgba(201,168,76,.04); }
+/* Ícone no topo do card */
+.auth-icon  { font-size: 2.5rem; color: var(--amber-light); display: block; }
 
-/* Badges */
-.badge-perfil {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: .78rem;
-  font-weight: 600;
+/* Títulos e textos do card */
+.auth-title { font-family: var(--font-display); color: var(--creme); font-size: 1.7rem; }
+.auth-sub   { color: var(--text-light); font-style: italic; font-size: .9rem; }
+
+/* Link de alternância (ex: "Já tem conta? Faça login") */
+.auth-link  { color: var(--text-light); font-size: .9rem; }
+.auth-link a { color: var(--amber-light); text-decoration: none; }
+.auth-link a:hover { color: var(--amber-pale); }
+
+/* Labels dos campos */
+.auth-card .form-label { color: var(--creme-warm); font-size: .87rem; font-weight: 500; }
+
+/* Inputs sobre fundo escuro */
+.auth-card .form-control {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(200,134,10,.25);
+  border-radius: 7px; color: var(--creme); transition: border-color .2s, box-shadow .2s;
 }
-.badge-perfil-admin  { background: rgba(201,168,76,.15); color: var(--amber); }
-.badge-perfil-editor { background: rgba(96,165,250,.15);  color: #60a5fa; }
-.badge-perfil-leitor { background: rgba(74,222,128,.15);  color: #4ade80; }
-.badge-genero {
-  display: inline-block;
-  padding: 3px 10px;
-  background: rgba(201,168,76,.12);
-  color: var(--amber);
-  border-radius: 20px;
-  font-size: .78rem;
+/* Placeholder discreto */
+.auth-card .form-control::placeholder { color: rgba(200,176,138,.4); }
+/* Foco: borda âmbar com anel de luz */
+.auth-card .form-control:focus {
+  background: rgba(255,255,255,.09); border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(200,134,10,.15); color: var(--creme);
 }
 
-/* ── Formulários no sistema ─────────────────────────────────── */
-.form-card .card-body { padding: 32px; }
+
+/* ════════════════════════════════════════════
+   SISTEMA — TÍTULOS DE PÁGINA
+   ════════════════════════════════════════════ */
+
+/* Título principal de cada página interna */
+.page-title { font-family: var(--font-display); font-size: 1.65rem; color: var(--mogno); }
+/* Subtítulo descritivo abaixo do título */
+.page-sub   { color: var(--text-muted); font-style: italic; font-size: .9rem; }
+
+
+/* ════════════════════════════════════════════
+   SISTEMA — CARDS (formulários e tabelas)
+   ════════════════════════════════════════════ */
+
+/* Card base: fundo branco com borda creme e sombra suave */
+.form-card, .table-card {
+  background: #fff; border: 1px solid var(--creme-warm);
+  border-radius: 12px; box-shadow: 0 2px 10px rgba(26,14,5,.08);
+}
+/* Padding interno do card de formulário */
+.form-card .card-body { padding: 1.75rem; }
+
+/* Labels dos campos do formulário interno */
+.form-card .form-label { font-size: .87rem; font-weight: 600; color: var(--text-body); }
+
+/* Inputs e selects do formulário interno */
 .form-card .form-control,
 .form-card .form-select {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  border-radius: 10px;
+  border: 1.5px solid #DDD3C4; border-radius: 7px;
+  background: var(--creme-soft); font-family: var(--font-body);
+  transition: border-color .2s, box-shadow .2s;
 }
+/* Foco: borda âmbar */
 .form-card .form-control:focus,
 .form-card .form-select:focus {
-  background: var(--bg-surface);
-  border-color: var(--amber);
-  color: var(--text-primary);
-  box-shadow: 0 0 0 3px rgba(201,168,76,.12);
+  border-color: var(--amber); box-shadow: 0 0 0 3px rgba(200,134,10,.12); background: #fff;
 }
-.form-card .form-label  { color: var(--text-muted); font-size: .88rem; }
-.form-card .form-text   { color: #6b7280; }
-.form-card textarea.form-control { resize: vertical; }
 
-/* ── Flash messages ─────────────────────────────────────────── */
-.alert-success { background: rgba(74,222,128,.1);  border-color: rgba(74,222,128,.3);  color: #4ade80; }
-.alert-danger  { background: rgba(248,113,113,.1); border-color: rgba(248,113,113,.3); color: #f87171; }
-.alert-info    { background: rgba(96,165,250,.1);  border-color: rgba(96,165,250,.3);  color: #60a5fa; }
-.alert .btn-close { filter: invert(1) opacity(.6); }
 
-/* ── FOOTER ─────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════
+   TABELAS (listar_livros, listar_autores, listar_usuarios)
+   ════════════════════════════════════════════ */
+
+/* Estilo base da tabela */
+.biblion-table { font-family: var(--font-body); font-size: .91rem; width: 100%; }
+
+/* Cabeçalho: fundo mogno com texto creme */
+.biblion-table thead tr { background: var(--mogno); }
+.biblion-table thead th {
+  color: var(--creme-warm); font-family: var(--font-display);
+  font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
+  padding: .85rem 1rem; border: none;
+}
+
+/* Linhas do corpo: hover suave em creme */
+.biblion-table tbody tr { transition: background .15s; }
+.biblion-table tbody tr:hover { background: #FBF5EA; }
+
+/* Células do corpo com separador inferior */
+.biblion-table tbody td {
+  padding: .75rem 1rem;
+  border-bottom: 1px solid var(--creme-warm);
+  vertical-align: middle; /* alinha conteúdo ao centro vertical */
+}
+
+
+/* ════════════════════════════════════════════
+   BADGES (gêneros e perfis)
+   ════════════════════════════════════════════ */
+
+/* Badge de gênero literário (ex: Romance, Ficção) */
+.badge-genero {
+  padding: .25rem .7rem; border-radius: 30px; font-size: .78rem; font-weight: 600;
+  background: rgba(200,134,10,.12); color: var(--amber); border: 1px solid rgba(200,134,10,.3);
+}
+
+/* Base dos badges de perfil */
+.badge-perfil { padding: .25rem .8rem; border-radius: 30px; font-size: .78rem; font-weight: 700; font-family: var(--font-display); }
+
+/* Cada perfil tem cor própria para fácil identificação visual */
+.badge-perfil-admin  { background: rgba(139,60,15,.1);  color: #8B3C0F; border: 1px solid rgba(139,60,15,.25); }  /* marrom */
+.badge-perfil-editor { background: rgba(200,134,10,.1); color: var(--amber); border: 1px solid rgba(200,134,10,.3); } /* âmbar */
+.badge-perfil-leitor { background: rgba(60,100,60,.08); color: #3A6B3A; border: 1px solid rgba(60,100,60,.2); }  /* verde */
+
+
+/* ════════════════════════════════════════════
+   BOTÕES DE AÇÃO NAS TABELAS (editar / excluir)
+   ════════════════════════════════════════════ */
+
+/* Botão secundário (editar) */
+.btn-outline-secondary {
+  color: var(--text-muted); border: 1.5px solid #CCC0B0;
+  background: transparent; border-radius: 6px; transition: background .18s;
+}
+.btn-outline-secondary:hover { background: var(--creme-warm); color: var(--mogno); }
+
+/* Botão de perigo (excluir) */
+.btn-outline-danger {
+  color: #c0392b; border: 1.5px solid rgba(192,57,43,.3);
+  background: transparent; border-radius: 6px; transition: background .18s;
+}
+.btn-outline-danger:hover { background: rgba(192,57,43,.08); }
+
+
+/* ════════════════════════════════════════════
+   ALERTS (mensagens de feedback do Flask flash)
+   ════════════════════════════════════════════ */
+
+/* Base: sem borda padrão, borda colorida à esquerda */
+.alert { border-radius: 8px; font-family: var(--font-body); font-size: .92rem; border: none; }
+.alert-success { background: rgba(56,142,60,.1);   color: #256428; border-left: 3px solid #388E3C; } /* verde */
+.alert-danger  { background: rgba(192,57,43,.08);  color: #8B1A10; border-left: 3px solid #c0392b; } /* vermelho */
+.alert-info    { background: rgba(200,134,10,.08);  color: #7A5200; border-left: 3px solid var(--amber); } /* âmbar */
+
+
+/* ════════════════════════════════════════════
+   FOOTER (compartilhado entre base e base_publica)
+   ════════════════════════════════════════════ */
+
 .site-footer {
-  background: var(--bg-card);
-  border-top: 1px solid var(--border);
-  padding: 18px 0;
-  color: var(--text-muted);
-  font-size: .85rem;
-  font-family: var(--font-body);
+  background: #150A02; /* quase preto com toque de mogno */
+  border-top: 1px solid rgba(200,134,10,.25);
+  padding: 1rem 0; font-size: .82rem; color: var(--text-muted);
 }
-.site-footer strong { color: var(--amber); }
+/* Nome dos desenvolvedores destacado em âmbar */
+.site-footer strong { color: var(--amber-light); }
 
-/* ── Inputs placeholder ─────────────────────────────────────── */
-::placeholder { color: #4a4a5a !important; }
 
-/* ── select option (dark bg) ────────────────────────────────── */
-select option { background: var(--bg-surface); color: var(--text-primary); }
+/* ════════════════════════════════════════════
+   UTILITÁRIOS GLOBAIS
+   ════════════════════════════════════════════ */
+
+/* Cor de seleção de texto no site inteiro */
+::selection { background: rgba(200,134,10,.25); color: var(--mogno); }
+
+/* Contorno de foco acessível (teclado / leitores de tela) */
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 4px; }
