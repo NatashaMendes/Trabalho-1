@@ -14,7 +14,12 @@
   <p class="page-sub mb-0">Cadastre um novo autor no acervo</p>
 </div>
 
+<!-- Cria um card (componente visual do Bootstrap) que serve como contêiner estilizado para o formulário.
+ A classe form-card provavelmente é uma classe personalizada definida no seu CSS para dar estilo específico a cards que contêm formulários. -->
 <div class="card form-card">
+
+  <!-- Define a área interna do card, onde o conteúdo principal (neste caso, os campos do formulário) será colocado.
+   A classe card-body é padrão do Bootstrap e garante espaçamento interno adequado, deixando o conteúdo bem organizado e legível. -->
   <div class="card-body">
 
     <!-- Início do formulário. Envia os dados via POST para a rota inserir_autor. -->
@@ -27,8 +32,15 @@
           <input type="text" id="nome" name="nome" class="form-control"
                  placeholder="Nome do autor" required>
         </div>
+
+        <!-- Essa div define uma coluna dentro de um sistema de grid do Bootstrap.
+         O col-md-6 significa que, em telas médias (a partir de 768px de largura), essa coluna ocupará 6 das 12 partes disponíveis — ou seja, 
+         metade da largura da linha. 
+         Isso permite organizar os campos do formulário lado a lado em duas colunas quando há espaço suficiente, 
+         mas em telas menores (como celulares) os campos ficam empilhados automaticamente.-->
         <div class="col-md-6">
 
+          <!-- Esse trecho é responsável por estruturar o formulário dentro de um card do Bootstrap. -->
           <label for="nacionalidade" class="form-label">Nacionalidade <span class="text-danger">*</span></label>
 
           <!-- Campo obrigatório para nacionalidade. -->
@@ -55,8 +67,13 @@
         </div>
       </div>
 
+      <!-- Insere uma linha horizontal (<hr>), usada para separar visualmente o conteúdo.
+      A classe my-4 (margin-y 4) aplica espaçamento vertical acima e abaixo da linha, deixando o layout mais limpo. -->
       <hr class="my-4">
 
+      <!-- Cria um contêiner flexível usando o utilitário d-flex do Bootstrap.
+      gap-2 adiciona um pequeno espaço entre os elementos internos (os botões).
+      justify-content-end alinha os elementos à direita do contêiner, ou seja, os botões ficam agrupados no canto direito da página. -->
       <div class="d-flex gap-2 justify-content-end">
 
         <!-- Botão de cancelar que redireciona para a lista de autores. -->
