@@ -1,36 +1,136 @@
 {% extends 'base.html' %}
+<!-- Diz que este template herda de outro chamado 'base.html'. 
+     Isso evita repetir cabeçalho, rodapé e estrutura padrão em todas as páginas. -->
+
 {% block titulo %}Novo Usuário — Livraria Virtual{% endblock %}
+<!-- {% block titulo %}: abre um bloco chamado titulo. Esse bloco pode ser sobrescrito em cada página que herda o template base (base.html).
+Novo Usuário — Livraria Virtual: é o conteúdo que será exibido como título da aba do navegador (dentro da tag <title> do HTML).
+{% endblock %}: fecha o bloco, indicando que o conteúdo do título terminou. -->
 
 {% block conteudo %}
+<!-- Início do bloco principal de conteúdo da página. -->
+
 <div class="page-header mb-4">
+  <!-- Cria uma seção de cabeçalho (page-header) com margem inferior (mb-4) para dar espaçamento em relação ao conteúdo seguinte.
+  Essa classe geralmente é usada para destacar o título principal da página. -->
+
   <h2 class="page-title"><i class="bi bi-person-plus me-2"></i>Novo Usuário</h2>
+  <!-- Define o título da página em nível 2 (<h2>).
+  Inclui um ícone do Bootstrap (bi bi-person-plus) antes do texto, com espaçamento à direita (me-2).
+  O texto “Novo Usuário” indica a ação principal da página. -->
+
   <p class="page-sub mb-0">Preencha os dados para cadastrar um novo usuário</p>
+  <!-- Um parágrafo de subtítulo (page-sub) que explica o propósito da página.
+  A classe mb-0 remove a margem inferior, deixando o texto mais próximo do título. -->
 </div>
 
 <div class="card form-card">
+  <!-- Cria um card (caixa estilizada do Bootstrap) para envolver o formulário.
+  A classe form-card provavelmente é personalizada no seu CSS para dar estilo específico a cards de formulário. -->
+
   <div class="card-body">
+    <!-- Área interna do card, onde o conteúdo principal (o formulário) será exibido.
+    card-body garante espaçamento interno adequado. -->
+
     <form method="POST" action="{{ url_for('inserir_usuario') }}">
+    <!-- Início do formulário.
+    Usa o método POST para enviar os dados ao servidor.
+    O atributo action chama a rota Flask inserir_usuario, responsável por processar o cadastro. -->
+
       <div class="row g-3">
+      <!-- Cria uma linha (row) dentro do grid do Bootstrap.
+      g-3 adiciona espaçamento (gutter) entre as colunas, deixando os campos mais organizados. -->
+
         <div class="col-md-6">
+        <!-- Define uma coluna que ocupa metade da largura da linha em telas médias ou maiores.
+        Isso permite que os campos fiquem lado a lado em duas colunas. -->
+
           <label for="nome" class="form-label">Nome completo <span class="text-danger">*</span></label>
+          <!-- Cria o rótulo do campo.
+          O atributo for="nome" conecta o rótulo ao campo de entrada com o mesmo id.
+          form-label aplica estilo padrão do Bootstrap.
+          O <span class="text-danger">*</span> adiciona um asterisco vermelho, indicando que o campo é obrigatório. -->
+
+          <!-- Campo de entrada de texto para o nome completo.
+          id e name são usados para identificar o campo no HTML e no backend.
+          form-control aplica estilo Bootstrap.
+          placeholder mostra um texto de exemplo dentro do campo.
+          required torna o preenchimento obrigatório. -->
           <input type="text" id="nome" name="nome" class="form-control"
+         
+                 
                  placeholder="Nome do usuário" required>
+                 <!-- placeholder="Nome do usuário": Define o texto que aparece dentro do campo de entrada antes do usuário digitar algo.
+                 Serve como uma dica visual, mostrando o que deve ser preenchido (neste caso, o nome do usuário).
+                 Esse texto desaparece quando o usuário começa a digitar.
+                 Required: Torna o campo obrigatório. Se o usuário tentar enviar o formulário sem preencher esse campo, 
+                 o navegador exibirá uma mensagem de validação pedindo para completar.
+                 É uma forma simples de garantir que informações essenciais não sejam deixadas em branco. -->
+
         </div>
+
         <div class="col-md-6">
+          <!-- Define uma coluna que ocupa metade da largura da linha em telas médias ou maiores.
+        Isso permite que os campos fiquem lado a lado em duas colunas. -->
+        
           <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
+          <!-- Cria o rótulo do campo.
+          O atributo for="email" conecta o rótulo ao campo de entrada com o mesmo id. form-label aplica estilo padrão do Bootstrap.
+          O <span class="text-danger">*</span> adiciona um asterisco vermelho, indicando que o campo é obrigatório. -->
+
+          <!-- Campo de entrada para o e-mail do usuário.
+          type="email" garante que o navegador valide se o valor digitado tem formato de e-mail (ex: nome@dominio.com).
+          id e name identificam o campo no HTML e no backend. form-control aplica estilo Bootstrap. placeholder mostra um exemplo de preenchimento.
+          required torna o campo obrigatório para envio do formulário. -->
           <input type="email" id="email" name="email" class="form-control"
-                 placeholder="usuario@email.com" required>
+          
+
+          placeholder="usuario@email.com" required>
+          <!-- placeholder="usuario@email.com"
+          Mostra um texto de exemplo dentro do campo antes do usuário digitar.
+          Serve como sugestão de formato correto para o preenchimento (um endereço de e-mail válido).
+          Esse texto desaparece assim que o usuário começa a escrever.
+          required: Torna o campo obrigatório para envio do formulário.
+          Se o usuário tentar enviar sem preencher, o navegador exibirá uma mensagem de validação pedindo para completar.
+          No caso de type="email", o navegador também verifica se o valor digitado tem formato de e-mail válido (ex: nome@dominio.com). -->
+
         </div>
         <div class="col-md-6">
+           <!-- Define uma coluna que ocupa metade da largura da linha em telas médias ou maiores.
+        Isso permite que os campos fiquem lado a lado em duas colunas. -->
+        
           <label for="perfil" class="form-label">Perfil de acesso <span class="text-danger">*</span></label>
+          <!-- Cria o rótulo do campo.
+          O atributo for="perfil" conecta o rótulo ao elemento <select> com o mesmo id.
+          form-label aplica estilo padrão do Bootstrap.
+          O <span class="text-danger">*</span> adiciona um asterisco vermelho, indicando que o campo é obrigatório. -->
+
           <select id="perfil" name="perfil" class="form-select" required>
+          <!-- Cria um campo de seleção (dropdown).
+          id e name identificam o campo no HTML e no backend.
+          form-select aplica estilo Bootstrap para selects.
+          required torna o preenchimento obrigatório. -->
+
             <option value="" disabled selected>Selecione um perfil</option>
+            <!-- Primeira opção exibida como padrão.
+            disabled impede que seja escolhida.
+            selected garante que apareça selecionada inicialmente.
+            Serve como instrução para o usuário escolher um perfil válido. -->
+
             <option value="Admin">Admin</option>
             <option value="Editor">Editor</option>
             <option value="Leitor">Leitor</option>
+            <!-- Define as opções disponíveis para o usuário escolher.
+            Cada value será enviado ao servidor quando o formulário for submetido.
+            Os perfis representam diferentes níveis de acesso: Admin (administrador), Editor (pode alterar conteúdo) e Leitor (apenas consulta). -->
+
           </select>
         </div>
+
         <div class="col-md-6">
+           <!-- Define uma coluna que ocupa metade da largura da linha em telas médias ou maiores.
+        Isso permite que os campos fiquem lado a lado em duas colunas. -->
+        
           <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
           <input type="password" id="senha" name="senha" class="form-control"
                  placeholder="Mínimo 6 caracteres" required>
@@ -38,16 +138,41 @@
       </div>
 
       <hr class="my-4">
+      <!-- Insere uma linha horizontal (<hr>), usada para separar visualmente o conteúdo.
+      A classe my-4 (margin-y 4) aplica espaçamento vertical acima e abaixo da linha, deixando o layout mais limpo. -->
 
       <div class="d-flex gap-2 justify-content-end">
+      <!-- Cria um contêiner flexível usando o utilitário d-flex do Bootstrap.
+      gap-2 adiciona espaçamento entre os elementos internos (os botões).
+      justify-content-end alinha os elementos à direita, deixando os botões agrupados no canto direito da página. -->
+
         <a href="{{ url_for('listar_usuarios') }}" class="btn btn-outline-secondary">
+        <!-- Cria um botão do tipo link (<a>).
+        O atributo href="{{ url_for('listar_usuarios') }}" faz com que o botão leve o usuário para a rota Flask listar_usuarios, ou seja, 
+        a página que lista todos os usuários cadastrados.
+        A classe btn btn-outline-secondary aplica estilo Bootstrap, deixando o botão com borda cinza e aparência de ação secundária. -->
+
           <i class="bi bi-x-lg me-1"></i> Cancelar
+          <!-- Adiciona um ícone de “X” (bi bi-x-lg) antes do texto “Cancelar”.
+          me-1 aplica margem à direita do ícone, evitando que o texto fique colado.
+          O botão “Cancelar” serve para abandonar o cadastro e voltar para a lista de usuários. -->
+
         </a>
+
         <button type="submit" class="btn btn-amber">
+        <!-- Cria um botão que envia o formulário.
+        type="submit" indica que, ao clicar, o formulário será enviado para o servidor.
+        btn btn-amber aplica estilo Bootstrap, com uma cor personalizada (provavelmente definida no seu CSS como “amber”). -->
+
           <i class="bi bi-check-lg me-1"></i> Salvar
+          <!-- Adiciona um ícone de “check” (bi bi-check-lg) antes do texto “Salvar”.
+          me-1 aplica margem à direita do ícone, evitando que o texto fique colado.
+          O texto “Salvar” deixa claro que esse botão confirma e envia os dados preenchidos. -->
+
         </button>
       </div>
     </form>
   </div>
 </div>
 {% endblock %}
+<!-- Fim do bloco de conteúdo -->
