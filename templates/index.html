@@ -4,7 +4,23 @@
 
 {% block conteudo %}
 
-<!-- Hero -->
+<!-- <section class="hero-section">
+  Define uma seção semântica chamada hero, geralmente usada no topo da página para chamar atenção.
+  hero-section é uma classe personalizada que provavelmente controla o fundo, altura e estilo visual.
+  <div class="container text-center">
+    Centraliza o conteúdo dentro de um contêiner responsivo.
+    text-center alinha todos os elementos ao centro.
+    <div class="hero-badge mb-3">✦ Acervo Literário Digital ✦</div>
+    Um selo ou destaque visual com texto estilizado.
+    mb-3 adiciona espaçamento inferior.
+    O uso dos símbolos ✦ dá um ar decorativo.
+    <h1 class="hero-title">Leia mais.<br>Descubra sempre.</h1>
+    Título principal da seção.
+    hero-title é uma classe personalizada para tipografia marcante.
+    O <br> quebra a linha para dar ritmo ao slogan.
+    <p class="hero-subtitle"> ... </p>
+    Texto complementar que explica a proposta da plataforma.
+    hero-subtitle estiliza o parágrafo para parecer leve e convidativo. -->
 <section class="hero-section">
   <div class="container text-center">
     <div class="hero-badge mb-3">✦ Acervo Literário Digital ✦</div>
@@ -49,7 +65,23 @@
 </section>
 
 
-<!-- CTA final -->
+<!-- <section class="cta-section text-center">
+  Define uma seção semântica para a chamada de ação.
+  cta-section é uma classe personalizada que provavelmente controla o estilo (fundo diferenciado, espaçamento, cores).
+  text-center centraliza todo o conteúdo.
+  <div class="container">
+    Cria um contêiner responsivo para alinhar o conteúdo de forma organizada.
+    Título (<h2 class="cta-title">)
+      Pergunta direta ao usuário: “Pronto para organizar seu acervo?”.
+      cta-title estiliza o título para dar destaque.
+      Subtítulo (<p class="cta-sub">)
+        Complementa a mensagem: “Cadastre-se gratuitamente e comece a catalogar hoje mesmo.”.
+        cta-sub aplica estilo mais leve, reforçando o convite.
+        Botão (<a ...>)
+          Link estilizado como botão grande (btn btn-amber btn-lg).
+          mt-2 px-5 adiciona margem superior e padding horizontal para dar mais presença.
+          Texto: “Começar agora”.
+          href="{{ url_for('cadastro') }}" -->
 <section class="cta-section text-center">
   <div class="container">
     <h2 class="cta-title">Pronto para organizar seu acervo?</h2>
@@ -59,3 +91,4 @@
 </section>
 
 {% endblock %}
+<!-- Fim do bloco de conteúdo -->
