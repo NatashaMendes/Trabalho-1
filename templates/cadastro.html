@@ -1,0 +1,49 @@
+{% extends 'base_publica.html' %}
+{% block titulo %}Cadastro — Livraria Virtual{% endblock %}
+
+{% block conteudo %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header text-center mb-4">
+      <i class="bi bi-person-plus auth-icon"></i>
+      <h2 class="auth-title">Criar conta</h2>
+      <p class="auth-sub">Junte-se à comunidade Biblion</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('cadastro') }}">
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome completo</label>
+        <input type="text" id="nome" name="nome" class="form-control"
+               placeholder="Seu nome" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        <input type="email" id="email" name="email" class="form-control"
+               placeholder="seu@email.com" required>
+      </div>
+      <div class="mb-3">
+        <label for="senha" class="form-label">Senha</label>
+        <input type="password" id="senha" name="senha" class="form-control"
+               placeholder="Mínimo 6 caracteres" required>
+        <!-- Barra de força da senha -->
+        <div class="mt-2">
+          <div class="progress senha-progress" style="height:5px;">
+            <div id="barraForca" class="progress-bar" role="progressbar" style="width:0%"></div>
+          </div>
+          <small id="textoForca" class="text-muted"></small>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label for="confirmacao" class="form-label">Confirmar senha</label>
+        <input type="password" id="confirmacao" name="confirmacao" class="form-control"
+               placeholder="Repita a senha" required>
+      </div>
+      <button type="submit" class="btn btn-amber w-100">Criar conta</button>
+    </form>
+
+    <p class="text-center mt-3 mb-0 auth-link">
+      Já tem conta? <a href="{{ url_for('login') }}">Faça login</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
