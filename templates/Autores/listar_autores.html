@@ -1,7 +1,15 @@
+<!-- Este comando indica que o template herda a estrutura de base.html, 
+ ou seja, usa o layout padrão definido ali (como cabeçalho, rodapé, etc). -->
 {% extends 'base.html' %}
+
+<!-- Define o conteúdo do bloco titulo, que provavelmente será usado na tag <title> da página HTML. -->
 {% block titulo %}Autores — Livraria Virtual{% endblock %}
 
+<!-- Início do bloco que define o conteúdo principal da página. -->
 {% block conteudo %}
+
+<!-- Cabeçalho da página com título, subtítulo e botão para cadastrar um novo autor.
+ Usa classes do Bootstrap para alinhar elementos e estilizar. -->
 <div class="page-header d-flex justify-content-between align-items-center mb-4">
   <div>
     <h2 class="page-title"><i class="bi bi-person-lines-fill me-2"></i>Autores</h2>
@@ -12,6 +20,8 @@
   </a>
 </div>
 
+<!-- Estrutura da tabela que lista os autores.
+ Cabeçalho define as colunas: ID, Nome, Nacionalidade, Nascimento, Obras e Ações. -->
 <div class="card table-card">
   <div class="card-body p-0">
     <table class="table table-hover table-bordered mb-0 biblion-table">
@@ -25,6 +35,11 @@
           <th class="text-center">Ações</th>
         </tr>
       </thead>
+
+      <!-- Loop for percorre a lista autores e cria uma linha para cada autor.
+       Exibe os dados do autor (id, nome, nacionalidade, nascimento, obras).
+       Coluna de ações traz botões para editar e excluir, com ícones do Bootstrap.
+       O botão de excluir chama uma função JavaScript confirmarExclusao passando o nome do autor. -->
       <tbody>
         {% for a in autores %}
         <tr>
@@ -43,9 +58,13 @@
             </button>
           </td>
         </tr>
+
+        <!-- Final do "for a in autores" -->
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+
+<!-- Final do extends 'base.html', Fecha o bloco conteudo, encerrando o conteúdo específico da página.-->
 {% endblock %}
