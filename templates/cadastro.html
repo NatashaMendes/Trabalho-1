@@ -1,5 +1,7 @@
 {% extends 'base_publica.html' %}
 {% block titulo %}Cadastro — Livraria Virtual{% endblock %}
+<!-- A página herda o layout base público.
+O título da aba é sobrescrito para “Cadastro — Livraria Virtual”. -->
 
 {% block conteudo %}
 <div class="auth-wrapper">
@@ -9,13 +11,36 @@
       <h2 class="auth-title">Criar conta</h2>
       <p class="auth-sub">Junte-se à comunidade</p>
     </div>
+    <!-- auth-wrapper e auth-card: classes personalizadas para centralizar e estilizar o card de cadastro.
+    Cabeçalho com ícone (bi-person-plus), título “Criar conta” e subtítulo motivacional. -->
 
     <form method="POST" action="{{ url_for('cadastro') }}">
+      <!-- O formulário envia dados via POST para a rota Flask cadastro.
+      Campos:
+      Nome completo (input type="text")
+      E-mail (input type="email")
+      Senha (input type="password")
+      Inclui uma barra de força da senha (progress-bar) e texto explicativo.
+      Confirmar senha (input type="password") -->
+
       <div class="mb-3">
         <label for="nome" class="form-label">Nome completo</label>
         <input type="text" id="nome" name="nome" class="form-control"
                placeholder="Seu nome" required>
       </div>
+      <!-- <div class="mb-3">
+        Cria um contêiner com margem inferior (mb-3) para espaçamento entre os campos do formulário.
+        <label for="nome" class="form-label">Nome completo</label>
+        Define o rótulo do campo.
+        O atributo for="nome" conecta o rótulo ao campo de entrada com id="nome".
+        form-label aplica estilo Bootstrap para labels.
+        <input type="text" id="nome" name="nome" class="form-control" ...>
+        Campo de entrada de texto.
+        id="nome" e name="nome" identificam o campo no HTML e no envio do formulário.
+        class="form-control" aplica estilo Bootstrap para inputs.
+        placeholder="Seu nome" mostra um texto de ajuda dentro do campo.
+        required torna o preenchimento obrigatório. -->
+
       <div class="mb-3">
         <label for="email" class="form-label">E-mail</label>
         <input type="email" id="email" name="email" class="form-control"
@@ -25,7 +50,7 @@
         <label for="senha" class="form-label">Senha</label>
         <input type="password" id="senha" name="senha" class="form-control"
                placeholder="Mínimo 6 caracteres" required>
-        <!-- Barra de força da senha -->
+        <!-- Barra de forçar senha -->
         <div class="mt-2">
           <div class="progress senha-progress" style="height:5px;">
             <div id="barraForca" class="progress-bar" role="progressbar" style="width:0%"></div>
@@ -33,17 +58,36 @@
           <small id="textoForca" class="text-muted"></small>
         </div>
       </div>
+
       <div class="mb-4">
         <label for="confirmacao" class="form-label">Confirmar senha</label>
         <input type="password" id="confirmacao" name="confirmacao" class="form-control"
                placeholder="Repita a senha" required>
       </div>
+      <!-- <div class="mb-4">
+        Cria um contêiner com margem inferior (mb-4) para espaçamento extra em relação aos outros campos.
+        <label for="confirmacao" class="form-label">Confirmar senha</label>
+        Define o rótulo do campo.
+        O atributo for="confirmacao" conecta o rótulo ao campo de entrada com id="confirmacao".
+        form-label aplica estilo Bootstrap para labels.
+        <input type="password" ...>
+        Campo de entrada do tipo senha, que oculta os caracteres digitados.
+        id="confirmacao" e name="confirmacao" identificam o campo no HTML e no envio do formulário.
+        class="form-control" aplica estilo Bootstrap para inputs.
+        placeholder="Repita a senha" mostra um texto de ajuda dentro do campo.
+        required torna o preenchimento obrigatório. -->
+
       <button type="submit" class="btn btn-amber w-100">Criar conta</button>
+      <!-- Botão estilizado (btn-amber) ocupando toda a largura. -->
+
     </form>
 
     <p class="text-center mt-3 mb-0 auth-link">
       Já tem conta? <a href="{{ url_for('login') }}">Faça login</a>
+    <!-- Mensagem para quem já possui conta, com link para a página de login. -->
+       
     </p>
   </div>
 </div>
 {% endblock %}
+<!-- Fim do bloco de conteúdo -->
