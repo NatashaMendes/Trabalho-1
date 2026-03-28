@@ -60,16 +60,6 @@ body {
   padding: 10px 0;
 }
 
-/* ── Brand / Logo ───────────────────────────────────────────── */
-.brand-logo {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--amber) !important;
-  letter-spacing: -0.5px;
-  text-decoration: none;
-}
-.brand-logo i { margin-right: 6px; }
 
 /* ── Links de navegação ─────────────────────────────────────── */
 .nav-link-sistema {
@@ -189,27 +179,6 @@ body {
   margin-bottom: 12px;
 }
 .feature-card p { color: var(--text-muted); font-size: .95rem; margin: 0; }
-
-/* ── Gêneros ────────────────────────────────────────────────── */
-.genres-section {
-  padding: 60px 0;
-  background: var(--bg-surface);
-}
-.genre-chip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px 12px;
-  cursor: default;
-  transition: border-color .2s, color .2s;
-}
-.genre-chip:hover { border-color: var(--amber); color: var(--amber); }
-.genre-chip i { font-size: 1.5rem; color: var(--amber); }
-.genre-chip span { font-size: .8rem; color: var(--text-muted); text-align: center; }
 
 /* ── CTA ────────────────────────────────────────────────────── */
 .cta-section { padding: 80px 0; background: var(--bg-dark); }

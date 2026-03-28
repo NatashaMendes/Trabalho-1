@@ -14,8 +14,11 @@
       cataloguem autores e conecte leitores ao conhecimento com elegância e simplicidade.
     </p>
     <div class="d-flex justify-content-center gap-3 mt-4">
-      <a href="{{ url_for('cadastro') }}" class="btn btn-amber btn-lg px-4">Criar conta grátis</a>
-      <a href="{{ url_for('login') }}"    class="btn btn-outline-amber btn-lg px-4">Entrar</a>
+      <div class="ms-auto d-flex gap-2">
+        <a href="{{ url_for('login') }}"    class="btn btn-outline-amber btn-sm">Entrar</a>
+        <a href="{{ url_for('cadastro') }}" class="btn btn-amber btn-sm">Cadastrar</a>
+        
+      </div>
     </div>
   </div>
 </section>
@@ -50,22 +53,6 @@
   </div>
 </section>
 
-<!-- Destaques / géneros -->
-<section class="genres-section">
-  <div class="container">
-    <h2 class="section-title text-center mb-5">Gêneros em destaque</h2>
-    <div class="row g-3 justify-content-center">
-      {% for genero, icone in [('Romance', 'bi-heart'), ('Ficção Científica', 'bi-rocket'), ('Poesia', 'bi-feather'), ('Filosofia', 'bi-lightbulb'), ('História', 'bi-hourglass-split'), ('Novela', 'bi-book')] %}
-      <div class="col-6 col-md-2">
-        <div class="genre-chip">
-          <i class="bi {{ icone }}"></i>
-          <span>{{ genero }}</span>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
 
 <!-- CTA final -->
 <section class="cta-section text-center">

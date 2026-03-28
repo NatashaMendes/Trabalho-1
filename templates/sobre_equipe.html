@@ -3,77 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Sobre Nós</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sobre_equipe.css') }}">
 </head>
+
 <body>
 
-  <h1>Luana Rafaela Ionta</h1>
-  <!-- h1 = título principal da página: maior, negrito, único por página -->
+  <!-- container = limita a largura do conteúdo e centraliza na página -->
+  <!-- mt-5 = margin-top 5 = espaço acima do conteúdo -->
+  <div class="container mt-5">
 
-  <h2>Sobre mim</h2>
-  <!-- h2 = subtítulo: menor que h1, usado para organizar seções -->
+    <!-- row = linha do grid Bootstrap. Os "col" dentro dela ficam lado a lado -->
+    <!-- g-4 = gap 4 = espaço entre as colunas -->
+    <!-- justify-content-center = centraliza as colunas dentro da linha -->
+    <div class="row g-4 justify-content-center">
 
-  <p>
-    Olá! Meu nome é Luana, tenho 20 anos e estou cursando Gestão da Tecnologia
-    da Informação na FATEC Jahu. Tenho interesse em .
-  </p>
-  <!-- p = parágrafo de texto: o navegador adiciona espaço antes e depois -->
+      <!-- LUANA -->
+      <!-- col-md-5 = em telas médias+, ocupa 5/12 da largura.
+           Em telas pequenas (celular), ocupa a largura toda (um embaixo do outro) -->
+      <!-- text-center = centraliza todo o texto e elementos dentro desta coluna -->
+      <div class="col-md-5 text-center">
 
-  <h2>Minhas habilidades</h2>
+        <img src="{{ url_for('static', filename='imgs/luana.png') }}" alt="Foto Luana" width="150">
 
-  <ul>
-    <!-- ul = "unordered list" = lista com marcadores (bolinhas).
-         Use quando a ORDEM dos itens não importa. -->
-    <li>HTML e CSS</li>
-    <!-- li = "list item" = cada item da lista -->
-    <li>Python (em aprendizado)</li>
-    <li>MySQL</li>
-    <li>Git e GitHub</li>
-  </ul>
+        <h1>Luana Rafaela Ionta</h1>
+        <!-- h1 = título principal da página: maior, negrito, único por página -->
 
-  <h2>Contato</h2>
+        <h2>Sobre mim</h2>
+        <!-- h2 = subtítulo: menor que h1, usado para organizar seções -->
 
-  <p>
-    Me encontre no GitHub:
-    <a href="https://github.com/Luana997">github.com/Luana997</a>
-    <!-- a = link (âncora). href = endereço de destino.
-         O texto entre as tags é o texto clicável que o usuário vê. -->
-  </p>
+        <p>
+          Olá! Meu nome é Luana, tenho 20 anos e estou cursando Gestão da Tecnologia
+          da Informação na FATEC Jahu. Tenho interesse em Jogos, comédias, terror e programação.
+        </p>
+        <!-- p = parágrafo de texto: o navegador adiciona espaço antes e depois -->
 
-  <h1>Natasha Mendes</h1>
-  <!-- h1 = título principal da página: maior, negrito, único por página -->
+        <p>Luanarionta@gmail.com</p>
 
-  <h2>Sobre mim</h2>
-  <!-- h2 = subtítulo: menor que h1, usado para organizar seções -->
+        <h2>Minhas habilidades</h2>
 
-  <p>
-    Olá! Meu nome é Natasha, tenho 21 anos e estou cursando Gestão da Tecnologia
-    da Informação na FATEC Jahu. Tenho interesse em .
-  </p>
-  <!-- p = parágrafo de texto: o navegador adiciona espaço antes e depois -->
+        <!-- ul = "unordered list" = lista com marcadores (bolinhas).
+             Use quando a ORDEM dos itens não importa.
+             list-unstyled = classe Bootstrap que remove os marcadores da lista,
+             ficando mais limpo quando o texto está centralizado -->
+        <ul class="list-unstyled">
+          <li>HTML e CSS</li>
+          <!-- li = "list item" = cada item da lista -->
+          <li>Python (em aprendizado)</li>
+          <li>MySQL</li>
+          <li>Git e GitHub</li>
+        </ul>
 
-  <h2>Minhas habilidades</h2>
+        <h2>Contato</h2>
 
-  <ul>
-    <!-- ul = "unordered list" = lista com marcadores (bolinhas).
-         Use quando a ORDEM dos itens não importa. -->
-    <li>HTML e CSS</li>
-    <!-- li = "list item" = cada item da lista -->
-    <li>Python (em aprendizado)</li>
-    <li>MySQL</li>
-    <li>Git e GitHub</li>
-  </ul>
+        <p>
+          Me encontre no GitHub:
+          <a href="https://github.com/Luana997">github.com/Luana997</a>
+          <!-- a = link (âncora). href = endereço de destino.
+               O texto entre as tags é o texto clicável que o usuário vê. -->
+        </p>
+      </div>
 
-  <h2>Contato</h2>
+      <!-- NATASHA -->
+      <!-- col-md-5 = mesma lógica da coluna da Luana: metade da tela em telas médias+ -->
+      <!-- text-center = centraliza todo o texto e elementos dentro desta coluna -->
+      <div class="col-md-5 text-center">
 
-  <p>
-    Me encontre no GitHub:
-    <a href="https://github.com/NatashaMendes">github.com/NatashaMendes</a>
-    <!-- a = link (âncora). href = endereço de destino.
-         O texto entre as tags é o texto clicável que o usuário vê. -->
-  </p>
->>>>>>> 02bbaee167eadee10615c462671e63f84ef79c9f
+        <img src="{{ url_for('static', filename='imgs/foto_Natasha.jpg') }}" alt="Foto Natasha" width="150">
+
+        <h1>Natasha Mendes</h1>
+        <!-- h1 = título principal da página: maior, negrito, único por página -->
+
+        <h2>Sobre mim</h2>
+        <!-- h2 = subtítulo: menor que h1, usado para organizar seções -->
+
+        <p>
+          Olá! Meu nome é Natasha, tenho 21 anos e estou cursando Gestão da Tecnologia
+          da Informação na FATEC Jahu. Tenho interesse em .
+        </p>
+        <!-- p = parágrafo de texto: o navegador adiciona espaço antes e depois -->
+
+        <h2>Minhas habilidades</h2>
+
+        <!-- ul = "unordered list" = lista com marcadores (bolinhas).
+             Use quando a ORDEM dos itens não importa.
+             list-unstyled = remove os marcadores para ficar mais limpo centralizado -->
+        <ul class="list-unstyled">
+          <li>HTML e CSS</li>
+          <!-- li = "list item" = cada item da lista -->
+          <li>Python (em aprendizado)</li>
+          <li>MySQL</li>
+          <li>Git e GitHub</li>
+        </ul>
+
+        <h2>Contato</h2>
+
+        <p>
+          Me encontre no GitHub:
+          <a href="https://github.com/NatashaMendes">github.com/NatashaMendes</a>
+          <!-- a = link (âncora). href = endereço de destino.
+               O texto entre as tags é o texto clicável que o usuário vê. -->
+        </p>
+      </div>
+
+    </div>
+  </div>
 
 </body>
 </html>
