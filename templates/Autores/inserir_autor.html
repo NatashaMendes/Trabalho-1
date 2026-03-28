@@ -1,7 +1,14 @@
+<!-- Este comando indica que o template herda a estrutura de base.html, 
+ ou seja, usa o layout padrão definido ali (como cabeçalho, rodapé, etc). -->
 {% extends 'base.html' %}
+
+<!-- Define o conteúdo do bloco titulo, que provavelmente será usado na tag <title> da página HTML. -->
 {% block titulo %}Novo Autor — Livraria Virtual{% endblock %}
 
+<!-- Início do bloco que define o conteúdo principal da página. -->
 {% block conteudo %}
+
+<!-- Cabeçalho da página com ícone e título. Usa classes do Bootstrap para espaçamento e estilo. -->
 <div class="page-header mb-4">
   <h2 class="page-title"><i class="bi bi-person-plus me-2"></i>Novo Autor</h2>
   <p class="page-sub mb-0">Cadastre um novo autor no acervo</p>
@@ -9,24 +16,35 @@
 
 <div class="card form-card">
   <div class="card-body">
+
+    <!-- Início do formulário. Envia os dados via POST para a rota inserir_autor. -->
     <form method="POST" action="{{ url_for('inserir_autor') }}">
       <div class="row g-3">
         <div class="col-md-6">
           <label for="nome" class="form-label">Nome completo <span class="text-danger">*</span></label>
+
+          <!-- Campo obrigatório para o nome completo do autor. -->
           <input type="text" id="nome" name="nome" class="form-control"
                  placeholder="Nome do autor" required>
         </div>
         <div class="col-md-6">
+
           <label for="nacionalidade" class="form-label">Nacionalidade <span class="text-danger">*</span></label>
+
+          <!-- Campo obrigatório para nacionalidade. -->
           <input type="text" id="nacionalidade" name="nacionalidade" class="form-control"
                  placeholder="Ex: Brasileira, Francesa..." required>
         </div>
         <div class="col-md-6">
           <label for="nascimento" class="form-label">Data de nascimento <span class="text-danger">*</span></label>
+
+          <!-- Campo obrigatório para data de nascimento. -->
           <input type="date" id="nascimento" name="nascimento" class="form-control" required>
         </div>
         <div class="col-md-6">
           <label for="falecimento" class="form-label">Data de falecimento</label>
+
+          <!-- Campo opcional para data de falecimento, com instrução explicativa. -->
           <input type="date" id="falecimento" name="falecimento" class="form-control">
           <div class="form-text">Deixe em branco se o autor ainda é vivo.</div>
         </div>
@@ -40,9 +58,13 @@
       <hr class="my-4">
 
       <div class="d-flex gap-2 justify-content-end">
+
+        <!-- Botão de cancelar que redireciona para a lista de autores. -->
         <a href="{{ url_for('listar_autores') }}" class="btn btn-outline-secondary">
           <i class="bi bi-x-lg me-1"></i> Cancelar
         </a>
+
+        <!-- Botão de salvar que envia o formulário. -->
         <button type="submit" class="btn btn-amber">
           <i class="bi bi-check-lg me-1"></i> Salvar
         </button>
@@ -50,4 +72,6 @@
     </form>
   </div>
 </div>
+
+<!-- Final do extends 'base.html' -->
 {% endblock %}
