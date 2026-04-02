@@ -18,58 +18,52 @@ Também pode influenciar na forma como o corretor ortográfico e assistentes dig
   initial-scale=1.0 define o nível inicial de zoom. -->
 
   <title>{% block titulo %}Livraria Virtual{% endblock %}</title>
-  <!-- Define o título da aba do navegador.
-  O bloco Jinja2 {% block titulo %} permite que páginas filhas sobrescrevam esse título.
-  Se não houver sobrescrita, o título padrão será “Livraria Virtual”. -->
+  {# Define o título da aba do navegador.
+  O bloco Jinja2 "block titulo" permite que páginas filhas sobrescrevam esse título.
+  Se não houver sobrescrita, o título padrão será "Livraria Virtual". #}
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  <!-- Importa o Bootstrap, ícones, fontes do Google e o CSS customizado da aplicação. --> 
+  <!-- Importa o Bootstrap, ícones, fontes do Google e o CSS customizado da aplicação. -->
 
 </head>
 
 <body class="sistema-body">
-<!-- <body>: abre a seção principal do documento HTML, onde todo o conteúdo visível da página será colocado (cabeçalho, formulários, tabelas, botões etc.).
-class="sistema-body": aplica uma classe CSS personalizada chamada sistema-body.
-Essa classe provavelmente está definida no arquivo styles.css que você importou no <head>.
+<!-- "body" abre a seção principal do documento HTML, onde todo o conteúdo visível da página será colocado.
+class="sistema-body" aplica uma classe CSS personalizada.
 Ela pode controlar cores de fundo, margens, tipografia ou outros estilos específicos para o corpo do sistema. -->
 
   <nav class="navbar navbar-expand-lg navbar-sistema">
   <!-- Cria uma navbar (barra de navegação) usando o Bootstrap.
   navbar-expand-lg faz com que a barra seja expansível: em telas grandes os itens aparecem lado a lado, em telas pequenas eles se recolhem em um menu colapsável.
-  navbar-sistema é uma classe personalizada, provavelmente definida no seu CSS, para aplicar cores e estilos específicos da aplicação. -->
+  navbar-sistema é uma classe personalizada para aplicar cores e estilos específicos da aplicação. -->
 
     <div class="container-fluid px-4">
-     <!-- Define um contêiner fluido que ocupa toda a largura da tela.
-     px-4 adiciona padding horizontal (espaçamento interno) de 4 unidades Bootstrap, deixando o conteúdo mais bem distribuído. -->
+    <!-- Define um contêiner fluido que ocupa toda a largura da tela.
+    px-4 adiciona padding horizontal de 4 unidades Bootstrap, deixando o conteúdo mais bem distribuído. -->
 
       <a class="navbar-brand brand-logo" href="{{ url_for('index') }}">
-      <i class="bi bi-book-half"></i> Livraria Virtual
+        <i class="bi bi-book-half"></i> Livraria Virtual
       </a>
       <!-- Cria o logo/identidade da aplicação.
       navbar-brand é a classe Bootstrap para destacar o nome ou logotipo da marca.
       brand-logo é uma classe personalizada para estilização adicional.
-      O link href="{{ url_for('index') }}" leva o usuário para a página inicial da aplicação.
-      O ícone bi bi-book-half (Bootstrap Icons) representa um livro, reforçando o tema da livraria.
-      O texto “Livraria Virtual” é o nome da aplicação. -->
+      O ícone bi-book-half representa um livro, reforçando o tema da livraria. -->
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
         <span class="navbar-toggler-icon"></span>
       </button>
       <!-- Cria o botão hambúrguer que aparece em telas pequenas.
-      navbar-toggler é o estilo Bootstrap para esse botão.
-      data-bs-toggle="collapse" e data-bs-target="#navMenu" fazem o botão abrir/fechar o menu colapsável identificado por id="navMenu".
-      <span class="navbar-toggler-icon"></span> desenha o ícone padrão do botão. -->
+      data-bs-toggle="collapse" e data-bs-target="#navMenu" fazem o botão abrir/fechar o menu colapsável.
+      A span desenha o ícone padrão do botão. -->
 
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav me-auto gap-1">
         <!-- collapse navbar-collapse define a área que será expandida ou recolhida.
-        id="navMenu" conecta com o botão acima.
-        Dentro, temos uma lista (<ul>) com os itens de navegação.
         navbar-nav aplica estilo Bootstrap para menus.
-        me-auto empurra os itens para a esquerda, deixando espaço para outros elementos à direita.
+        me-auto empurra os itens para a esquerda.
         gap-1 adiciona espaçamento entre os itens. -->
 
           <li class="nav-item">
@@ -77,14 +71,9 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
                href="{{ url_for('listar_usuarios') }}">
               <i class="bi bi-people"></i> Usuários
             </a>
-            </li>
-            <!-- Cada <li> é um item do menu.
-            O link (<a>) tem classes nav-link e nav-link-sistema para estilização.
-            O trecho Jinja2 {% if request.path.startswith('/usuarios') %}active{% endif %} adiciona a classe active automaticamente quando o usuário está na rota /usuarios. 
-            Isso destaca o item atual no menu.
-            O ícone bi bi-people representa usuários.
-            O texto “Usuários” é o nome da seção.
-            href="{{ url_for('listar_usuarios') }}" leva para a página de listagem de usuários. -->
+          </li>
+          {# O trecho "if request.path.startswith('/usuarios')" adiciona a classe active
+          automaticamente quando o usuário está na rota /usuarios, destacando o item atual no menu. #}
 
           <li class="nav-item">
             <a class="nav-link nav-link-sistema {% if request.path.startswith('/livros') %}active{% endif %}"
@@ -92,19 +81,8 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
               <i class="bi bi-journal-text"></i> Livros
             </a>
           </li>
-           <!-- <li class="nav-item">
-            Define um item de lista dentro da navbar.
-            <a class="nav-link nav-link-sistema ...>
-            Cria o link de navegação.
-            nav-link aplica estilo padrão do Bootstrap.
-            nav-link-sistema é uma classe personalizada para estilização extra.
-            O trecho Jinja2 {% if request.path.startswith('/livros') %}active{% endif %} adiciona a classe active automaticamente quando o usuário está em uma rota que começa com /livros. Isso destaca o item atual no menu.
-            href="{{ url_for('listar_livros') }}"
-            Define o destino do link, levando o usuário para a página de listagem de livros.
-            <i class="bi bi-journal-text"></i>
-            Ícone de caderno/livro do Bootstrap Icons, reforçando visualmente a seção de livros.
-            Texto “Livros”
-            Nome da seção exibido ao lado do ícone. -->
+          {# O trecho "if request.path.startswith('/livros')" adiciona a classe active
+          automaticamente quando o usuário está em uma rota que começa com /livros. #}
 
           <li class="nav-item">
             <a class="nav-link nav-link-sistema {% if request.path.startswith('/autores') %}active{% endif %}"
@@ -112,70 +90,35 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
               <i class="bi bi-person-lines-fill"></i> Autores
             </a>
           </li>
-           <!-- <li class="nav-item">
-            Define um item de lista dentro da navbar.
-            <a class="nav-link nav-link-sistema ...>
-              Cria o link de navegação.
-              nav-link aplica estilo padrão do Bootstrap.
-              nav-link-sistema é uma classe personalizada para estilização extra.
-              O trecho Jinja2 {% if request.path.startswith('/autores') %}active{% endif %} adiciona a classe active automaticamente quando o usuário está em uma rota que começa com /autores. Isso destaca o item atual no menu.
-              href="{{ url_for('listar_autores') }}"
-              Define o destino do link, levando o usuário para a página de listagem de autores.
-              <i class="bi bi-person-lines-fill"></i>
-              Ícone de pessoa com linhas (Bootstrap Icons), representando autores ou perfis.
-              Reforça visualmente a seção de autores.
-              Texto “Autores” -->
-          
+          {# O trecho "if request.path.startswith('/autores')" adiciona a classe active
+          automaticamente quando o usuário está em uma rota que começa com /autores. #}
+
           <li class="nav-item">
             <a class="nav-link nav-link-sistema {% if request.path == '/equipe' %}active{% endif %}"
                href="{{ url_for('equipe') }}">
               <i class="bi bi-stars"></i> Equipe
             </a>
           </li>
-          <!-- <li class="nav-item">
-            Define um item de lista dentro da navbar.
-            <a class="nav-link nav-link-sistema ...>
-              Cria o link de navegação.
-              nav-link aplica estilo padrão do Bootstrap.
-              nav-link-sistema é uma classe personalizada para estilização extra.
-              O trecho Jinja2 {% if request.path == '/equipe' %}active{% endif %} adiciona a classe active automaticamente quando o usuário está exatamente na rota /equipe. 
-            Isso destaca o item atual no menu.
-            href="{{ url_for('equipe') }}"
-            Define o destino do link, levando o usuário para a página da equipe.
-            <i class="bi bi-stars"></i>
-            Ícone de estrelas do Bootstrap Icons, representando destaque, brilho ou reconhecimento.
-            Reforça visualmente a seção da equipe.
-            Texto “Equipe”
-            Nome da seção exibido ao lado do ícone. -->
-          
+          {# O trecho "if request.path == '/equipe'" adiciona a classe active
+          automaticamente quando o usuário está exatamente na rota /equipe. #}
+
         </ul>
         <div class="d-flex align-items-center gap-3">
+        <!-- Cria um contêiner flexível para alinhar os elementos lado a lado.
+        align-items-center centraliza verticalmente.
+        gap-3 adiciona espaçamento entre os elementos. -->
+
           <span class="navbar-text text-amber-light">
             <i class="bi bi-person-circle"></i>
             {{ session.get('usuario', 'Usuário') }}
           </span>
+          {# session.get('usuario', 'Usuário') mostra o nome do usuário logado obtido da sessão.
+          Se não houver usuário na sessão, exibe "Usuário" como padrão. #}
+
           <a href="{{ url_for('logout') }}" class="btn btn-outline-amber-nav btn-sm">
             <i class="bi bi-box-arrow-right"></i> Sair
           </a>
-          <!-- </ul>
-          Fecha a lista de itens de menu da navbar.
-          <div class="d-flex align-items-center gap-3">
-          Cria um contêiner flexível para alinhar os elementos (nome do usuário e botão de sair) lado a lado.
-          align-items-center centraliza verticalmente.
-          gap-3 adiciona espaçamento entre os elementos.
-          <span class="navbar-text text-amber-light">
-          Exibe texto dentro da navbar.
-          navbar-text aplica estilo Bootstrap para texto em barra de navegação.
-          text-amber-light é uma classe personalizada para cor diferenciada.
-          Dentro do span:
-          Ícone bi bi-person-circle representa o usuário.
-          {{ session.get('usuario', 'Usuário') }} mostra o nome do usuário logado, obtido da sessão. Se não houver usuário na sessão, exibe “Usuário” como padrão.
-          <a href="{{ url_for('logout') }}" class="btn btn-outline-amber-nav btn-sm">
-          Cria o botão de logout.
-          btn btn-outline-amber-nav btn-sm aplica estilo de botão pequeno, com cor personalizada.
-          Ícone bi bi-box-arrow-right representa saída.
-          Texto “Sair” deixa claro que o botão encerra a sessão.
-          O link leva para a rota Flask logout, que provavelmente limpa a sessão e redireciona para a página inicial ou de login. -->
+          <!-- O botão de logout leva para a rota Flask logout, que limpa a sessão e redireciona para o login. -->
 
         </div>
       </div>
@@ -184,6 +127,10 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
 
   <main class="sistema-main">
     <div class="container-fluid px-4 py-4">
+      {# get_flashed_messages recupera mensagens enviadas pelo Flask com categorias (success, danger, info).
+      Se houver mensagens, cada uma é exibida dentro de um alerta Bootstrap com ícone dinâmico.
+      success usa ícone de check, danger usa ícone de alerta, outros usam ícone de informação.
+      fade show faz o alerta aparecer com animação. btn-close permite fechar o alerta. #}
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
@@ -195,24 +142,10 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
           {% endfor %}
         {% endif %}
       {% endwith %}
-      <!-- <main>: marca a área principal do documento, semanticamente usada para o conteúdo central.
-        class="sistema-main": aplica estilos personalizados para o corpo principal.
-        <div class="container-fluid px-4 py-4">: cria um contêiner fluido (ocupa toda a largura da tela), com espaçamento interno (padding) horizontal e vertical.  
-        get_flashed_messages(with_categories=true): recupera mensagens enviadas pelo Flask com categorias (ex: success, danger, info).
-        Se houver mensagens, cada uma é exibida dentro de um alerta Bootstrap.
-        alert alert-{{ category }}: aplica estilo conforme a categoria (alert-success, alert-danger, etc.).
-        Ícone dinâmico:
-        success → ícone de check (bi-check-circle).
-        danger → ícone de alerta (bi-exclamation-triangle).
-        Outros → ícone de informação (bi-info-circle).
-        btn-close: botão para fechar o alerta.
-        fade show: faz o alerta aparecer com animação.
-        mb-3: adiciona margem inferior para espaçamento entre alertas. -->
 
+      {# Define o bloco "conteudo". Esse bloco será sobrescrito pelas páginas filhas.
+      É aqui que entram os cards, tabelas e formulários específicos de cada página. #}
       {% block conteudo %}{% endblock %}
-      <!-- Define um bloco Jinja2 chamado conteudo.
-      Esse bloco será sobrescrito pelas páginas filhas (templates que herdam este layout).
-      É aqui que entram os cards, tabelas e formulários específicos de cada página. -->
 
     </div>
   </main>
@@ -222,30 +155,14 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
       <p class="mb-0">&copy; 2026 Livraria Virtual &nbsp;|&nbsp; Desenvolvido por <strong>Natasha Mendes e Luana Ionta</strong></p>
     </div>
   </footer>
-  <!-- <footer class="site-footer">
-    Define a área de rodapé da página.
-    site-footer é uma classe personalizada para aplicar estilos específicos (cor de fundo, tipografia, espaçamento etc.).
-    <div class="container text-center">
-      Cria um contêiner centralizado.
-      text-center alinha o conteúdo no centro da página.
-      <p class="mb-0">
-        Exibe o texto do rodapé.
-        mb-0 remove a margem inferior, deixando o rodapé mais compacto.
-        O texto inclui:
-        &copy; 2026 → símbolo de copyright seguido do ano.
-        Nome da aplicação: Livraria Virtual.
-        Texto adicional: “Desenvolvido por Natasha Mendes e Luana Ionta”, com os nomes em destaque (<strong>). -->
+  <!-- O rodapé exibe o símbolo de copyright, o nome da aplicação e os nomes das desenvolvedoras em destaque.
+  site-footer é uma classe personalizada para aplicar estilos específicos ao rodapé. -->
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
-  <!-- Bootstrap JS
-  O primeiro <script> importa o Bootstrap Bundle (versão 5.3.3) diretamente da CDN.
-    Esse bundle já inclui o Popper.js, essencial para componentes como dropdowns, tooltips e o menu colapsável da navbar.
-    Sem esse script, os elementos interativos do Bootstrap não funcionariam.
-    Script personalizado da aplicação
-    O segundo <script> carrega o arquivo scripts.js da pasta static/js da sua aplicação Flask.
-      url_for('static', filename='js/scripts.js') gera automaticamente o caminho correto para esse arquivo.
-      Esse arquivo é usado para comportamentos específicos do sistema, como a função confirmarExclusao que vimos antes. -->
+  <!-- O Bootstrap Bundle já inclui o Popper.js, essencial para dropdowns, tooltips e o menu colapsável.
+  O segundo script carrega o arquivo scripts.js da pasta static/js da aplicação Flask,
+  usado para comportamentos específicos do sistema, como a função confirmarExclusao. -->
 
 </body>
 </html>

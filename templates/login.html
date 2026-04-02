@@ -9,25 +9,6 @@
       <h2 class="auth-title">Bem-vindo de volta</h2>
       <p class="auth-sub">Acesse sua conta Biblion</p>
     </div>
-    <!-- {% block conteudo %}
-    Início do bloco Jinja2 que será renderizado dentro do layout base.
-    Aqui vai o conteúdo específico da página de login.
-    <div class="auth-wrapper">
-      Contêiner externo para centralizar e estilizar a área de autenticação.
-      Geralmente controla alinhamento vertical e fundo.
-      <div class="auth-card">
-        Card visual que contém o formulário de login.
-        Dá a sensação de caixa destacada no centro da tela.
-        <div class="auth-header text-center mb-4">
-          Cabeçalho do card, centralizado (text-center) e com espaçamento inferior (mb-4).
-          Contém ícone, título e subtítulo.
-          <i class="bi bi-book-half auth-icon"></i>
-          Ícone de livro (Bootstrap Icons), reforçando o tema literário.
-          auth-icon é uma classe personalizada para tamanho/cor.
-          <h2 class="auth-title">Bem-vindo de volta</h2>
-          Título principal do card, saudando o usuário.
-          <p class="auth-sub">Acesse sua conta Biblion</p>
-          Subtítulo que explica a ação: login na conta. -->
 
     <form method="POST" action="{{ url_for('login') }}">
       <div class="mb-3">
@@ -35,65 +16,19 @@
         <input type="email" id="email" name="email" class="form-control"
                placeholder="seu@email.com" required>
       </div>
-      <!-- <form method="POST" action="{{ url_for('login') }}">
-        Cria o formulário que será enviado via método POST para a rota Flask login.
-        Essa rota deve processar os dados e autenticar o usuário.
-        <div class="mb-3">
-          Contêiner com margem inferior (mb-3) para espaçamento entre os campos.
-          <label for="email" class="form-label">E-mail</label>
-          Rótulo do campo.
-          for="email" conecta o label ao input com id="email".
-          form-label aplica estilo Bootstrap.
-          <input type="email" ...>
-          Campo de entrada para e-mail.
-          type="email" garante validação básica de formato (ex: exige @).
-          id="email" e name="email" identificam o campo no HTML e no envio do formulário.
-          class="form-control" aplica estilo Bootstrap.
-          placeholder="seu@email.com" mostra um exemplo dentro do campo.
-          required torna o preenchimento obrigatório. -->
 
       <div class="mb-4">
         <label for="senha" class="form-label">Senha</label>
         <input type="password" id="senha" name="senha" class="form-control"
                placeholder="••••••••" required>
       </div>
-      <!-- <div class="mb-4">
-        Contêiner com margem inferior (mb-4), dando mais espaçamento em relação ao próximo elemento.
-        <label for="senha" class="form-label">Senha</label>
-        Rótulo do campo.
-        for="senha" conecta o label ao input com id="senha".
-        form-label aplica estilo Bootstrap.
-        <input type="password" ...>
-        Campo de entrada do tipo senha, que oculta os caracteres digitados.
-        id="senha" e name="senha" identificam o campo no HTML e no envio do formulário.
-        class="form-control" aplica estilo Bootstrap.
-        placeholder="••••••••" mostra um exemplo visual de senha oculta.
-        required torna o preenchimento obrigatório. -->
 
       <button type="submit" class="btn btn-amber w-100">Entrar</button>
     </form>
-      <!-- <button type="submit">
-        Cria um botão que, ao ser clicado, envia o formulário para a rota definida no atributo action ({{ url_for('login') }}).
-        class="btn btn-amber w-100"
-        btn aplica o estilo padrão de botão do Bootstrap.
-        btn-amber é uma classe personalizada que provavelmente define a cor principal da identidade visual do sistema.
-        w-100 faz o botão ocupar toda a largura disponível, dando destaque e facilitando o clique. -->
 
     <p class="text-center mt-3 mb-0 auth-link">
       Não tem conta? <a href="{{ url_for('cadastro') }}">Cadastre-se aqui</a>
     </p>
-    <!-- <p class="text-center mt-3 mb-0 auth-link">
-      Cria um parágrafo centralizado (text-center).
-      mt-3 adiciona margem superior, separando do botão de login.
-      mb-0 remove a margem inferior, deixando o bloco mais compacto.
-      auth-link é uma classe personalizada para estilização de links auxiliares.
-      Texto “Não tem conta?”
-      Pergunta direta ao usuário, incentivando o cadastro.
-      <a href="{{ url_for('cadastro') }}">Cadastre-se aqui</a>
-      Link que leva à página de cadastro.
-      url_for('cadastro') gera automaticamente a rota correta no Flask. -->
-
   </div>
 </div>
 {% endblock %}
-<!-- Fim do bloco de conteúdo -->

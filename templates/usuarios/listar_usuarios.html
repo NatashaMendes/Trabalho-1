@@ -3,15 +3,15 @@
      Isso evita repetir cabeçalho, rodapé e estrutura padrão em todas as páginas. -->
 
 {% block titulo %}Usuários — Livraria Virtual{% endblock %}
-<!-- {% block titulo %}: abre um bloco chamado titulo.
+<!--  block titulo  abre um bloco chamado titulo.
 Esse bloco é usado no base.html dentro da tag <title>.
 Assim, cada página filha pode sobrescrever o título exibido na aba do navegador.
 Usuários — Livraria Virtual: é o texto que será mostrado como título da página.
 Aqui, indica que a página é dedicada à listagem ou gerenciamento de usuários, mantendo o padrão da aplicação (“Livraria Virtual”).
-{% endblock %}: fecha o bloco, indicando que o conteúdo do título terminou. -->
+endblock, fecha o bloco, indicando que o conteúdo do título terminou. -->
 
 {% block conteudo %}
-<!-- Início do bloco principal de conteúdo da página. -->
+
 
 
 
@@ -112,4 +112,3 @@ A classe table-card provavelmente é personalizada no seu CSS para dar estilo es
   </div>
 </div>
 {% endblock %}
-<!-- Fim do bloco de conteúdo -->
