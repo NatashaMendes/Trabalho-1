@@ -1,35 +1,36 @@
 {% extends 'base.html' %}
-<!-- Diz que este template herda de outro chamado 'base.html'. 
-     Isso evita repetir cabeçalho, rodapé e estrutura padrão em todas as páginas. -->
+{# Este template herda de base.html, evitando repetir cabeçalho, rodapé e estrutura padrão em todas as páginas. #}
 
 {% block titulo %}Usuários — Livraria Virtual{% endblock %}
-<!--  block titulo  abre um bloco chamado titulo.
-Esse bloco é usado no base.html dentro da tag <title>.
-Assim, cada página filha pode sobrescrever o título exibido na aba do navegador.
-Usuários — Livraria Virtual: é o texto que será mostrado como título da página.
-Aqui, indica que a página é dedicada à listagem ou gerenciamento de usuários, mantendo o padrão da aplicação (“Livraria Virtual”).
-endblock, fecha o bloco, indicando que o conteúdo do título terminou. -->
+{# Sobrescreve o título da aba do navegador definido no base.html. #}
 
 {% block conteudo %}
+{# Início do bloco principal de conteúdo da página. #}
 
-
-
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+  <!-- Cabeçalho da página com título, subtítulo e botão para cadastrar um novo usuário.
+  d-flex e justify-content-between alinham o título e o botão nas extremidades.
+  align-items-center centraliza verticalmente os elementos. -->
+  <div>
+    <h2 class="page-title"><i class="bi bi-people me-2"></i>Usuários</h2>
+    <p class="page-sub mb-0">Gerenciamento de usuários do sistema</p>
+  </div>
+  <a href="{{ url_for('inserir_usuario') }}" class="btn btn-amber">
+    <i class="bi bi-plus-lg me-1"></i> Novo Usuário
+  </a>
+</div>
 
 <div class="card table-card">
-<!-- Cria um card (caixa estilizada do Bootstrap) para envolver a tabela.
-A classe table-card provavelmente é personalizada no seu CSS para dar estilo específico a cards que contêm tabelas. -->
+<!-- Card estilizado para envolver a tabela.
+table-card é uma classe personalizada para estilização. -->
 
   <div class="card-body p-0">
-  <!-- Área interna do card.
-  p-0 remove o padding interno, permitindo que a tabela ocupe toda a largura sem espaçamento extra. -->
+  <!-- p-0 remove o padding interno, permitindo que a tabela ocupe toda a largura sem espaçamento extra. -->
 
     <table class="table table-hover table-bordered mb-0 biblion-table">
-    <!-- Cria a tabela em si.
-    table aplica estilo padrão do Bootstrap.
-    table-hover adiciona efeito de destaque quando o usuário passa o mouse sobre uma linha.
+    <!-- table-hover adiciona efeito de destaque ao passar o mouse sobre uma linha.
     table-bordered coloca bordas em todas as células.
-    mb-0 remove a margem inferior da tabela.
-    biblion-table é provavelmente uma classe personalizada para ajustes visuais. -->
+    biblion-table é uma classe personalizada para ajustes visuais. -->
 
       <thead>
         <tr>
@@ -38,75 +39,38 @@ A classe table-card provavelmente é personalizada no seu CSS para dar estilo es
           <th>E-mail</th>
           <th>Perfil</th>
           <th class="text-center">Ações</th>
-          <!-- <thead> define o cabeçalho da tabela.
-          <tr> cria uma linha de cabeçalho.
-          Cada <th> é uma coluna:
-          #: normalmente usado para numeração ou ID.
-          Nome: nome completo do usuário.
-          E-mail: endereço de e-mail.
-          Perfil: tipo de acesso (Admin, Editor, Leitor).
-          Ações: coluna reservada para botões de editar, excluir, etc.
-          class="text-center" centraliza o conteúdo da coluna de ações. -->
-      
+          <!-- text-center centraliza o conteúdo da coluna de ações. -->
         </tr>
-
-
       </thead>
       <tbody>
+        {# Loop que percorre a lista usuarios enviada pelo Flask.
+        Para cada objeto u (usuário), cria uma linha na tabela. #}
         {% for u in usuarios %}
-        <!-- Inicia um loop que percorre a lista usuarios.
-        Para cada objeto u (usuário), será criada uma linha (<tr>) na tabela. -->
-
         <tr>
           <td>{{ u.id }}</td>
           <td>{{ u.nome }}</td>
           <td>{{ u.email }}</td>
-          <td><span class="badge-perfil badge-perfil-{{ u.perfil|lower }}">{{ u.perfil }}</span></td>
-          <!--   <td><span class="badge-perfil badge-perfil-{{ u.perfil|lower }}">{{ u.perfil }}</span></td>
-          Cria uma linha da tabela (<tr>).
-          Cada <td> exibe uma informação do usuário:
-          {{ u.id }} → ID do usuário.
-          {{ u.nome }} → Nome completo.
-          {{ u.email }} → Endereço de e-mail.
-          {{ u.perfil }} → Perfil de acesso (Admin, Editor, Leitor).
-          O perfil é envolvido em um <span> com classes dinâmicas:
-          badge-perfil é estilo base.
-          badge-perfil-{{ u.perfil|lower }} aplica uma classe específica conforme o perfil (ex: badge-perfil-admin, badge-perfil-editor, badge-perfil-leitor).
-          Isso permite diferenciar visualmente os perfis com cores ou estilos distintos. -->
-
+          <td>
+            <span class="badge-perfil badge-perfil-{{ u.perfil|lower }}">{{ u.perfil }}</span>
+            {# badge-perfil-{{ u.perfil|lower }} aplica uma classe específica conforme o perfil
+            (ex: badge-perfil-admin, badge-perfil-editor, badge-perfil-leitor),
+            permitindo diferenciar visualmente os perfis com cores distintas. #}
+          </td>
           <td class="text-center">
             <button class="btn btn-sm btn-outline-secondary me-1" title="Editar">
+              <!-- Botão de edição. btn-sm aplica tamanho pequeno. title exibe tooltip ao passar o mouse. -->
               <i class="bi bi-pencil"></i>
             </button>
-            <!-- Cria a célula de ações.
-            class="text-center" centraliza os botões.
-            O primeiro botão é de edição:
-            btn btn-sm btn-outline-secondary → botão pequeno, estilo secundário.
-            me-1 → margem à direita para espaçamento.
-            Ícone bi bi-pencil → representa edição.
-            title="Editar" → tooltip que aparece ao passar o mouse. -->
-
             <button class="btn btn-sm btn-outline-danger" title="Excluir"
                     onclick="confirmarExclusao(event, '{{ u.nome }}')">
+              <!-- btn-outline-danger aplica estilo vermelho, indicando ação destrutiva.
+              confirmarExclusao exibe uma confirmação personalizada antes de excluir o usuário. -->
               <i class="bi bi-trash"></i>
             </button>
-            <!-- btn btn-sm btn-outline-danger
-            Cria um botão pequeno (btn-sm) com estilo de alerta (btn-outline-danger), que normalmente aparece em vermelho para indicar ação destrutiva.
-            title="Excluir"
-            Define o texto que aparece como tooltip ao passar o mouse sobre o botão.
-            Ajuda na acessibilidade e clareza da ação.
-            onclick="confirmarExclusao(event, '{{ u.nome }}')"
-            Define uma função JavaScript que será chamada quando o botão for clicado.
-            A função confirmarExclusao recebe o evento e o nome do usuário ({{ u.nome }}) como parâmetro.
-            Isso permite exibir uma mensagem de confirmação personalizada, como: “Deseja realmente excluir o usuário João?” antes de prosseguir com a exclusão.
-            <i class="bi bi-trash"></i>
-            Ícone de lixeira do Bootstrap Icons, representando exclusão.
-            Reforça visualmente a ação do botão. -->
-
-
           </td>
         </tr>
         {% endfor %}
+        {# Fim do loop: cada usuário da lista gera uma linha na tabela. #}
       </tbody>
     </table>
   </div>
