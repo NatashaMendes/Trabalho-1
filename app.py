@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from db import iniciar_bd
+
 
 app = Flask(__name__)
-app.secret_key = 'biblioteca-digital-secret-key-2024'
+
+
+iniciar_bd() #inicia o BD e as tabelas
 
 # ─── Dados simulados ────────────────────────────────────────────────────────
 
@@ -159,6 +163,22 @@ def inserir_livro():
         flash('Livro cadastrado com sucesso!', 'success')
         return redirect(url_for('listar_livros'))
     return render_template('livros/inserir_livro.html', autores=AUTORES)
+
+
+# -- #
+@app.route('/funcoes/cadastrar', methods=['GET', 'POST'])
+def cadastrar_funcao():
+    if request.method == 'POST':
+        nome = request.form.get('nome_funcao')
+        status = request.form.get('status')
+        dashboard = request.form.get('acesso_dashboard') # 'on' se marcado, None se não
+        
+        # Aqui viria a lógica para salvar no banco de dados
+        flash(f'Função "{nome}" cadastrada com sucesso!', 'success')
+        return redirect(url_for('index')) # Ou para uma listagem de funções
+        
+    return render_template('cadastrar_funcao.html')
+# -- #
 
 # ─── Equipe ───────────────────────────────────────────────────────────────────
 
