@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS funcoes (
     nome VARCHAR(20) NOT NULL UNIQUE,
     status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
     descrição VARCHAR(255),
+    gerenciar_funcoes BOOLEAN DEFAULT 0,
+    gerenciar_usuarios BOOLEAN DEFAULT 0,
     livros BOOLEAN DEFAULT 0,
     autores BOOLEAN DEFAULT 0,
     usuarios BOOLEAN DEFAULT 0,
@@ -21,6 +23,7 @@ CREATE TABLE IF NOT EXISTS funcoes (
         ON UPDATE CURRENT_TIMESTAMP
 );
 -- a partir daqui é uma tentativa
+ 
 -- DROP TABLE IF EXISTS clientes;
 CREATE TABLE IF NOT EXISTS clientes(
 
@@ -51,4 +54,25 @@ CREATE TABLE IF NOT EXISTS clientes(
     CONSTRAINT fk_cliente_funcao
     FOREIGN KEY (funcao_id) REFERENCES funcoes (id_funcao)
     
+);
+
+--criar as outras tabelas
+
+--teste, depois ver se ta certo
+-- DROP TABLE IF EXISTS funcoes;
+CREATE TABLE IF NOT EXISTS livros (
+    id_livro BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(20) NOT NULL UNIQUE,
+    status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
+    descrição VARCHAR(255),
+    inserir_livros BOOLEAN DEFAULT 0,
+    listar_livros BOOLEAN DEFAULT 0,
+    autores BOOLEAN DEFAULT 0,
+    usuarios BOOLEAN DEFAULT 0,
+
+    -- LOG
+
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP, 
+    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
 );

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from db import iniciar_bd
+from db import iniciar_bd, execute_query
 
 
 app = Flask(__name__)
@@ -50,10 +50,10 @@ def login():
             flash('Preencha e-mail e senha.', 'danger')
             return render_template('login.html')
         # Simulação: qualquer combinação não-vazia é aceita
-        session['usuario'] = email
-        flash('Login realizado com sucesso!', 'success')
-        return redirect(url_for('listar_usuarios'))
-    return render_template('login.html')
+        #session['usuario'] = email
+        #flash('Login realizado com sucesso!', 'success')
+        #return redirect(url_for('listar_usuarios'))
+    return render_template('base.html')
 
 
 @app.route('/cadastro', methods=['GET', 'POST'])
@@ -114,6 +114,21 @@ def inserir_usuario():
 
 @app.route('/autores/listar')
 def listar_autores():
+    sql = '''
+        SELECT 
+            nome,
+            status,
+            descrição,
+            inserir_livros,
+            listar_livros,
+            autores,
+            usuarios,
+            criado_em,
+            alterado_em
+            FROM livros
+            ORDER BY id_livro DESC;
+        '''
+    
     return render_template('autores/listar_autores.html', autores=AUTORES)
 
 
@@ -169,16 +184,58 @@ def inserir_livro():
 @app.route('/funcoes/cadastrar', methods=['GET', 'POST'])
 def cadastrar_funcao():
     if request.method == 'POST':
-        nome = request.form.get('nome_funcao')
-        status = request.form.get('status')
-        dashboard = request.form.get('acesso_dashboard') # 'on' se marcado, None se não
+        nome = request.form.get('nome', '').strip()
+        status = request.form.get('status', '').strip()
+        descricao = request.form.get('nome', '').strip()
+        livros = 1 if request.form.get('livros') else 0
+        autores = 1 if request.form.get('autores') else 0
+        usuarios = 1 if request.form.get('usuarios') else 0
+
+
+        if not nome:
+            flash('O campo <b>NOME<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
         
-        # Aqui viria a lógica para salvar no banco de dados
-        flash(f'Função "{nome}" cadastrada com sucesso!', 'success')
-        return redirect(url_for('index')) # Ou para uma listagem de funções
+        if not status:
+            flash('O campo <b>STATUS<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))       
+
+        if not descricao:
+            flash('O campo <b>DESCRICAO<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+
+        if not livros:
+            flash('O campo <b>LIVROS<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
         
-    return render_template('cadastrar_funcao.html')
+        if not autores:
+            flash('O campo <b>AUTORES<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+        
+        if not usuarios:
+            flash('O campo <b>USUARIOS<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+        
+    return render_template('funcoes/cadastrar_funcao.html')
+
 # -- #
+@app.route('/funcoes/listar', methods=['GET', 'POST'])
+def listar_funcao():
+    sql = '''
+        SELECT 
+            nome,
+            status,
+            descrição,
+            autores,
+            livros,
+            usuarios,
+            criado_em,
+            alterado_em
+            FROM livros
+            ORDER BY id_livro DESC;
+        '''
+    lista_dados = execute_query(sql, fech=True)
+    return render_template('funcoes/listar_funcao.html', dados=lista_dados)
 
 # ─── Equipe ───────────────────────────────────────────────────────────────────
 
