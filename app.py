@@ -92,7 +92,8 @@ def listar_autores():
         SELECT id_autor, 
         nome, 
         nacionalidade, 
-        nascimento, 
+        nascimento,
+        genero, 
         falecimento, 
         biografia, 
         situacao
@@ -142,11 +143,11 @@ def inserir_autor():
 
         sql = '''
             INSERT INTO autores 
-                (nome, nacionalidade, nascimento, falecimento, biografia, situacao)
-            VALUES (%s, %s, %s, %s, %s, %s)
+                (nome, nacionalidade, nascimento, genero, falecimento, biografia, situacao)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
         '''
         execute_query(sql, params=(
-            nome, nacionalidade, nascimento, falecimento, biografia, situacao
+            nome, nacionalidade, nascimento, genero, falecimento, biografia, situacao
         ))
 
         flash('Autor cadastrado com sucesso!', 'success')

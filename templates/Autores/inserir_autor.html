@@ -55,9 +55,16 @@
             <option value="masculino">Masculino</option>
             <option value="outro">Outro</option>>
           </select>
-      
-      
+
+        <div class="col-md-4"
+          <label for="situacao" class="form-label">Situação</label>
+          <select id="situacao" name="situacao" class="form-select" required>
+            <option value="vivo" selected>Vivo</option>
+            <option value="falecido">Falecido</option>
+          </select>      
         </div>
+
+
         <div class="col-md-6">
           <label for="nascimento" class="form-label">Data de nascimento <span class="text-danger">*</span></label>
 
@@ -71,7 +78,7 @@
           <input type="date" id="falecimento" name="falecimento" class="form-control">
           <div class="form-text">Deixe em branco se o autor ainda é vivo.</div>
         </div>
-        <div class="col-12">
+        <div class="col-md-12">
           <label for="biografia" class="form-label">Biografia</label>
           <textarea id="biografia" name="biografia" class="form-control" rows="4"
                     placeholder="Breve biografia do autor..."></textarea>
@@ -88,7 +95,7 @@
       <div class="d-flex gap-2 justify-content-end">
 
         <!-- Botão de cancelar que redireciona para a lista de autores. -->
-        <a href="{{ url_for('listar_autor') }}" class="btn btn-outline-secondary">
+        <a href="{{ url_for('listar_autores') }}" class="btn btn-outline-secondary">
           <i class="bi bi-x-lg me-1"></i> Cancelar
         </a>
 
