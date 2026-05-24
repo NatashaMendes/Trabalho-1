@@ -5,74 +5,67 @@ CREATE DATABASE IF NOT EXISTS TRABALHO
 
 USE TRABALHO;
 -- DROP TABLE IF EXISTS funcoes;
-CREATE TABLE IF NOT EXISTS funcoes (
-    id_funcao BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(20) NOT NULL UNIQUE,
-    status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
-    descrição VARCHAR(255),
-    gerenciar_funcoes BOOLEAN DEFAULT 0,
-    gerenciar_usuarios BOOLEAN DEFAULT 0,
-    livros BOOLEAN DEFAULT 0,
-    autores BOOLEAN DEFAULT 0,
-    usuarios BOOLEAN DEFAULT 0,
+CREATE TABLE IF NOT EXISTS livros (
+    id_livro BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    autor VARCHAR(100) NOT NULL,
+    genero ENUM('Terror', 'Ficção', 'Romance', 'Aventura') DEFAULT 'Ficção',
+    ano INT,
+    paginas INT,
+    sinopse TEXT,
+    perm_cadastrar BOOLEAN DEFAULT 0,
+    perm_editar BOOLEAN DEFAULT 0,
+    perm_excluir BOOLEAN DEFAULT 0,
+    perm_listar BOOLEAN DEFAULT 0,
 
-    -- LOG
-
-    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP, 
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP
         ON UPDATE CURRENT_TIMESTAMP
 );
 -- a partir daqui é uma tentativa
  
 -- DROP TABLE IF EXISTS clientes;
-CREATE TABLE IF NOT EXISTS clientes(
-
-    id_cliente BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
-    nome VARCHAR(20) NOT NULL UNIQUE,
-    cpf INT NOT NULL UNIQUE,
+CREATE TABLE IF NOT EXISTS usuarios (
+    id_usuario BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
     data_nascimento DATE NOT NULL,
     numero INT NOT NULL,
-    email VARCHAR(20), 
-    pais DEFAULT 'Brasil',
-    estado VARCHAR(20),
-    cidade VARCHAR(20),
-    senha CHAR(20),
-    descrição VARCHAR(255)
+    email VARCHAR(100),
+    pais VARCHAR(30) DEFAULT 'Brasil',
+    estado VARCHAR(50),
+    cidade VARCHAR(50),
+    senha VARCHAR(255),
+    descricao VARCHAR(255),
     livros BOOLEAN DEFAULT 0,
     autores BOOLEAN DEFAULT 0,
     usuarios BOOLEAN DEFAULT 0,
     status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
 
-    funcao_id BIGINT UNSIGNED NOT NULL,
+    livro_id BIGINT UNSIGNED NOT NULL,
 
-    --LOGS
-    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP, 
-    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
-        ON UPDATE CURRENT_TIMESTAMP
+    -- LOGS
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
 
-    --CRIA O RELACIONAMENTO ENTRE TABELAS
-    CONSTRAINT fk_cliente_funcao
-    FOREIGN KEY (funcao_id) REFERENCES funcoes (id_funcao)
-    
+    -- RELACIONAMENTO
+    CONSTRAINT fk_usuario_livro
+    FOREIGN KEY (livro_id) REFERENCES livros (id_livro)
 );
 
---criar as outras tabelas
+CREATE TABLE IF NOT EXISTS autores (
+    id_autor BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    nacionalidade VARCHAR(50) NOT NULL,
+    nascimento DATE NOT NULL,
+    falecimento DATE DEFAULT NULL,
+    biografia TEXT,
+    situacao ENUM('Vivo', 'Falecido') DEFAULT 'Vivo',
+    genero ENUM('Feminino', 'Masculino', 'Outro') DEFAULT 'Outro',
 
---teste, depois ver se ta certo
--- DROP TABLE IF EXISTS funcoes;
-CREATE TABLE IF NOT EXISTS livros (
-    id_livro BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(20) NOT NULL UNIQUE,
-    status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
-    descrição VARCHAR(255),
-    inserir_livros BOOLEAN DEFAULT 0,
-    listar_livros BOOLEAN DEFAULT 0,
-    autores BOOLEAN DEFAULT 0,
-    usuarios BOOLEAN DEFAULT 0,
-
-    -- LOG
-
-    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP, 
+    -- LOGS
+    criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP
         ON UPDATE CURRENT_TIMESTAMP
 );

@@ -3,13 +3,13 @@
 /* ── Variáveis globais de cor, fonte e transição ── */
 :root {
   /* Tons de âmbar (dourado) usados em botões, bordas e destaques */
-  --amber:       #C8860A;
-  --amber-light: #E8A020;
-  --amber-pale:  #F5C84A;
-  --amber-glow:  rgba(200,134,10,.15); /* usado em hover de fundo */
+  --amber:       #918368;
+  --amber-light: #924dca;
+  --amber-pale:  #e4f54a;
+  --amber-glow:  rgb(200, 133, 10); /* usado em hover de fundo */
 
   /* Tons de mogno (marrom escuro) para fundos e navbar */
-  --mogno:       #1A0E05;
+  --mogno:       #6e2ca5;
 
   /* Tons de creme (bege claro) para fundos e textos em área pública */
   --creme:       #F5EDD8;
@@ -18,8 +18,8 @@
 
   /* Cores de texto */
   --text-body:   #3D2510; /* texto padrão */
-  --text-muted:  #7A5C3A; /* texto secundário / subtítulos */
-  --text-light:  #C8B08A; /* texto em fundo escuro */
+  --text-muted:  #264353; /* texto secundário / subtítulos */
+  --text-light:  #352d20; /* texto em fundo escuro */
 
   /* Fontes: Playfair para títulos, Lora para corpo */
   --font-display:'Playfair Display', Georgia, serif;
@@ -44,9 +44,9 @@ body { font-family: var(--font-body); color: var(--text-body); }
 
 /* Navbar da área pública: fundo semitransparente com desfoque */
 .navbar-publica {
-  background: rgba(26,14,5,.92);
+  background: rgba(224, 23, 100, 0.92);
   backdrop-filter: blur(10px); /* efeito vidro fosco */
-  border-bottom: 1px solid rgba(200,134,10,.3); /* linha âmbar sutil */
+  border-bottom: 1px solid rgba(74, 158, 53, 0.3); /* linha âmbar sutil */
 }
 
 
@@ -65,7 +65,7 @@ body { font-family: var(--font-body); color: var(--text-body); }
 /* Navbar do sistema: fundo mogno sólido */
 .navbar-sistema {
   background: var(--mogno);
-  border-bottom: 2px solid rgba(200,134,10,.3);
+  border-bottom: 2px solid rgba(42, 100, 117, 0.938);
 }
 
 /* Área principal ocupa o espaço restante entre navbar e footer */
@@ -98,7 +98,7 @@ body { font-family: var(--font-body); color: var(--text-body); }
 /* Hover: fundo âmbar translúcido */
 .nav-link-sistema:hover { background: var(--amber-glow); color: var(--creme) !important; }
 /* Active: página atual destacada */
-.nav-link-sistema.active { background: rgba(200,134,10,.15); color: var(--amber-pale) !important; font-weight: 600; }
+.nav-link-sistema.active { background: rgba(34, 88, 170, 0.863); color: var(--amber-pale) !important; font-weight: 600; }
 
 
 /* ════════════════════════════════════════════
@@ -117,14 +117,14 @@ body { font-family: var(--font-body); color: var(--text-body); }
 
 /* Botão contornado âmbar (área pública: Entrar) */
 .btn-outline-amber {
-  color: var(--amber-light); border: 1.5px solid rgba(200,134,10,.4);
+  color: var(--amber-light); border: 1.5px solid rgb(31, 23, 110);
   background: transparent; border-radius: 6px; transition: background .2s, color .2s;
 }
 .btn-outline-amber:hover { background: var(--amber-glow); color: var(--amber-pale); }
 
 /* Botão contornado âmbar menor (navbar sistema: Sair) */
 .btn-outline-amber-nav {
-  color: var(--amber-light); border: 1.5px solid rgba(200,134,10,.35);
+  color: var(--amber-light); border: 1.5px solid rgb(84, 32, 126);
   background: transparent; border-radius: 6px;
   font-size: .82rem; padding: .3rem .75rem; transition: background .2s;
 }
@@ -165,12 +165,12 @@ body { font-family: var(--font-body); color: var(--text-body); }
 
 /* Card de funcionalidade com borda âmbar e hover animado */
 .feature-card {
-  background: rgba(255,255,255,.04); border: 1px solid rgba(200,134,10,.3);
+  background: rgba(255,255,255,.04); border: 1px solid rgb(200, 133, 10);
   border-radius: 12px; padding: 1.75rem; text-align: center;
   transition: background .3s, transform .3s, box-shadow .3s;
 }
 /* Hover: sobe levemente e ganha brilho âmbar */
-.feature-card:hover { background: rgba(200,134,10,.08); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(200,134,10,.2); }
+.feature-card:hover { background: rgb(20, 81, 83); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(200,134,10,.2); }
 
 /* Ícone do card (Bootstrap Icons) */
 .feature-icon { font-size: 2rem; color: var(--amber-light); margin-bottom: .75rem; display: block; }
@@ -202,7 +202,7 @@ body { font-family: var(--font-body); color: var(--text-body); }
 
 /* Card do formulário com efeito vidro escuro */
 .auth-card {
-  background: rgba(255,255,255,.04); border: 1px solid rgba(200,134,10,.3);
+  background: #e90d0d; border: 1px solid rgb(129, 40, 103);
   border-radius: 14px; padding: 2.25rem; width: 100%; max-width: 420px;
   box-shadow: 0 8px 40px rgba(0,0,0,.3);
 }
@@ -224,15 +224,15 @@ body { font-family: var(--font-body); color: var(--text-body); }
 
 /* Inputs sobre fundo escuro */
 .auth-card .form-control {
-  background: rgba(255,255,255,.06); border: 1px solid rgba(200,134,10,.25);
+  background: rgba(145, 12, 12, 0.06); border: 1px solid rgb(200, 133, 10);
   border-radius: 7px; color: var(--creme); transition: border-color .2s, box-shadow .2s;
 }
 /* Placeholder discreto */
-.auth-card .form-control::placeholder { color: rgba(200,176,138,.4); }
+.auth-card .form-control::placeholder { color: rgb(200, 176, 138); }
 /* Foco: borda âmbar com anel de luz */
 .auth-card .form-control:focus {
   background: rgba(255,255,255,.09); border-color: var(--amber);
-  box-shadow: 0 0 0 3px rgba(200,134,10,.15); color: var(--creme);
+  box-shadow: 0 0 0 3px rgb(200, 133, 10); color: var(--creme);
 }
 
 
@@ -316,9 +316,9 @@ body { font-family: var(--font-body); color: var(--text-body); }
 .badge-perfil { padding: .25rem .8rem; border-radius: 30px; font-size: .78rem; font-weight: 700; font-family: var(--font-display); }
 
 /* Cada perfil tem cor própria para fácil identificação visual */
-.badge-perfil-admin  { background: rgba(139,60,15,.1);  color: #8B3C0F; border: 1px solid rgba(139,60,15,.25); }  /* marrom */
-.badge-perfil-editor { background: rgba(200,134,10,.1); color: var(--amber); border: 1px solid rgba(200,134,10,.3); } /* âmbar */
-.badge-perfil-leitor { background: rgba(60,100,60,.08); color: #3A6B3A; border: 1px solid rgba(60,100,60,.2); }  /* verde */
+.badge-perfil-admin  { background: rgb(41, 179, 184);  color: #8B3C0F; border: 1px solid rgba(139,60,15,.25); }  /* marrom */
+.badge-perfil-editor { background: rgb(192, 131, 17); color: var(--amber); border: 1px solid rgba(200,134,10,.3); } /* âmbar */
+.badge-perfil-leitor { background: rgb(60, 100, 60); color: #3A6B3A; border: 1px solid rgba(60,100,60,.2); }  /* verde */
 
 
 /* ════════════════════════════════════════════
@@ -334,10 +334,10 @@ body { font-family: var(--font-body); color: var(--text-body); }
 
 /* Botão de perigo (excluir) */
 .btn-outline-danger {
-  color: #c0392b; border: 1.5px solid rgba(192,57,43,.3);
+  color: #c0392b; border: 1.5px solid rgb(230, 23, 0);
   background: transparent; border-radius: 6px; transition: background .18s;
 }
-.btn-outline-danger:hover { background: rgba(192,57,43,.08); }
+.btn-outline-danger:hover { background: rgb(182, 26, 8); }
 
 
 /* ════════════════════════════════════════════
@@ -356,8 +356,8 @@ body { font-family: var(--font-body); color: var(--text-body); }
    ════════════════════════════════════════════ */
 
 .site-footer {
-  background: #150A02; /* quase preto com toque de mogno */
-  border-top: 1px solid rgba(200,134,10,.25);
+  background: #d1c514; /* quase preto com toque de mogno */
+  border-top: 1px solid rgba(15, 167, 154, 0.25);
   padding: 1rem 0; font-size: .82rem; color: var(--text-muted);
 }
 /* Nome dos desenvolvedores destacado em âmbar */
@@ -369,7 +369,7 @@ body { font-family: var(--font-body); color: var(--text-body); }
    ════════════════════════════════════════════ */
 
 /* Cor de seleção de texto no site inteiro */
-::selection { background: rgba(200,134,10,.25); color: var(--mogno); }
+::selection { background: rgb(200, 133, 10); color: var(--mogno); }
 
 /* Contorno de foco acessível (teclado / leitores de tela) */
 :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 4px; }

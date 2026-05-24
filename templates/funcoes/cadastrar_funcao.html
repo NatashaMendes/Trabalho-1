@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Cadastrar Funções — Livraria Virtual{% endblock %}
+{% block titulo %}Cadastrar Livros — Livraria Virtual{% endblock %}
 
 {% block conteudo %}
 <div class="page-header mb-4">
-    <h2 class="page-title"><i class="bi bi-gear-fill me-2"></i>Cadastrar Funções</h2>
-    <p class="page-sub mb-0">Configure os níveis de acesso e permissões do sistema</p>
+    <h2 class="page-title"><i class="bi bi-gear-fill me-2"></i>Livros</h2>
+    <p class="page-sub mb-0">Cadastre seus Livros</p>
 </div>
 
 <div class="card form-card shadow-sm">
@@ -14,47 +14,67 @@
             <div class="row g-3">
                 
                 <div class="col-md-8">
-                    <label for="nome_funcao" class="form-label">Nome da Função</label>
-                    <input type="text" id="nome_funcao" name="nome_funcao" class="form-control" 
-                           placeholder="Ex: Gerente, Operador..." required>
+                    <label for="titulo" class="form-label">Titulo do Livro</label>
+                    <input type="text" id="titulo" name="titulo" class="form-control" 
+                           placeholder="Ex: O nome do vento, Senhor dos anéis..." required>
                 </div>
 
-                <div class="col-md-4">
-                    <label for="status" class="form-label">Status</label>
-                    <select id="status" name="status" class="form-select" required>
-                        <option value="ativo" selected>Ativo</option>
-                        <option value="inativo">Inativo</option>
+                 <div class="col-md-4">
+                    <label for="genero" class="form-label">Genero</label>
+                    <select id="genero" name="genero" class="form-select" required>
+                        <option value="terror" selected>Terror</option>
+                        <option value="ficcao">Ficção</option>
+                        <option value="romance">Romance</option>
+                        <option value="Aventura">Aventura</option>
                     </select>
                 </div>
 
+                <div class="col-md-2">
+                    <label for="ano" class="form-label">Ano de lançamento</label>
+                    <input type="number" id="ano" name="ano" class="form-control" 
+                            placeholder="Ex: 2024" min="1000" max="2027" required>
+                </div>
+
                 <div class="col-md-8">
-                    <label for="descricao" class="form-label">Descrição</label>
-                    <input type="text" id="descricao" name="descricao" class="form-control" 
-                           placeholder="Ex: Gerente, Operador..." required>
+                    <label for="autor" class="form-label">Autor</label>
+                    <input type="text" id="autor" name="autor" class="form-control" 
+                           placeholder="Ex: Machado de Assis, Clarice Lispector..." required>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="paginas" class="form-label">Páginas</label>
+                    <input type="number" id="paginas" name="paginas" class="form-control" 
+                            placeholder="Ex: 256" min="10" max="2027" required>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="sinopse" class="form-label">Sinopse</label>
+                    <input type="text" id="sinopse" name="sinopse" class="form-control" 
+                           placeholder="Ex:  Um defunto autor decide narrar sua vida após a morte, relembrando..." required>
                 </div>
 
                 <div class="col-12 mt-4">
                     <label class="form-label d-block mb-3 fw-bold">Permissões</label>
                     <div class="d-flex flex-wrap gap-2">
                         
-                        <input type="checkbox" class="btn-check" id="perm_dashboard" name="permissoes" value="dashboard" autocomplete="off">
-                        <label class="btn btn-outline-amber px-4" for="perm_dashboard">
-                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                        <input name="cadastrar" type="checkbox" class="btn-check" id="perm_cadastrar" name="permissoes" value="cadastrar" autocomplete="off">
+                        <label class="btn btn-outline-amber px-4" for="perm_cadastrar">
+                            <i class="bi bi-book me-2"></i>cadastrar
                         </label>
 
-                        <input name="livros" type="checkbox" class="btn-check" id="perm_livros" name="permissoes" value="livros" autocomplete="off">
-                        <label class="btn btn-outline-amber px-4" for="perm_livros">
-                            <i class="bi bi-book me-2"></i>Livros
+                        <input name="editar" type="checkbox" class="btn-check" id="perm_editar" name="permissoes" value="editar" autocomplete="off">
+                        <label class="btn btn-outline-amber px-4" for="perm_editar">
+                            <i class="bi bi-person-badge me-2"></i>Editar
                         </label>
 
-                        <input name="autores" type="checkbox" class="btn-check" id="perm_autores" name="permissoes" value="autores" autocomplete="off">
-                        <label class="btn btn-outline-amber px-4" for="perm_autores">
-                            <i class="bi bi-person-badge me-2"></i>Autores
+                        <input name="excluir" type="checkbox" class="btn-check" id="perm_excluir" name="permissoes" value="excluir" autocomplete="off">
+                        <label class="btn btn-outline-amber px-4" for="perm_excluir">
+                            <i class="bi bi-person-badge me-2"></i>Excluir
                         </label>
 
-                        <input name="usuarios" type="checkbox" class="btn-check" id="perm_usuarios" name="permissoes" value="usuarios" autocomplete="off">
-                        <label class="btn btn-outline-amber px-4" for="perm_usuarios">
-                            <i class="bi bi-people me-2"></i>Usuários
+                        <input name="listar" type="checkbox" class="btn-check" id="perm_listar" name="permissoes" value="listar" autocomplete="off">
+                        <label class="btn btn-outline-amber px-4" for="perm_listar">
+                            <i class="bi bi-people me-2"></i>Listar
                         </label>
 
                     </div>
@@ -70,7 +90,7 @@
                     <i class="bi bi-x-lg me-1"></i> Cancelar
                 </a>
                 <button type="submit" class="btn btn-amber px-4">
-                    <i class="bi bi-check-lg me-1"></i> Cadastrar Função
+                    <i class="bi bi-check-lg me-1"></i> Cadastrar Livros
                 </button>
             </div>
         </form>

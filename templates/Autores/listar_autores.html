@@ -1,27 +1,19 @@
-<!-- Este comando indica que o template herda a estrutura de base.html, 
- ou seja, usa o layout padrão definido ali (como cabeçalho, rodapé, etc). -->
 {% extends 'base.html' %}
 
-<!-- Define o conteúdo do bloco titulo, que provavelmente será usado na tag <title> da página HTML. -->
-{% block titulo %}Autores — Livraria Virtual{% endblock %}
+{% block titulo %}Livros — Livraria Virtual{% endblock %}
 
-<!-- Início do bloco que define o conteúdo principal da página. -->
 {% block conteudo %}
 
-<!-- Cabeçalho da página com título, subtítulo e botão para cadastrar um novo autor.
- Usa classes do Bootstrap para alinhar elementos e estilizar. -->
 <div class="page-header d-flex justify-content-between align-items-center mb-4">
   <div>
-    <h2 class="page-title"><i class="bi bi-person-lines-fill me-2"></i>Autores</h2>
-    <p class="page-sub mb-0">Catálogo de autores do acervo</p>
+    <h2 class="page-title"><i class="bi bi-book me-2"></i>Livros</h2>
+    <p class="page-sub mb-0">Acervo completo de títulos</p>
   </div>
-  <a href="{{ url_for('inserir_autor') }}" class="btn btn-amber">
-    <i class="bi bi-plus-lg me-1"></i> Novo Autor
+  <a href="{{ url_for('cadastrar_funcao') }}" class="btn btn-amber">
+    <i class="bi bi-plus-lg me-1"></i> Novo Livro
   </a>
 </div>
 
-<!-- Estrutura da tabela que lista os autores.
- Cabeçalho define as colunas: ID, Nome, Nacionalidade, Nascimento, Obras e Ações. -->
 <div class="card table-card">
   <div class="card-body p-0">
     <table class="table table-hover table-bordered mb-0 biblion-table">
@@ -31,23 +23,20 @@
           <th>Nome</th>
           <th>Nacionalidade</th>
           <th>Nascimento</th>
-          <th>Obras</th>
+          <th>Genero</th>
+          <th>Situação</th>
           <th class="text-center">Ações</th>
         </tr>
       </thead>
-
-      <!-- Loop for percorre a lista autores e cria uma linha para cada autor.
-       Exibe os dados do autor (id, nome, nacionalidade, nascimento, obras).
-       Coluna de ações traz botões para editar e excluir, com ícones do Bootstrap.
-       O botão de excluir chama uma função JavaScript confirmarExclusao passando o nome do autor. -->
       <tbody>
-        {% for a in autores %}
+        {% for a in dados %}
         <tr>
-          <td>{{ a.id }}</td>
+          <td>{{ a.id_autor }}</td>
           <td><strong>{{ a.nome }}</strong></td>
           <td>{{ a.nacionalidade }}</td>
           <td>{{ a.nascimento }}</td>
-          <td><span class="badge bg-secondary">{{ a.obras }}</span></td>
+          <td>{{ a.genero }}</td>
+          <td>{{ a.situacao }}</td>
           <td class="text-center">
             <button class="btn btn-sm btn-outline-secondary me-1" title="Editar">
               <i class="bi bi-pencil"></i>
@@ -58,13 +47,10 @@
             </button>
           </td>
         </tr>
-
-        <!-- Final do "for a in autores" -->
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- Final do extends 'base.html', Fecha o bloco conteudo, encerrando o conteúdo específico da página.-->
 {% endblock %}

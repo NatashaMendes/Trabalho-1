@@ -81,13 +81,18 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
           automaticamente quando o usuário está na rota /usuarios, destacando o item atual no menu. #}
 
           <li class="nav-item">
-            <a class="nav-link nav-link-sistema {% if request.path.startswith('/livros') %}active{% endif %}"
-               href="{{ url_for('listar_livros') }}">
-              <i class="bi bi-journal-text"></i> Livros
+            <a class="nav-link nav-link-sistema {% if request.path.startswith('/autores') %}active{% endif %}"
+               href="{{ url_for('inserir_autor') }}">
+              <i class="bi bi-people"></i> Cadastrar Autores
             </a>
           </li>
-          {# O trecho "if request.path.startswith('/livros')" adiciona a classe active
-          automaticamente quando o usuário está em uma rota que começa com /livros. #}
+
+          <li class="nav-item">
+            <a class="nav-link nav-link-sistema {% if request.path.startswith('/funcoes') %}active{% endif %}"
+              href="{{ url_for('listar_funcao') }}">
+              <i class="bi bi-book me-1"></i> Livros Cadastrados
+            </a>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link nav-link-sistema {% if request.path.startswith('/autores') %}active{% endif %}"
@@ -111,7 +116,7 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
             <a class="nav-link {% if request.endpoint == 'cadastrar_funcao' %}active{% endif %}" 
                href="{{ url_for('cadastrar_funcao') }}">
               <i class="bi bi-gear-fill me-2"></i>
-              <span>Cadastrar Funções</span>
+              <span>Cadastrar Livros</span>
             </a>
           </li>
 

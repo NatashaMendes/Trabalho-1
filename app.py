@@ -3,36 +3,10 @@ from db import iniciar_bd, execute_query
 
 
 app = Flask(__name__)
-
+app.secret_key = 'chave_secreta_123'
 
 iniciar_bd() #inicia o BD e as tabelas
 
-# ─── Dados simulados ────────────────────────────────────────────────────────
-
-USUARIOS = [
-    {'id': 1, 'nome': 'Ana Souza',       'email': 'ana@email.com',    'perfil': 'Admin'},
-    {'id': 2, 'nome': 'Bruno Lima',      'email': 'bruno@email.com',  'perfil': 'Leitor'},
-    {'id': 3, 'nome': 'Carla Mendes',    'email': 'carla@email.com',  'perfil': 'Leitor'},
-    {'id': 4, 'nome': 'Diego Ferreira',  'email': 'diego@email.com',  'perfil': 'Editor'},
-    {'id': 5, 'nome': 'Elisa Ramos',     'email': 'elisa@email.com',  'perfil': 'Leitor'},
-]
-
-AUTORES = [
-    {'id': 1, 'nome': 'Machado de Assis',   'nacionalidade': 'Brasileira', 'nascimento': '21/06/1839', 'obras': 9},
-    {'id': 2, 'nome': 'Clarice Lispector',  'nacionalidade': 'Brasileira', 'nascimento': '10/12/1920', 'obras': 17},
-    {'id': 3, 'nome': 'Jorge Amado',        'nacionalidade': 'Brasileira', 'nascimento': '10/08/1912', 'obras': 32},
-    {'id': 4, 'nome': 'Gabriel García Márquez', 'nacionalidade': 'Colombiana', 'nascimento': '06/03/1927', 'obras': 11},
-    {'id': 5, 'nome': 'Franz Kafka',        'nacionalidade': 'Tcheca',    'nascimento': '03/07/1883', 'obras': 7},
-]
-
-LIVROS = [
-    {'id': 1, 'titulo': 'Dom Casmurro',          'autor': 'Machado de Assis',       'ano': 1899, 'genero': 'Romance',   'paginas': 256},
-    {'id': 2, 'titulo': 'A Hora da Estrela',      'autor': 'Clarice Lispector',      'ano': 1977, 'genero': 'Novela',    'paginas': 88},
-    {'id': 3, 'titulo': 'Gabriela, Cravo e Canela','autor': 'Jorge Amado',           'ano': 1958, 'genero': 'Romance',   'paginas': 368},
-    {'id': 4, 'titulo': 'Cem Anos de Solidão',    'autor': 'Gabriel García Márquez', 'ano': 1967, 'genero': 'Romance',   'paginas': 448},
-    {'id': 5, 'titulo': 'A Metamorfose',          'autor': 'Franz Kafka',            'ano': 1915, 'genero': 'Ficção',    'paginas': 96},
-    {'id': 6, 'titulo': 'Memórias Póstumas',      'autor': 'Machado de Assis',       'ano': 1881, 'genero': 'Romance',   'paginas': 208},
-]
 
 # ─── Rotas públicas ──────────────────────────────────────────────────────────
 
@@ -115,126 +89,143 @@ def inserir_usuario():
 @app.route('/autores/listar')
 def listar_autores():
     sql = '''
-        SELECT 
-            nome,
-            status,
-            descrição,
-            inserir_livros,
-            listar_livros,
-            autores,
-            usuarios,
-            criado_em,
-            alterado_em
-            FROM livros
-            ORDER BY id_livro DESC;
-        '''
-    
-    return render_template('autores/listar_autores.html', autores=AUTORES)
+        SELECT id_autor, 
+        nome, 
+        nacionalidade, 
+        nascimento, 
+        falecimento, 
+        biografia, 
+        situacao
+        FROM autores
+        ORDER BY id_autor DESC;
+    '''
+    lista_dados = execute_query(sql, fetch=True)
+    return render_template('autores/listar_autores.html', dados=lista_dados)
 
 
 @app.route('/autores/inserir', methods=['GET', 'POST'])
 def inserir_autor():
     if request.method == 'POST':
-        nome          = request.form.get('nome', '').strip()
+        nome = request.form.get('nome', '').strip()
         nacionalidade = request.form.get('nacionalidade', '').strip()
-        nascimento    = request.form.get('nascimento', '').strip()
-        erros = []
-        if not nome:          erros.append('Nome é obrigatório.')
-        if not nacionalidade: erros.append('Nacionalidade é obrigatória.')
-        if not nascimento:    erros.append('Data de nascimento é obrigatória.')
-        if erros:
-            for e in erros:
-                flash(e, 'danger')
-            return render_template('autores/inserir_autor.html')
+        nascimento = request.form.get('nascimento', '').strip()
+        falecimento = request.form.get('falecimento', '').strip()
+        falecimento = falecimento if falecimento else None
+        biografia = request.form.get('biografia', '').strip()
+        situacao = request.form.get('situacao', '').strip()
+        genero = request.form.get('genero', '').strip()
+
+
+        if not nome:
+            flash('O campo <b>NOME<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+
+        if not nacionalidade:
+            flash('O campo <b>NACIONALIDADE<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+
+        if not genero:
+            flash('O campo <b>GENERO<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+
+        if not nascimento:
+            flash('O campo <b>NASCIMENTO<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+
+        if not biografia:
+            flash('O campo <b>BIOGRAFIA<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+        
+        if not situacao:
+            flash('O campo <b>SITUACAO<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+
+        sql = '''
+            INSERT INTO autores 
+                (nome, nacionalidade, nascimento, falecimento, biografia, situacao)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        '''
+        execute_query(sql, params=(
+            nome, nacionalidade, nascimento, falecimento, biografia, situacao
+        ))
+
         flash('Autor cadastrado com sucesso!', 'success')
         return redirect(url_for('listar_autores'))
     return render_template('autores/inserir_autor.html')
-
-# ─── Rotas protegidas — Livros ────────────────────────────────────────────────
-
-@app.route('/livros/listar')
-def listar_livros():
-    return render_template('livros/listar_livros.html', livros=LIVROS)
-
-
-@app.route('/livros/inserir', methods=['GET', 'POST'])
-def inserir_livro():
-    if request.method == 'POST':
-        titulo  = request.form.get('titulo', '').strip()
-        autor   = request.form.get('autor', '').strip()
-        ano     = request.form.get('ano', '').strip()
-        genero  = request.form.get('genero', '').strip()
-        paginas = request.form.get('paginas', '').strip()
-        erros   = []
-        if not titulo:  erros.append('Título é obrigatório.')
-        if not autor:   erros.append('Autor é obrigatório.')
-        if not ano:     erros.append('Ano de publicação é obrigatório.')
-        if not genero:  erros.append('Gênero é obrigatório.')
-        if not paginas: erros.append('Número de páginas é obrigatório.')
-        if erros:
-            for e in erros:
-                flash(e, 'danger')
-            return render_template('livros/inserir_livro.html', autores=AUTORES)
-        flash('Livro cadastrado com sucesso!', 'success')
-        return redirect(url_for('listar_livros'))
-    return render_template('livros/inserir_livro.html', autores=AUTORES)
 
 
 # -- #
 @app.route('/funcoes/cadastrar', methods=['GET', 'POST'])
 def cadastrar_funcao():
     if request.method == 'POST':
-        nome = request.form.get('nome', '').strip()
-        status = request.form.get('status', '').strip()
-        descricao = request.form.get('nome', '').strip()
-        livros = 1 if request.form.get('livros') else 0
-        autores = 1 if request.form.get('autores') else 0
-        usuarios = 1 if request.form.get('usuarios') else 0
+        titulo = request.form.get('titulo', '').strip()
+        genero = request.form.get('genero', '').strip()
+        ano = request.form.get('ano', '').strip()
+        autor = request.form.get('autor', '').strip()
+        paginas = request.form.get('paginas', '').strip()
+        sinopse = request.form.get('sinopse', '').strip()
+        perm_cadastrar = 1 if request.form.get('perm_cadastrar') else 0
+        perm_editar = 1 if request.form.get('perm_editar') else 0
+        perm_excluir = 1 if request.form.get('perm_excluir') else 0
+        perm_listar = 1 if request.form.get('perm_listar') else 0
 
 
-        if not nome:
-            flash('O campo <b>NOME<b> é obrigatório', 'danger')
-            return redirect(url_for('cadastrar_funcao'))
-        
-        if not status:
-            flash('O campo <b>STATUS<b> é obrigatório', 'danger')
-            return redirect(url_for('cadastrar_funcao'))       
-
-        if not descricao:
-            flash('O campo <b>DESCRICAO<b> é obrigatório', 'danger')
+        if not titulo:
+            flash('O campo <b>TITULO<b> é obrigatório', 'danger')
             return redirect(url_for('cadastrar_funcao'))
 
-        if not livros:
-            flash('O campo <b>LIVROS<b> é obrigatório', 'danger')
+        if not sinopse:
+            flash('O campo <b>SINOPSE<b> é obrigatório', 'danger')
             return redirect(url_for('cadastrar_funcao'))
-        
-        if not autores:
-            flash('O campo <b>AUTORES<b> é obrigatório', 'danger')
+
+        if not genero:
+            flash('O campo <b>GENERO<b> é obrigatório', 'danger')
             return redirect(url_for('cadastrar_funcao'))
-        
-        if not usuarios:
-            flash('O campo <b>USUARIOS<b> é obrigatório', 'danger')
+
+        if not ano:
+            flash('O campo <b>ANO<b> é obrigatório', 'danger')
             return redirect(url_for('cadastrar_funcao'))
-        
+
+        if not autor:
+            flash('O campo <b>AUTOR<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+
+        if not paginas:
+            flash('O campo <b>PAGINAS<b> é obrigatório', 'danger')
+            return redirect(url_for('cadastrar_funcao'))
+
+        sql = '''
+            INSERT INTO livros 
+                (titulo, autor, genero, ano, paginas, sinopse,
+                perm_cadastrar, perm_editar, perm_excluir, perm_listar)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        '''
+        execute_query(sql, params=(
+            titulo, autor, genero, ano, paginas, sinopse,
+            perm_cadastrar, perm_editar, perm_excluir, perm_listar
+        ))
+
+        flash('Livro cadastrado com sucesso!', 'success')
+        return redirect(url_for('listar_funcao'))
+
     return render_template('funcoes/cadastrar_funcao.html')
+    
 
 # -- #
 @app.route('/funcoes/listar', methods=['GET', 'POST'])
 def listar_funcao():
     sql = '''
-        SELECT 
-            nome,
-            status,
-            descrição,
-            autores,
-            livros,
-            usuarios,
-            criado_em,
-            alterado_em
-            FROM livros
-            ORDER BY id_livro DESC;
-        '''
-    lista_dados = execute_query(sql, fech=True)
+        SELECT id_livro, 
+        titulo, 
+        autor, 
+        genero, 
+        sinopse,
+        ano, 
+        paginas
+        FROM livros
+        ORDER BY id_livro DESC;
+    '''
+    lista_dados = execute_query(sql, fetch=True)
     return render_template('funcoes/listar_funcao.html', dados=lista_dados)
 
 # ─── Equipe ───────────────────────────────────────────────────────────────────
