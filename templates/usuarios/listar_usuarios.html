@@ -31,31 +31,27 @@ table-card é uma classe personalizada para estilização. -->
     <!-- table-hover adiciona efeito de destaque ao passar o mouse sobre uma linha.
     table-bordered coloca bordas em todas as células.
     biblion-table é uma classe personalizada para ajustes visuais. -->
-
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Nome</th>
-          <th>E-mail</th>
-          <th>Perfil</th>
-          <th class="text-center">Ações</th>
-          <!-- text-center centraliza o conteúdo da coluna de ações. -->
-        </tr>
-      </thead>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>E-mail</th>
+        <th>Cidade</th>
+        <th>Estado</th>
+        <th>Status</th>
+      </tr>
+    </thead>
       <tbody>
-        {# Loop que percorre a lista usuarios enviada pelo Flask.
-        Para cada objeto u (usuário), cria uma linha na tabela. #}
-        {% for u in usuarios %}
+        {% for u in dados %}
         <tr>
-          <td>{{ u.id }}</td>
-          <td>{{ u.nome }}</td>
+          <td>{{ u.id_usuario }}</td>
+          <td><strong>{{ u.nome }}</strong></td>
+          <td>{{ u.cpf }}</td>
           <td>{{ u.email }}</td>
-          <td>
-            <span class="badge-perfil badge-perfil-{{ u.perfil|lower }}">{{ u.perfil }}</span>
-            {# badge-perfil-{{ u.perfil|lower }} aplica uma classe específica conforme o perfil
-            (ex: badge-perfil-admin, badge-perfil-editor, badge-perfil-leitor),
-            permitindo diferenciar visualmente os perfis com cores distintas. #}
-          </td>
+          <td>{{ u.cidade }}</td>
+          <td>{{ u.estado }}</td>
+          <td>{{ u.status }}</td>
           <td class="text-center">
             <button class="btn btn-sm btn-outline-secondary me-1" title="Editar">
               <!-- Botão de edição. btn-sm aplica tamanho pequeno. title exibe tooltip ao passar o mouse. -->

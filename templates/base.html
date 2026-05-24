@@ -53,7 +53,7 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
       O ícone bi-book-half representa um livro, reforçando o tema da livraria. -->
 
       <a class="nav-link" href="{{ url_for('cadastrar_funcao') }}">
-        <i class="bi bi-gear-fill me-1"></i> Funções
+        <i class="bi bi-gear-fill me-1"></i> Cadastrar Livros
       </a>
       
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -72,30 +72,28 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
 
 
           <li class="nav-item">
-            <a class="nav-link nav-link-sistema {% if request.path.startswith('/usuarios') %}active{% endif %}"
+            <a class="nav-link"
                href="{{ url_for('listar_usuarios') }}">
               <i class="bi bi-people"></i> Usuários
             </a>
           </li>
-          {# O trecho "if request.path.startswith('/usuarios')" adiciona a classe active
-          automaticamente quando o usuário está na rota /usuarios, destacando o item atual no menu. #}
 
           <li class="nav-item">
-            <a class="nav-link nav-link-sistema {% if request.path.startswith('/autores') %}active{% endif %}"
+            <a class="nav-link"
                href="{{ url_for('inserir_autor') }}">
               <i class="bi bi-people"></i> Cadastrar Autores
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link nav-link-sistema {% if request.path.startswith('/funcoes') %}active{% endif %}"
+            <a class="nav-link"
               href="{{ url_for('listar_funcao') }}">
               <i class="bi bi-book me-1"></i> Livros Cadastrados
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link nav-link-sistema {% if request.path.startswith('/autores') %}active{% endif %}"
+            <a class="nav-link"
                href="{{ url_for('listar_autores') }}">
               <i class="bi bi-person-lines-fill"></i> Autores
             </a>
@@ -104,21 +102,13 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
           automaticamente quando o usuário está em uma rota que começa com /autores. #}
 
           <li class="nav-item">
-            <a class="nav-link nav-link-sistema {% if request.path == '/equipe' %}active{% endif %}"
+            <a class="nav-link"
                href="{{ url_for('equipe') }}">
               <i class="bi bi-stars"></i> Equipe
             </a>
           </li>
           {# O trecho "if request.path == '/equipe'" adiciona a classe active
           automaticamente quando o usuário está exatamente na rota /equipe. #}
-
-          <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'cadastrar_funcao' %}active{% endif %}" 
-               href="{{ url_for('cadastrar_funcao') }}">
-              <i class="bi bi-gear-fill me-2"></i>
-              <span>Cadastrar Livros</span>
-            </a>
-          </li>
 
         </ul>
         <div class="d-flex align-items-center gap-3">

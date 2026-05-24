@@ -59,31 +59,72 @@ def logout():
 
 # ─── Rotas protegidas — Usuários ─────────────────────────────────────────────
 
+
 @app.route('/usuarios/listar')
 def listar_usuarios():
-    return render_template('usuarios/listar_usuarios.html', usuarios=USUARIOS)
+    sql = '''
+        SELECT id_usuario,
+        nome,
+        cpf,
+        data_nascimento,
+        email,
+        cidade,
+        estado,
+        status
+        FROM usuarios
+        ORDER BY id_usuario DESC;
+    '''
+    lista_dados = execute_query(sql, fetch=True)
+    return render_template('usuarios/listar_usuarios.html', dados=lista_dados)
 
 
 @app.route('/usuarios/inserir', methods=['GET', 'POST'])
 def inserir_usuario():
     if request.method == 'POST':
-        nome   = request.form.get('nome', '').strip()
-        email  = request.form.get('email', '').strip()
-        perfil = request.form.get('perfil', '').strip()
-        senha  = request.form.get('senha', '').strip()
-        erros  = []
-        if not nome:   erros.append('Nome é obrigatório.')
-        if not email:  erros.append('E-mail é obrigatório.')
-        if not perfil: erros.append('Perfil é obrigatório.')
-        if not senha:  erros.append('Senha é obrigatória.')
-        if erros:
-            for e in erros:
-                flash(e, 'danger')
-            return render_template('usuarios/inserir_usuario.html')
+        nome = request.form.get('nome', '').strip()
+        cpf = request.form.get('cpf', '').strip()
+        data_nascimento = request.form.get('data_nascimento', '').strip()
+        email = request.form.get('email', '').strip()
+        pais = request.form.get('pais', 'Brasil').strip()
+        estado = request.form.get('estado', '').strip()
+        cidade = request.form.get('cidade', '').strip()
+        senha = request.form.get('senha', '').strip()
+        status = request.form.get('status', 'Ativo').strip()
+
+
+        if not nome:
+            flash('O campo <b>NOME<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+
+        if not cpf:
+            flash('O campo <b>CPF<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+
+        if not data_nascimento:
+            flash('O campo <b>DATA<b> DE NASCIMENTO é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+
+        if not senha:
+            flash('O campo <b>SENHA<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+        
+
+        sql = '''
+            INSERT INTO usuarios
+                (nome, cpf, data_nascimento, email, pais,
+                 estado, cidade, senha, status)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        '''
+        execute_query(sql, params=(
+            nome, cpf, data_nascimento, email, pais,
+            estado, cidade, senha, status
+        ))
+
         flash('Usuário cadastrado com sucesso!', 'success')
         return redirect(url_for('listar_usuarios'))
-    return render_template('usuarios/inserir_usuario.html')
 
+    livros = execute_query('SELECT id_livro, titulo FROM livros ORDER BY titulo', fetch=True)
+    return render_template('usuarios/inserir_usuario.html', livros=livros)
 # ─── Rotas protegidas — Autores ───────────────────────────────────────────────
 
 @app.route('/autores/listar')

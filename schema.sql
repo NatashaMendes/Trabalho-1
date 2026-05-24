@@ -30,18 +30,12 @@ CREATE TABLE IF NOT EXISTS usuarios (
     nome VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     data_nascimento DATE NOT NULL,
-    numero INT NOT NULL,
     email VARCHAR(100),
     pais VARCHAR(30) DEFAULT 'Brasil',
     estado VARCHAR(50),
     cidade VARCHAR(50),
     senha VARCHAR(255),
-    descricao VARCHAR(255),
-    livros BOOLEAN DEFAULT 0,
-    autores BOOLEAN DEFAULT 0,
-    usuarios BOOLEAN DEFAULT 0,
     status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
-
     livro_id BIGINT UNSIGNED NOT NULL,
 
     -- LOGS

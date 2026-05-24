@@ -8,87 +8,83 @@
 {# Início do bloco principal de conteúdo da página. #}
 
 <div class="page-header mb-4">
-  <!-- Seção de cabeçalho com margem inferior (mb-4) para espaçamento em relação ao conteúdo seguinte. -->
+
 
   <h2 class="page-title"><i class="bi bi-person-plus me-2"></i>Novo Usuário</h2>
-  <!-- Título da página com ícone bi-person-plus antes do texto. me-2 adiciona espaçamento à direita do ícone. -->
 
   <p class="page-sub mb-0">Preencha os dados para cadastrar um novo usuário</p>
-  <!-- Subtítulo explicando o propósito da página. mb-0 remove a margem inferior. -->
+  
 </div>
 
 <div class="card form-card">
-  <!-- Card estilizado para envolver o formulário.
-  form-card é uma classe personalizada para estilização específica de cards com formulários. -->
+ 
 
   <div class="card-body">
-    <!-- Área interna do card. card-body garante espaçamento interno adequado. -->
+   
 
     <form method="POST" action="{{ url_for('inserir_usuario') }}">
-    <!-- Formulário enviado via POST para a rota Flask inserir_usuario,
-    responsável por processar o cadastro do novo usuário. -->
+  
 
       <div class="row g-3">
-      <!-- Linha do grid Bootstrap. g-3 adiciona espaçamento entre as colunas. -->
+      
 
         <div class="col-md-6">
-          <!-- Coluna que ocupa metade da largura em telas médias ou maiores,
-          permitindo que os campos fiquem lado a lado. -->
+          
 
-          <label for="nome" class="form-label">Nome completo <span class="text-danger">*</span></label>
-          <!-- Rótulo do campo. for="nome" conecta ao input com id="nome".
-          O asterisco vermelho indica que o campo é obrigatório. -->
+          <div class="col-md-8">
+            <label for="nome" class="form-label">Nome completo</label>
+            <input type="text" id="nome" name="nome" class="form-control" 
+                placeholder="Ex: Livia Alves de Oliveira" required>
+          </div>
 
-          <input type="text" id="nome" name="nome" class="form-control"
-                 placeholder="Nome do usuário" required>
-          <!-- placeholder mostra um texto de exemplo antes do usuário digitar.
-          required torna o preenchimento obrigatório. -->
-        </div>
+          <div class="col-md-2">
+            <label for="status" class="form-label">Status</label>
+            <select id="status" name="status" class="form-select" required>
+                <option value="Ativo" selected>Ativo</option>
+                <option value="Inativo">Inativo</option>
+              </select>
+          </div>
 
-        <div class="col-md-6">
-          <!-- Coluna que ocupa metade da largura em telas médias ou maiores. -->
+          <div class="col-md-2">
+              <label for="cpf" class="form-label">CPF</label>
+              <input type="text" id="cpf" name="cpf" class="form-control" 
+                    placeholder="Ex: 123.456.789-00" maxlength="14" required>
+          </div>
 
-          <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
-          <!-- Rótulo do campo. O asterisco vermelho indica que o campo é obrigatório. -->
+          <div class="col-md-4">
+              <label for="data_nascimento" class="form-label">Data de Nascimento</label>
+              <input type="date" id="data_nascimento" name="data_nascimento" class="form-control" required>
+          </div>
 
-          <input type="email" id="email" name="email" class="form-control"
-                 placeholder="usuario@email.com" required>
-          <!-- type="email" garante que o navegador valide o formato do e-mail (ex: nome@dominio.com).
-          required torna o campo obrigatório para envio do formulário. -->
-        </div>
+          <div class="col-md-8">
+              <label for="email" class="form-label">E-mail</label>
+              <input type="email" id="email" name="email" class="form-control" 
+                    placeholder="Ex: usuario@email.com">
+          </div>
 
-        <div class="col-md-6">
-          <!-- Coluna que ocupa metade da largura em telas médias ou maiores. -->
+          <div class="col-md-6">
+              <label for="pais" class="form-label">País</label>
+              <input type="text" id="pais" name="pais" class="form-control" 
+                    placeholder="Ex: Brasil" value="Brasil">
+          </div>
 
-          <label for="perfil" class="form-label">Perfil de acesso <span class="text-danger">*</span></label>
-          <!-- Rótulo do campo. O asterisco vermelho indica que o campo é obrigatório. -->
+          <div class="col-md-6">
+              <label for="estado" class="form-label">Estado</label>
+              <input type="text" id="estado" name="estado" class="form-control" 
+                    placeholder="Ex: São Paulo">
+          </div>
 
-          <select id="perfil" name="perfil" class="form-select" required>
-          <!-- Campo de seleção (dropdown). form-select aplica estilo Bootstrap.
-          required torna o preenchimento obrigatório. -->
+          <div class="col-md-5">
+              <label for="cidade" class="form-label">Cidade</label>
+              <input type="text" id="cidade" name="cidade" class="form-control" 
+                    placeholder="Ex: Campinas">
+          </div>
 
-            <option value="" disabled selected>Selecione um perfil</option>
-            <!-- Opção padrão exibida inicialmente. disabled impede que seja escolhida.
-            selected garante que apareça selecionada ao carregar a página. -->
-
-            <option value="Admin">Admin</option>
-            <option value="Editor">Editor</option>
-            <option value="Leitor">Leitor</option>
-            <!-- Cada value será enviado ao servidor ao submeter o formulário.
-            Admin: administrador. Editor: pode alterar conteúdo. Leitor: apenas consulta. -->
-
-          </select>
-        </div>
-
-        <div class="col-md-6">
-          <!-- Coluna que ocupa metade da largura em telas médias ou maiores. -->
-
-          <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
-          <input type="password" id="senha" name="senha" class="form-control"
-                 placeholder="Mínimo 6 caracteres" required>
-          <!-- type="password" oculta os caracteres digitados. required torna o campo obrigatório. -->
-        </div>
-      </div>
+          <div class="col-md-6">
+              <label for="senha" class="form-label">Senha</label>
+              <input type="password" id="senha" name="senha" class="form-control" 
+                    placeholder="Mínimo 6 caracteres" required>
+          </div>
 
       <hr class="my-4">
       <!-- Linha horizontal para separar visualmente o formulário dos botões.
