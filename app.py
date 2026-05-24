@@ -90,6 +90,8 @@ def inserir_usuario():
         cidade = request.form.get('cidade', '').strip()
         senha = request.form.get('senha', '').strip()
         status = request.form.get('status', 'Ativo').strip()
+        situacao = request.form.get('situacao', '').strip()
+        livro_id = request.form.get('livro_id', '').strip()
 
 
         if not nome:
@@ -108,16 +110,39 @@ def inserir_usuario():
             flash('O campo <b>SENHA<b> é obrigatório', 'danger')
             return redirect(url_for('inserir_usuario'))
         
+        if not pais:
+            flash('O campo <b>PAIS<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+        
+        if not estado:
+            flash('O campo <b>ESTADO<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+        
+        if not cidade:
+            flash('O campo <b>CIDADE<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+        
+        if not status:
+            flash('O campo <b>STATUS<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+        
+        if not situacao:
+            flash('O campo <b>SITUACAO<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
+        
+        if not livro_id:
+            flash('O campo <b>LIVRO_ID<b> é obrigatório', 'danger')
+            return redirect(url_for('inserir_usuario'))
 
         sql = '''
             INSERT INTO usuarios
                 (nome, cpf, data_nascimento, email, pais,
-                 estado, cidade, senha, status)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                 estado, cidade, senha, status, situacao, livro_id )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         '''
         execute_query(sql, params=(
             nome, cpf, data_nascimento, email, pais,
-            estado, cidade, senha, status
+            estado, cidade, senha, status, situacao, livro_id
         ))
 
         flash('Usuário cadastrado com sucesso!', 'success')

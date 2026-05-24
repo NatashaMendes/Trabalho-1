@@ -46,6 +46,15 @@
           </div>
 
           <div class="col-md-2">
+            <label for="situacao" class="form-label">Status</label>
+            <select id="situacao" name="situacao" class="form-select" required>
+                <option value="leitor" selected>leitor</option>
+                <option value="escritor">escritor</option>
+                <option value="administrador">administrador</option>
+              </select>
+          </div>
+
+          <div class="col-md-2">
               <label for="cpf" class="form-label">CPF</label>
               <input type="text" id="cpf" name="cpf" class="form-control" 
                     placeholder="Ex: 123.456.789-00" maxlength="14" required>
@@ -84,6 +93,16 @@
               <label for="senha" class="form-label">Senha</label>
               <input type="password" id="senha" name="senha" class="form-control" 
                     placeholder="Mínimo 6 caracteres" required>
+
+          <div class="col-md-6">
+                <label for="livro_id" class="form-label">Livro</label>
+                <select id="livro_id" name="livro_id" class="form-select" required>
+                    <option value="" disabled selected>Selecione um livro</option>
+                    {% for l in livros %}
+                    <option value="{{ l.id_livro }}">{{ l.titulo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
           </div>
 
       <hr class="my-4">

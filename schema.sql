@@ -36,7 +36,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
     cidade VARCHAR(50),
     senha VARCHAR(255),
     status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
+    situacao ENUM('Leitor', 'Administrador', 'Escritor') DEFAULT 'Leitor',
     livro_id BIGINT UNSIGNED NOT NULL,
+
 
     -- LOGS
     criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
