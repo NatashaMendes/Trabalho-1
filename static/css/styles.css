@@ -1,375 +1,548 @@
 /* ── Livraria Virtual — styles.css ── */
+/* Tema: Marrom caramelo + Amarelo dourado */
 
-/* ── Variáveis globais de cor, fonte e transição ── */
+/* ── Variáveis globais ── */
 :root {
-  /* Tons de âmbar (dourado) usados em botões, bordas e destaques */
-  --amber:       #918368;
-  --amber-light: #924dca;
-  --amber-pale:  #e4f54a;
-  --amber-glow:  rgb(200, 133, 10); /* usado em hover de fundo */
+  /* Amarelos dourados */
+  --amber:        #C8860A;
+  --amber-light:  #F5C842;
+  --amber-pale:   #FFF3C4;
+  --amber-glow:   #A86F00;
 
-  /* Tons de mogno (marrom escuro) para fundos e navbar */
-  --mogno:       #6e2ca5;
+  /* Marrons */
+  --mogno:        #5C3A1E;
+  --mogno-dark:   #3D2510;
+  --mogno-mid:    #7A4E2D;
 
-  /* Tons de creme (bege claro) para fundos e textos em área pública */
-  --creme:       #F5EDD8;
-  --creme-soft:  #FAF5E9; /* fundo da área do sistema */
-  --creme-warm:  #EDE0C4; /* bordas e separadores */
+  /* Cremes */
+  --creme:        #FFF8E7;
+  --creme-soft:   #FDF6E3;
+  --creme-warm:   #E8D5B0;
 
-  /* Cores de texto */
-  --text-body:   #3D2510; /* texto padrão */
-  --text-muted:  #264353; /* texto secundário / subtítulos */
-  --text-light:  #352d20; /* texto em fundo escuro */
+  /* Textos */
+  --text-body:    #3D2510;
+  --text-muted:   #7A5C3A;
+  --text-light:   #F5EDD8;
 
-  /* Fontes: Playfair para títulos, Lora para corpo */
-  --font-display:'Playfair Display', Georgia, serif;
-  --font-body:   'Lora', Georgia, serif;
+  /* Fontes */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Lora', Georgia, serif;
 }
 
-/* Fonte padrão e cor de texto para todo o site */
-body { font-family: var(--font-body); color: var(--text-body); }
-
+/* ── Base ── */
+body {
+  font-family: var(--font-body);
+  color: var(--text-body);
+}
 
 /* ════════════════════════════════════════════
-   ÁREA PÚBLICA (index, login, cadastro)
-   Fundo escuro mogno com navbar transparente
+   ÁREA PÚBLICA
    ════════════════════════════════════════════ */
 
-/* Corpo da área pública: fundo escuro, altura mínima de tela inteira */
 .publica-body {
-  background: var(--mogno);
+  background: linear-gradient(160deg, var(--mogno-dark) 0%, var(--mogno) 60%, #8B5A2B 100%);
   min-height: 100vh;
-  display: flex; flex-direction: column; /* empilha navbar + main + footer */
+  display: flex;
+  flex-direction: column;
 }
 
-/* Navbar da área pública: fundo semitransparente com desfoque */
 .navbar-publica {
-  background: rgba(224, 23, 100, 0.92);
-  backdrop-filter: blur(10px); /* efeito vidro fosco */
-  border-bottom: 1px solid rgba(74, 158, 53, 0.3); /* linha âmbar sutil */
+  background: rgba(61, 37, 16, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(200, 134, 10, 0.35);
 }
 
+.publica-main {
+  flex: 1;
+}
 
 /* ════════════════════════════════════════════
-   ÁREA DO SISTEMA (usuários, livros, autores)
-   Fundo claro creme com navbar mogno
+   ÁREA DO SISTEMA
    ════════════════════════════════════════════ */
 
-/* Corpo do sistema: fundo creme claro */
 .sistema-body {
   background: var(--creme-soft);
   min-height: 100vh;
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Navbar do sistema: fundo mogno sólido */
 .navbar-sistema {
-  background: var(--mogno);
-  border-bottom: 2px solid rgba(42, 100, 117, 0.938);
+  background: var(--mogno-dark);
+  border-bottom: 2px solid var(--amber);
 }
 
-/* Área principal ocupa o espaço restante entre navbar e footer */
 .sistema-main { flex: 1; }
-
 
 /* ════════════════════════════════════════════
    BRAND / LOGO
    ════════════════════════════════════════════ */
 
-/* Logo/nome do site na navbar */
 .brand-logo {
-  font-family: var(--font-display); font-weight: 700;
-  color: var(--amber-light) !important; text-decoration: none;
-  transition: color .2s; /* suaviza a mudança de cor no hover */
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--amber-light) !important;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: color .2s;
 }
 .brand-logo:hover { color: var(--amber-pale) !important; }
 
-
 /* ════════════════════════════════════════════
-   LINKS DE NAVEGAÇÃO (sistema)
+   LINKS DE NAVEGAÇÃO
    ════════════════════════════════════════════ */
 
-/* Links do menu interno (Usuários, Livros, Autores...) */
 .nav-link-sistema {
-  color: var(--text-light) !important;
-  border-radius: 7px; padding: .4rem .85rem !important;
+  color: var(--creme-warm) !important;
+  border-radius: 7px;
+  padding: .4rem .85rem !important;
   transition: background .2s, color .2s;
 }
-/* Hover: fundo âmbar translúcido */
-.nav-link-sistema:hover { background: var(--amber-glow); color: var(--creme) !important; }
-/* Active: página atual destacada */
-.nav-link-sistema.active { background: rgba(34, 88, 170, 0.863); color: var(--amber-pale) !important; font-weight: 600; }
+.nav-link-sistema:hover {
+  background: rgba(200, 134, 10, 0.25);
+  color: var(--amber-light) !important;
+}
+.nav-link-sistema.active {
+  background: rgba(200, 134, 10, 0.2);
+  color: var(--amber-light) !important;
+  font-weight: 600;
+  border-left: 2px solid var(--amber);
+}
 
+.navbar-sistema .nav-link {
+  color: var(--creme-warm) !important;
+  transition: color .2s;
+}
+.navbar-sistema .nav-link:hover {
+  color: var(--amber-light) !important;
+}
+
+.navbar-text { color: var(--creme-warm) !important; }
 
 /* ════════════════════════════════════════════
    BOTÕES
    ════════════════════════════════════════════ */
 
-/* Botão principal (âmbar dourado com gradiente) */
 .btn-amber {
-  background: linear-gradient(135deg, var(--amber), var(--amber-light));
-  color: var(--mogno) !important; border: none;
-  font-family: var(--font-body); font-weight: 600; border-radius: 6px;
-  transition: filter .2s, transform .2s;
+  background: linear-gradient(135deg, var(--amber), #E09A12);
+  color: #fff !important;
+  border: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  border-radius: 6px;
+  transition: filter .2s, transform .2s, box-shadow .2s;
+  box-shadow: 0 2px 8px rgba(200, 134, 10, 0.3);
 }
-/* Hover: levemente mais claro e levantado */
-.btn-amber:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-amber:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(200, 134, 10, 0.4);
+}
 
-/* Botão contornado âmbar (área pública: Entrar) */
 .btn-outline-amber {
-  color: var(--amber-light); border: 1.5px solid rgb(31, 23, 110);
-  background: transparent; border-radius: 6px; transition: background .2s, color .2s;
+  color: var(--amber-light);
+  border: 1.5px solid var(--amber-light);
+  background: transparent;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background .2s, color .2s;
 }
-.btn-outline-amber:hover { background: var(--amber-glow); color: var(--amber-pale); }
+.btn-outline-amber:hover {
+  background: var(--amber);
+  color: #fff;
+  border-color: var(--amber);
+}
 
-/* Botão contornado âmbar menor (navbar sistema: Sair) */
 .btn-outline-amber-nav {
-  color: var(--amber-light); border: 1.5px solid rgb(84, 32, 126);
-  background: transparent; border-radius: 6px;
-  font-size: .82rem; padding: .3rem .75rem; transition: background .2s;
+  color: var(--amber-light);
+  border: 1.5px solid rgba(245, 200, 66, 0.5);
+  background: transparent;
+  border-radius: 6px;
+  font-size: .82rem;
+  padding: .3rem .75rem;
+  transition: background .2s, color .2s;
 }
-.btn-outline-amber-nav:hover { background: var(--amber-glow); color: var(--amber-pale); }
-
+.btn-outline-amber-nav:hover {
+  background: rgba(200, 134, 10, 0.3);
+  color: var(--amber-pale);
+}
 
 /* ════════════════════════════════════════════
-   HERO (seção principal da index.html)
+   HERO
    ════════════════════════════════════════════ */
 
-/* Espaçamento generoso acima e abaixo do hero */
 .hero-section { padding: 6rem 0 4rem; }
 
-/* Pequena etiqueta decorativa acima do título */
 .hero-badge {
-  font-family: var(--font-display); font-size: .78rem;
-  font-style: italic; letter-spacing: .18em; color: var(--amber-light);
+  font-family: var(--font-display);
+  font-size: .78rem;
+  font-style: italic;
+  letter-spacing: .2em;
+  color: var(--amber-light);
+  opacity: .85;
 }
 
-/* Título grande em Playfair, responsivo com clamp() */
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 7vw, 5rem); /* mínimo 2.8rem, ideal 7vw, máximo 5rem */
-  font-weight: 700; color: var(--creme); line-height: 1.1;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 700;
+  color: var(--creme);
+  line-height: 1.1;
+  text-shadow: 0 2px 20px rgba(0,0,0,.3);
 }
 
-/* Subtítulo em itálico, centralizado e com largura limitada */
-.hero-subtitle { color: var(--text-light); font-style: italic; max-width: 540px; margin: 0 auto; }
-
+.hero-subtitle {
+  color: var(--creme-warm);
+  font-style: italic;
+  max-width: 540px;
+  margin: 0 auto;
+  opacity: .9;
+}
 
 /* ════════════════════════════════════════════
-   FEATURES (cards de funcionalidades, index.html)
+   FEATURES
    ════════════════════════════════════════════ */
 
 .features-section { padding: 4rem 0; }
-/* Título da seção em Playfair sobre fundo escuro */
-.section-title { font-family: var(--font-display); color: var(--creme); }
 
-/* Card de funcionalidade com borda âmbar e hover animado */
+.section-title {
+  font-family: var(--font-display);
+  color: var(--creme);
+}
+
 .feature-card {
-  background: rgba(255,255,255,.04); border: 1px solid rgb(200, 133, 10);
-  border-radius: 12px; padding: 1.75rem; text-align: center;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(200, 134, 10, 0.35);
+  border-radius: 12px;
+  padding: 1.75rem;
+  text-align: center;
   transition: background .3s, transform .3s, box-shadow .3s;
 }
-/* Hover: sobe levemente e ganha brilho âmbar */
-.feature-card:hover { background: rgb(20, 81, 83); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(200,134,10,.2); }
+.feature-card:hover {
+  background: rgba(200, 134, 10, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(200, 134, 10, 0.2);
+}
 
-/* Ícone do card (Bootstrap Icons) */
-.feature-icon { font-size: 2rem; color: var(--amber-light); margin-bottom: .75rem; display: block; }
+.feature-icon {
+  font-size: 2rem;
+  color: var(--amber-light);
+  margin-bottom: .75rem;
+  display: block;
+}
 
-/* Título e texto do card */
-.feature-card h5 { font-family: var(--font-display); color: var(--creme); }
-.feature-card p  { color: var(--text-light); font-size: .93rem; }
-
+.feature-card h5 {
+  font-family: var(--font-display);
+  color: var(--creme);
+}
+.feature-card p {
+  color: var(--creme-warm);
+  font-size: .93rem;
+}
 
 /* ════════════════════════════════════════════
-   CTA (chamada para ação no final da index.html)
+   CTA
    ════════════════════════════════════════════ */
 
 .cta-section { padding: 4rem 0 5rem; }
-.cta-title { font-family: var(--font-display); color: var(--creme); font-size: 2rem; }
-.cta-sub   { color: var(--text-light); font-style: italic; }
 
+.cta-title {
+  font-family: var(--font-display);
+  color: var(--creme);
+  font-size: 2rem;
+}
+.cta-sub {
+  color: var(--creme-warm);
+  font-style: italic;
+}
 
 /* ════════════════════════════════════════════
-   AUTH (login.html e cadastro.html)
-   Card centralizado sobre fundo escuro
+   AUTH (login e cadastro)
    ════════════════════════════════════════════ */
 
-/* Wrapper centraliza o card vertical e horizontalmente */
 .auth-wrapper {
-  min-height: calc(100vh - 120px); /* desconta a navbar */
-  display: flex; align-items: center; justify-content: center; padding: 2rem 1rem;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
 }
 
-/* Card do formulário com efeito vidro escuro */
 .auth-card {
-  background: #e90d0d; border: 1px solid rgb(129, 40, 103);
-  border-radius: 14px; padding: 2.25rem; width: 100%; max-width: 420px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.3);
+  background: rgba(61, 37, 16, 0.88);
+  border: 1px solid rgba(200, 134, 10, 0.4);
+  border-radius: 14px;
+  padding: 2.25rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.4);
+  backdrop-filter: blur(8px);
 }
 
-/* Ícone no topo do card */
-.auth-icon  { font-size: 2.5rem; color: var(--amber-light); display: block; }
+.auth-icon {
+  font-size: 2.5rem;
+  color: var(--amber-light);
+  display: block;
+}
 
-/* Títulos e textos do card */
-.auth-title { font-family: var(--font-display); color: var(--creme); font-size: 1.7rem; }
-.auth-sub   { color: var(--text-light); font-style: italic; font-size: .9rem; }
+.auth-title {
+  font-family: var(--font-display);
+  color: var(--creme);
+  font-size: 1.7rem;
+}
+.auth-sub {
+  color: var(--creme-warm);
+  font-style: italic;
+  font-size: .9rem;
+}
 
-/* Link de alternância (ex: "Já tem conta? Faça login") */
-.auth-link  { color: var(--text-light); font-size: .9rem; }
+.auth-link { color: var(--creme-warm); font-size: .9rem; }
 .auth-link a { color: var(--amber-light); text-decoration: none; }
 .auth-link a:hover { color: var(--amber-pale); }
 
-/* Labels dos campos */
-.auth-card .form-label { color: var(--creme-warm); font-size: .87rem; font-weight: 500; }
+.auth-card .form-label {
+  color: var(--creme-warm);
+  font-size: .87rem;
+  font-weight: 500;
+}
 
-/* Inputs sobre fundo escuro */
 .auth-card .form-control {
-  background: rgba(145, 12, 12, 0.06); border: 1px solid rgb(200, 133, 10);
-  border-radius: 7px; color: var(--creme); transition: border-color .2s, box-shadow .2s;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(200, 134, 10, 0.4);
+  border-radius: 7px;
+  color: var(--creme);
+  transition: border-color .2s, box-shadow .2s;
 }
-/* Placeholder discreto */
-.auth-card .form-control::placeholder { color: rgb(200, 176, 138); }
-/* Foco: borda âmbar com anel de luz */
+.auth-card .form-control::placeholder { color: rgba(232, 213, 176, 0.5); }
 .auth-card .form-control:focus {
-  background: rgba(255,255,255,.09); border-color: var(--amber);
-  box-shadow: 0 0 0 3px rgb(200, 133, 10); color: var(--creme);
+  background: rgba(255,255,255,.1);
+  border-color: var(--amber-light);
+  box-shadow: 0 0 0 3px rgba(200, 134, 10, 0.2);
+  color: var(--creme);
 }
-
 
 /* ════════════════════════════════════════════
    SISTEMA — TÍTULOS DE PÁGINA
    ════════════════════════════════════════════ */
 
-/* Título principal de cada página interna */
-.page-title { font-family: var(--font-display); font-size: 1.65rem; color: var(--mogno); }
-/* Subtítulo descritivo abaixo do título */
-.page-sub   { color: var(--text-muted); font-style: italic; font-size: .9rem; }
-
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  color: var(--mogno);
+}
+.page-sub {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: .9rem;
+}
 
 /* ════════════════════════════════════════════
-   SISTEMA — CARDS (formulários e tabelas)
+   CARDS (formulários e tabelas)
    ════════════════════════════════════════════ */
 
-/* Card base: fundo branco com borda creme e sombra suave */
 .form-card, .table-card {
-  background: #fff; border: 1px solid var(--creme-warm);
-  border-radius: 12px; box-shadow: 0 2px 10px rgba(26,14,5,.08);
+  background: #fff;
+  border: 1px solid var(--creme-warm);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(61, 37, 16, 0.08);
 }
-/* Padding interno do card de formulário */
 .form-card .card-body { padding: 1.75rem; }
 
-/* Labels dos campos do formulário interno */
-.form-card .form-label { font-size: .87rem; font-weight: 600; color: var(--text-body); }
+.form-card .form-label {
+  font-size: .87rem;
+  font-weight: 600;
+  color: var(--text-body);
+}
 
-/* Inputs e selects do formulário interno */
 .form-card .form-control,
 .form-card .form-select {
-  border: 1.5px solid #DDD3C4; border-radius: 7px;
-  background: var(--creme-soft); font-family: var(--font-body);
+  border: 1.5px solid #DDD3C4;
+  border-radius: 7px;
+  background: var(--creme-soft);
+  font-family: var(--font-body);
   transition: border-color .2s, box-shadow .2s;
 }
-/* Foco: borda âmbar */
 .form-card .form-control:focus,
 .form-card .form-select:focus {
-  border-color: var(--amber); box-shadow: 0 0 0 3px rgba(200,134,10,.12); background: #fff;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(200, 134, 10, 0.12);
+  background: #fff;
 }
-
 
 /* ════════════════════════════════════════════
-   TABELAS (listar_livros, listar_autores, listar_usuarios)
+   TABELAS
    ════════════════════════════════════════════ */
 
-/* Estilo base da tabela */
-.biblion-table { font-family: var(--font-body); font-size: .91rem; width: 100%; }
-
-/* Cabeçalho: fundo mogno com texto creme */
-.biblion-table thead tr { background: var(--mogno); }
-.biblion-table thead th {
-  color: var(--creme-warm); font-family: var(--font-display);
-  font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
-  padding: .85rem 1rem; border: none;
+.biblion-table {
+  font-family: var(--font-body);
+  font-size: .91rem;
+  width: 100%;
 }
 
-/* Linhas do corpo: hover suave em creme */
+.biblion-table thead tr {
+  background: var(--mogno);
+}
+.biblion-table thead th {
+  color: var(--amber-light);
+  font-family: var(--font-display);
+  font-size: .82rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: .85rem 1rem;
+  border: none;
+}
+
 .biblion-table tbody tr { transition: background .15s; }
 .biblion-table tbody tr:hover { background: #FBF5EA; }
 
-/* Células do corpo com separador inferior */
 .biblion-table tbody td {
   padding: .75rem 1rem;
   border-bottom: 1px solid var(--creme-warm);
-  vertical-align: middle; /* alinha conteúdo ao centro vertical */
+  vertical-align: middle;
 }
 
-
 /* ════════════════════════════════════════════
-   BADGES (gêneros e perfis)
+   BADGES
    ════════════════════════════════════════════ */
 
-/* Badge de gênero literário (ex: Romance, Ficção) */
 .badge-genero {
-  padding: .25rem .7rem; border-radius: 30px; font-size: .78rem; font-weight: 600;
-  background: rgba(200,134,10,.12); color: var(--amber); border: 1px solid rgba(200,134,10,.3);
+  padding: .25rem .7rem;
+  border-radius: 30px;
+  font-size: .78rem;
+  font-weight: 600;
+  background: rgba(200, 134, 10, 0.12);
+  color: var(--amber);
+  border: 1px solid rgba(200, 134, 10, 0.3);
 }
 
-/* Base dos badges de perfil */
-.badge-perfil { padding: .25rem .8rem; border-radius: 30px; font-size: .78rem; font-weight: 700; font-family: var(--font-display); }
+.badge-perfil {
+  padding: .25rem .8rem;
+  border-radius: 30px;
+  font-size: .78rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
 
-/* Cada perfil tem cor própria para fácil identificação visual */
-.badge-perfil-admin  { background: rgb(41, 179, 184);  color: #8B3C0F; border: 1px solid rgba(139,60,15,.25); }  /* marrom */
-.badge-perfil-editor { background: rgb(192, 131, 17); color: var(--amber); border: 1px solid rgba(200,134,10,.3); } /* âmbar */
-.badge-perfil-leitor { background: rgb(60, 100, 60); color: #3A6B3A; border: 1px solid rgba(60,100,60,.2); }  /* verde */
-
+.badge-perfil-admin  { background: rgba(200, 134, 10, 0.15); color: var(--mogno); border: 1px solid rgba(200, 134, 10, 0.3); }
+.badge-perfil-editor { background: rgba(92, 58, 30, 0.1);    color: var(--mogno-mid); border: 1px solid rgba(92, 58, 30, 0.2); }
+.badge-perfil-leitor { background: rgba(168, 111, 0, 0.1);   color: var(--amber-glow); border: 1px solid rgba(168, 111, 0, 0.2); }
 
 /* ════════════════════════════════════════════
-   BOTÕES DE AÇÃO NAS TABELAS (editar / excluir)
+   BOTÕES DE AÇÃO NAS TABELAS
    ════════════════════════════════════════════ */
 
-/* Botão secundário (editar) */
 .btn-outline-secondary {
-  color: var(--text-muted); border: 1.5px solid #CCC0B0;
-  background: transparent; border-radius: 6px; transition: background .18s;
+  color: var(--text-muted);
+  border: 1.5px solid #CCC0B0;
+  background: transparent;
+  border-radius: 6px;
+  transition: background .18s, color .18s;
 }
-.btn-outline-secondary:hover { background: var(--creme-warm); color: var(--mogno); }
+.btn-outline-secondary:hover {
+  background: var(--creme-warm);
+  color: var(--mogno);
+  border-color: var(--creme-warm);
+}
 
-/* Botão de perigo (excluir) */
 .btn-outline-danger {
-  color: #c0392b; border: 1.5px solid rgb(230, 23, 0);
-  background: transparent; border-radius: 6px; transition: background .18s;
+  color: #c0392b;
+  border: 1.5px solid #e74c3c;
+  background: transparent;
+  border-radius: 6px;
+  transition: background .18s, color .18s;
 }
-.btn-outline-danger:hover { background: rgb(182, 26, 8); }
-
+.btn-outline-danger:hover {
+  background: #c0392b;
+  color: #fff;
+  border-color: #c0392b;
+}
 
 /* ════════════════════════════════════════════
-   ALERTS (mensagens de feedback do Flask flash)
+   CHECKBOXES COMO BOTÕES (permissões)
    ════════════════════════════════════════════ */
 
-/* Base: sem borda padrão, borda colorida à esquerda */
-.alert { border-radius: 8px; font-family: var(--font-body); font-size: .92rem; border: none; }
-.alert-success { background: rgba(56,142,60,.1);   color: #256428; border-left: 3px solid #388E3C; } /* verde */
-.alert-danger  { background: rgba(192,57,43,.08);  color: #8B1A10; border-left: 3px solid #c0392b; } /* vermelho */
-.alert-info    { background: rgba(200,134,10,.08);  color: #7A5200; border-left: 3px solid var(--amber); } /* âmbar */
-
+.btn-outline-amber {
+  color: var(--amber);
+  border: 1.5px solid var(--amber);
+  background: transparent;
+  border-radius: 6px;
+  font-size: .88rem;
+  transition: background .2s, color .2s;
+}
+.btn-check:checked + .btn-outline-amber {
+  background: var(--amber);
+  color: #fff;
+  border-color: var(--amber);
+}
+.btn-outline-amber:hover {
+  background: rgba(200, 134, 10, 0.1);
+}
 
 /* ════════════════════════════════════════════
-   FOOTER (compartilhado entre base e base_publica)
+   ALERTS
+   ════════════════════════════════════════════ */
+
+.alert {
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: .92rem;
+  border: none;
+}
+.alert-success {
+  background: rgba(56, 142, 60, 0.1);
+  color: #256428;
+  border-left: 3px solid #388E3C;
+}
+.alert-danger {
+  background: rgba(192, 57, 43, 0.08);
+  color: #8B1A10;
+  border-left: 3px solid #c0392b;
+}
+.alert-info {
+  background: rgba(200, 134, 10, 0.08);
+  color: var(--amber-glow);
+  border-left: 3px solid var(--amber);
+}
+
+/* ════════════════════════════════════════════
+   FOOTER
    ════════════════════════════════════════════ */
 
 .site-footer {
-  background: #d1c514; /* quase preto com toque de mogno */
-  border-top: 1px solid rgba(15, 167, 154, 0.25);
-  padding: 1rem 0; font-size: .82rem; color: var(--text-muted);
+  background: var(--mogno-dark);
+  border-top: 1px solid rgba(200, 134, 10, 0.25);
+  padding: 1rem 0;
+  font-size: .82rem;
+  color: var(--creme-warm);
 }
-/* Nome dos desenvolvedores destacado em âmbar */
 .site-footer strong { color: var(--amber-light); }
 
-
 /* ════════════════════════════════════════════
-   UTILITÁRIOS GLOBAIS
+   BARRA DE FORÇA DE SENHA
    ════════════════════════════════════════════ */
 
-/* Cor de seleção de texto no site inteiro */
-::selection { background: rgb(200, 133, 10); color: var(--mogno); }
+.senha-progress { background: rgba(255,255,255,.1); border-radius: 4px; }
 
-/* Contorno de foco acessível (teclado / leitores de tela) */
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; border-radius: 4px; }
+/* ════════════════════════════════════════════
+   UTILITÁRIOS
+   ════════════════════════════════════════════ */
+
+::selection {
+  background: rgba(200, 134, 10, 0.3);
+  color: var(--mogno-dark);
+}
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--creme-soft); }
+::-webkit-scrollbar-thumb {
+  background: var(--creme-warm);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--amber); }
