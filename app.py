@@ -12,61 +12,35 @@ app.secret_key = '123'
 iniciar_bd()
 
 def garantir_admin():
-    """
-    Verifica se existe algum usuário no banco.
-    Se não existir, cria a função 'Administrador' e o usuário padrão.
-    Isso garante que sempre haverá um acesso inicial ao sistema,
-    evitando o problema de ficar bloqueado sem nenhuma conta para logar.
-    """
     try:
-        # Conta quantos usuários existem no banco.
-        total = execute_one('SELECT COUNT(*) AS total FROM usuario')
+        total = execute_query('SELECT COUNT(*) AS total FROM usuarios', fetch=True)
 
-        # Se o banco já tiver pelo menos um usuário, não faz nada.
-        if total and total['total'] > 0:
+        if total and total[0]['total'] > 0:
             return
 
-        # Verifica se a função 'Administrador' já existe.
-        funcao = execute_one(
-            "SELECT id_funcao FROM funcoes WHERE nome = %s", ('Administrador',)
-        )
-
-        # Se a função não existir, cria com todas as permissões ativas.
-        if not funcao:
-            execute_query(
-                """INSERT INTO funcoes
-                       (nome, status, descricao, gerenciar_funcoes, gerenciar_usuarios, gerenciar_autores)
-                   VALUES (%s, 'Ativo', %s, 1, 1, 1)""",
-                ('Administrador', 'Acesso total ao sistema')
-            )
-            # Busca o id da função recém-criada para usá-lo no INSERT do usuário.
-            funcao = execute_one(
-                "SELECT id_funcao FROM funcoes WHERE nome = %s", ('Administrador',)
-            )
-
-        # Cria o usuário administrador padrão com senha hasheada.
         execute_query(
             """INSERT INTO usuarios
-                   (nome, email, senha, status, funcao_id)
-               VALUES (%s, %s, %s, %s, %s, %s, 'Ativo', %s)""",
+                   (nome, cpf, data_nascimento, email, pais,
+                    estado, cidade, senha, status, situacao, livro_id)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
             (
                 'Administrador',
                 '000.000.000-00',
-                'admin@casagestor.com',
-                '(00) 00000-0000',
+                '2000-01-01',
+                'admin@livraria.com',
+                'Brasil',
                 'SP',
-                generate_password_hash('1234'),
-                funcao['id_funcao']
+                'São Paulo',
+                '1234',
+                'Ativo',
+                'Administrador',
+                1
             )
         )
-        print('Usuário administrador padrão criado: admin@gmail.com / 1234')
+        print('Usuário administrador padrão criado: admin@livraria.com / 1234')
 
     except Exception as e:
         print(f'Erro ao garantir admin: {e}')
-
-
-# Chama a função logo após inicializar o banco.
-garantir_admin()
 
 def login_required(f):
     """
@@ -119,58 +93,40 @@ def login():
         email = request.form.get('email', '').strip()
         senha = request.form.get('senha', '').strip()
 
-        # Busca o usuário pelo e-mail fazendo JOIN com funcoes
-        # para trazer também as permissões da função.
-        usuario = execute_one(
-            '''SELECT u.id_usuario, u.nome, u.email, u.senha, u.status,
-                      f.nome AS funcao,
-                      f.gerenciar_funcoes,
-                      f.gerenciar_usuarios,
-                      f.gerenciar_autores
-               FROM usuarios AS u
-               INNER JOIN funcoes AS f ON u.funcao_id = f.id_funcao
-               WHERE u.email = %s''',
-            (email,)
+        if not email or not senha:
+            flash('Preencha e-mail e senha.', 'danger')
+            return redirect(url_for('login'))
+
+        usuario = execute_query(
+            'SELECT * FROM usuarios WHERE email = %s',
+            params=(email,), fetch=True
         )
 
-        # Verificação 1: o e-mail existe no banco?
-        # Verificação 2: a senha digitada corresponde ao hash armazenado?
-        # Usamos 'or' para não revelar se foi o e-mail ou a senha que falhou,
-        # o que seria uma brecha de segurança.
-        if not usuario or not check_password_hash(usuario['senha'], senha):
+        if not usuario:
             flash('E-mail ou senha inválidos.', 'danger')
             return redirect(url_for('login'))
 
-        # Verificação 3: o usuário está ativo?
+        usuario = usuario[0]
+
+        if usuario['senha'] != senha:
+            flash('E-mail ou senha inválidos.', 'danger')
+            return redirect(url_for('login'))
+
         if usuario['status'] != 'Ativo':
             flash('Usuário inativo. Contate o administrador.', 'warning')
             return redirect(url_for('login'))
 
-        # Gera as iniciais do nome para exibir no avatar do dashboard.
-        # Ex: "João Silva" vira "JS". Se tiver apenas um nome, usa as duas primeiras letras.
-        partes = usuario['nome'].split()
-        if len(partes) > 1:
-            iniciais = (partes[0][0] + partes[-1][0]).upper()
-        else:
-            iniciais = partes[0][:2].upper()
-
-        # Armazena os dados do usuário na sessão do Flask.
-        # session funciona como um dicionário que persiste entre requisições
-        # do mesmo navegador, usando um cookie assinado pelo secret_key.
         session['usuario'] = {
-            'id':                  usuario['id_usuario'],
-            'nome':                usuario['nome'],
-            'email':               usuario['email'],
-            'funcao':              usuario['funcao'],
-            'iniciais':            iniciais,
-            'gerenciar_funcoes':   usuario['gerenciar_autores'],
-            'gerenciar_usuarios':  usuario['gerenciar_usuarios'],   
+            'id':       usuario['id_usuario'],
+            'nome':     usuario['nome'],
+            'email':    usuario['email'],
+            'situacao': usuario['situacao'],
         }
 
         flash(f'Bem-vindo, {usuario["nome"]}!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('listar_funcao'))
 
-    return render_template('auth/login.html')
+    return render_template('login.html')
 
 
 @app.route('/logout')
@@ -195,9 +151,9 @@ def cadastro():
         senha = request.form.get('senha', '').strip()
         conf  = request.form.get('confirmacao', '').strip()
         erros = []
-        if not nome:      erros.append('Nome é obrigatório.')
-        if not email:     erros.append('E-mail é obrigatório.')
-        if not senha:     erros.append('Senha é obrigatória.')
+        if not nome: erros.append('Nome é obrigatório.')
+        if not email: erros.append('E-mail é obrigatório.')
+        if not senha: erros.append('Senha é obrigatória.')
         if senha != conf: erros.append('As senhas não coincidem.')
         if erros:
             for e in erros:
@@ -205,13 +161,14 @@ def cadastro():
             return render_template('cadastro.html')
 
         sql = '''
-            INSERT INTO usuarios (nome, email, senha)
-            VALUES (%s, %s, %s)
+            INSERT INTO usuarios (nome, email, senha, cpf, data_nascimento, status, situacao, livro_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         '''
-        execute_query(sql, params=(nome, email, senha))
+        execute_query(sql, params=(nome, email, senha, '000.000.000-00', '2000-01-01', 'Ativo', 'Leitor', 1))
 
         flash('Cadastro realizado! Faça o login.', 'success')
         return redirect(url_for('login'))
+
     return render_template('cadastro.html')
 
 
@@ -578,7 +535,7 @@ def listar_funcao():
     '''
     lista_dados = execute_query(sql, fetch=True)
     return render_template('funcoes/listar_funcao.html', dados=lista_dados)
-
+        
 
 @app.route('/funcoes/alterar/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -591,45 +548,40 @@ def funcoes_alterar(id):
         paginas = request.form.get('paginas', '').strip()
         sinopse = request.form.get('sinopse', '').strip()
         perm_cadastrar = 1 if request.form.get('perm_cadastrar') else 0
-        perm_editar = 1 if request.form.get('perm_editar') else 0
-        perm_excluir = 1 if request.form.get('perm_excluir') else 0
-        perm_listar = 1 if request.form.get('perm_listar') else 0
+        perm_editar = 1 if request.form.get('perm_editar')    else 0
+        perm_excluir = 1 if request.form.get('perm_excluir')   else 0
+        perm_listar = 1 if request.form.get('perm_listar')    else 0
 
         if not titulo:
-            flash('O campo <b>Titulo</b> é obrigatório.', 'danger')
+            flash('O campo Titulo é obrigatório.', 'danger')
             return redirect(url_for('funcoes_alterar', id=id))
 
         try:
             sql = '''
-                UPDATE funcoes SET
-                    titulo               = %s,
-                    genero             = %s,
-                    ano  = %s,
-                    autor = %s,
-                    paginas = %s,
-                    sinopse          = %s,
-                    perm_cadastrar  = %s,
-                    perm_editar = %s,
-                    perm_excluir  = %s,
-                    perm_listar = %s
-                WHERE id_funcao = %s
+                UPDATE livros SET
+                    titulo = %s, genero = %s, ano = %s, autor = %s,
+                    paginas = %s, sinopse = %s, perm_cadastrar = %s,
+                    perm_editar = %s, perm_excluir = %s, perm_listar = %s
+                WHERE id_livro = %s
             '''
-            dados = (titulo, genero, ano,
-                     autor, paginas, sinopse, perm_cadastrar, perm_editar, perm_excluir, perm_listar, id)
-            execute_query(sql, dados)
-            flash(f'Função <b>{titulo}</b> alterada com sucesso!', 'success')
-            return redirect(url_for('funcoes_listar'))
+            execute_query(sql, params=(
+                titulo, genero, ano, autor, paginas, sinopse,
+                perm_cadastrar, perm_editar, perm_excluir, perm_listar, id
+            ))
+            flash(f'Livro {titulo} alterado com sucesso!', 'success')
+            return redirect(url_for('listar_funcao'))
         except Exception as e:
-            flash(f'Erro ao alterar função: {e}', 'danger')
+            flash(f'Erro ao alterar livro: {e}', 'danger')
             return redirect(url_for('funcoes_alterar', id=id))
 
-    item = execute_one('SELECT * FROM funcoes WHERE id_funcao = %s', (id,))
+    item = execute_query(
+        'SELECT * FROM livros WHERE id_livro = %s', params=(id,), fetch=True
+    )
     if not item:
-        flash('Função não encontrada.', 'danger')
-        return redirect(url_for('funcoes_listar'))
+        flash('Livro não encontrado.', 'danger')
+        return redirect(url_for('listar_funcao'))
 
-    return render_template('dashboard/funcoes/form.html',
-                           titulo='Alterar Função', modo='alterar', item=item)
+    return render_template('funcoes/cadastrar_funcao.html', item=item[0])
 
 
 @app.route('/funcoes/excluir/<int:id>', methods=['POST'])

@@ -45,7 +45,7 @@
         {% for l in dados %}
         <!-- Loop Jinja2 que percorre a lista 'livros' enviada pelo Flask -->
         <tr>
-          <td>{{ l.id }}</td> <!-- Mostra o ID do livro -->
+          <td>{{ l.id_livro }}</td> <!-- Mostra o ID do livro -->
           <td><strong>{{ l.titulo }}</strong></td> <!-- Mostra o título em negrito -->
           <td>{{ l.autor }}</td> <!-- Mostra o autor -->
           <td><span class="badge-genero">{{ l.genero }}</span></td> <!-- Mostra o gênero com estilo -->
@@ -53,14 +53,14 @@
           <td>{{ l.paginas }}</td> <!-- Mostra o número de páginas -->
           <td class="text-center">
             <!-- Coluna de ações (editar/excluir) -->
-            <a href="{{ url_for('alterar_livro', id=l.id_livro) }}"
+            <a href="{{ url_for('funcoes_alterar', id=l.id_livro) }}"
               class="btn btn-sm btn-outline-secondary me-1" title="Editar">
                 <i class="bi bi-pencil"></i>
             </a>
             <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                     data-bs-toggle="modal"
                     data-bs-target="#modalExcluir"
-                    data-id="{{ l.id_usuario }}"
+                    data-id="{{ l.id_livro }}"
                     data-nome="{{ l.nome }}">
                 <i class="bi bi-trash"></i>
             </button>

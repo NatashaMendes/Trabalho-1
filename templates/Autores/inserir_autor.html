@@ -27,26 +27,15 @@
       <div class="row g-3">
         <div class="col-md-6">
           <label for="nome" class="form-label">Nome completo <span class="text-danger">*</span></label>
-
-          <!-- Campo obrigatório para o nome completo do autor. -->
           <input type="text" id="nome" name="nome" class="form-control"
-                value="{{ item.nome if item else '' }}" required>
+                 value="{{ item.nome if item else '' }}"
                  placeholder="Nome do autor" required>
         </div>
 
-        <!-- Essa div define uma coluna dentro de um sistema de grid do Bootstrap.
-         O col-md-6 significa que, em telas médias (a partir de 768px de largura), essa coluna ocupará 6 das 12 partes disponíveis — ou seja, 
-         metade da largura da linha. 
-         Isso permite organizar os campos do formulário lado a lado em duas colunas quando há espaço suficiente, 
-         mas em telas menores (como celulares) os campos ficam empilhados automaticamente.-->
         <div class="col-md-6">
-
-          <!-- Esse trecho é responsável por estruturar o formulário dentro de um card do Bootstrap. -->
           <label for="nacionalidade" class="form-label">Nacionalidade <span class="text-danger">*</span></label>
-
-          <!-- Campo obrigatório para nacionalidade. -->
           <input type="text" id="nacionalidade" name="nacionalidade" class="form-control"
-                  value="{{ item.nacionalidade if item else '' }}" required>
+                 value="{{ item.nacionalidade if item else '' }}"
                  placeholder="Ex: Brasileira, Francesa..." required>
         </div>
 
@@ -66,29 +55,24 @@
           </select>      
         </div>
 
-
         <div class="col-md-6">
           <label for="nascimento" class="form-label">Data de nascimento <span class="text-danger">*</span></label>
-
-          <!-- Campo obrigatório para data de nascimento. -->
-          <input type="date" id="nascimento" name="nascimento" class="form-control" required>
-              value="{{ item.nascimento if item else '' }}" required>
+          <input type="date" id="nascimento" name="nascimento" class="form-control"
+                 value="{{ item.nascimento if item else '' }}" required>
         </div>
+
         <div class="col-md-6">
           <label for="falecimento" class="form-label">Data de falecimento</label>
-
-          <!-- Campo opcional para data de falecimento, com instrução explicativa. -->
-          <input type="date" id="falecimento" name="falecimento" class="form-control">
-              value="{{ item.falecimento if item else '' }}" required>
+          <input type="date" id="falecimento" name="falecimento" class="form-control"
+                 value="{{ item.falecimento if item else '' }}">
           <div class="form-text">Deixe em branco se o autor ainda é vivo.</div>
         </div>
+
         <div class="col-md-12">
           <label for="biografia" class="form-label">Biografia</label>
           <textarea id="biografia" name="biografia" class="form-control" rows="4"
-                  value="{{ item.biografia if item else '' }}" required></textarea>
-                    placeholder="Breve biografia do autor..."></textarea>
+                    placeholder="Breve biografia do autor...">{{ item.biografia if item else '' }}</textarea>
         </div>
-      </div>
 
       <!-- Insere uma linha horizontal (<hr>), usada para separar visualmente o conteúdo.
       A classe my-4 (margin-y 4) aplica espaçamento vertical acima e abaixo da linha, deixando o layout mais limpo. -->

@@ -118,7 +118,7 @@ Ela pode controlar cores de fundo, margens, tipografia ou outros estilos especí
 
           <span class="navbar-text text-amber-light">
             <i class="bi bi-person-circle"></i>
-            {{ session.get('usuario', 'Usuário') }}
+           {{ session.get('usuario', {}).get('nome', 'Usuário') }}
           </span>
           {# session.get('usuario', 'Usuário') mostra o nome do usuário logado obtido da sessão.
           Se não houver usuário na sessão, exibe "Usuário" como padrão. #}
