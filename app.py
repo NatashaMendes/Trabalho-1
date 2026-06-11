@@ -11,6 +11,87 @@ app.secret_key = '123'
 
 iniciar_bd()
 
+def garantir_admin():
+    """
+    Verifica se existe algum usuário no banco.
+    Se não existir, cria a função 'Administrador' e o usuário padrão.
+    Isso garante que sempre haverá um acesso inicial ao sistema,
+    evitando o problema de ficar bloqueado sem nenhuma conta para logar.
+    """
+    try:
+        # Conta quantos usuários existem no banco.
+        total = execute_one('SELECT COUNT(*) AS total FROM usuario')
+
+        # Se o banco já tiver pelo menos um usuário, não faz nada.
+        if total and total['total'] > 0:
+            return
+
+        # Verifica se a função 'Administrador' já existe.
+        funcao = execute_one(
+            "SELECT id_funcao FROM funcoes WHERE nome = %s", ('Administrador',)
+        )
+
+        # Se a função não existir, cria com todas as permissões ativas.
+        if not funcao:
+            execute_query(
+                """INSERT INTO funcoes
+                       (nome, status, descricao, gerenciar_funcoes, gerenciar_usuarios, gerenciar_autores)
+                   VALUES (%s, 'Ativo', %s, 1, 1, 1)""",
+                ('Administrador', 'Acesso total ao sistema')
+            )
+            # Busca o id da função recém-criada para usá-lo no INSERT do usuário.
+            funcao = execute_one(
+                "SELECT id_funcao FROM funcoes WHERE nome = %s", ('Administrador',)
+            )
+
+        # Cria o usuário administrador padrão com senha hasheada.
+        execute_query(
+            """INSERT INTO usuarios
+                   (nome, email, senha, status, funcao_id)
+               VALUES (%s, %s, %s, %s, %s, %s, 'Ativo', %s)""",
+            (
+                'Administrador',
+                '000.000.000-00',
+                'admin@casagestor.com',
+                '(00) 00000-0000',
+                'SP',
+                generate_password_hash('1234'),
+                funcao['id_funcao']
+            )
+        )
+        print('Usuário administrador padrão criado: admin@gmail.com / 1234')
+
+    except Exception as e:
+        print(f'Erro ao garantir admin: {e}')
+
+
+# Chama a função logo após inicializar o banco.
+garantir_admin()
+
+def login_required(f):
+    """
+    Decorator que protege as rotas do dashboard.
+    Um decorator é uma função que envolve outra função para adicionar comportamento extra.
+    Ao adicionar @login_required em uma rota, o Flask vai executar esta função
+    ANTES de executar a rota. Se o usuário não estiver logado, ele é redirecionado.
+
+    Como usar: adicione @login_required logo abaixo de @app.route(...) nas rotas protegidas.
+    """
+    # @wraps(f) preserva o nome e a documentação da função original.
+    # Sem isso, todas as rotas decoradas teriam o mesmo nome internamente,
+    # o que causaria erros no Flask.
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        # session.get('usuario') retorna None se a chave não existir na sessão,
+        # ou seja, se nenhum usuário estiver logado.
+        if not session.get('usuario'):
+            flash('Faça login para acessar o sistema.', 'warning')
+            return redirect(url_for('login'))
+        # Se o usuário estiver logado, executa a rota normalmente.
+        return f(*args, **kwargs)
+    return wrapper
+
+
 @app.context_processor
 def injetar_usuario():
     """
@@ -38,39 +119,58 @@ def login():
         email = request.form.get('email', '').strip()
         senha = request.form.get('senha', '').strip()
 
-        if not email or not senha:
-            flash('Preencha e-mail e senha.', 'danger')
-            return redirect(url_for('login'))
-
-        usuario = execute_query(
-            'SELECT * FROM usuarios WHERE email = %s',
-            params=(email,), fetch=True
+        # Busca o usuário pelo e-mail fazendo JOIN com funcoes
+        # para trazer também as permissões da função.
+        usuario = execute_one(
+            '''SELECT u.id_usuario, u.nome, u.email, u.senha, u.status,
+                      f.nome AS funcao,
+                      f.gerenciar_funcoes,
+                      f.gerenciar_usuarios,
+                      f.gerenciar_autores
+               FROM usuarios AS u
+               INNER JOIN funcoes AS f ON u.funcao_id = f.id_funcao
+               WHERE u.email = %s''',
+            (email,)
         )
 
-        if not usuario:
+        # Verificação 1: o e-mail existe no banco?
+        # Verificação 2: a senha digitada corresponde ao hash armazenado?
+        # Usamos 'or' para não revelar se foi o e-mail ou a senha que falhou,
+        # o que seria uma brecha de segurança.
+        if not usuario or not check_password_hash(usuario['senha'], senha):
             flash('E-mail ou senha inválidos.', 'danger')
             return redirect(url_for('login'))
 
-        usuario = usuario[0]
-
-        if usuario['senha'] != senha:
-            flash('E-mail ou senha inválidos.', 'danger')
-            return redirect(url_for('login'))
-
+        # Verificação 3: o usuário está ativo?
         if usuario['status'] != 'Ativo':
             flash('Usuário inativo. Contate o administrador.', 'warning')
             return redirect(url_for('login'))
 
+        # Gera as iniciais do nome para exibir no avatar do dashboard.
+        # Ex: "João Silva" vira "JS". Se tiver apenas um nome, usa as duas primeiras letras.
+        partes = usuario['nome'].split()
+        if len(partes) > 1:
+            iniciais = (partes[0][0] + partes[-1][0]).upper()
+        else:
+            iniciais = partes[0][:2].upper()
+
+        # Armazena os dados do usuário na sessão do Flask.
+        # session funciona como um dicionário que persiste entre requisições
+        # do mesmo navegador, usando um cookie assinado pelo secret_key.
         session['usuario'] = {
-            'id':       usuario['id_usuario'],
-            'nome':     usuario['nome'],
-            'email':    usuario['email'],
+            'id':                  usuario['id_usuario'],
+            'nome':                usuario['nome'],
+            'email':               usuario['email'],
+            'funcao':              usuario['funcao'],
+            'iniciais':            iniciais,
+            'gerenciar_funcoes':   usuario['gerenciar_autores'],
+            'gerenciar_usuarios':  usuario['gerenciar_usuarios'],   
         }
 
         flash(f'Bem-vindo, {usuario["nome"]}!', 'success')
-        return redirect(url_for('listar_funcao'))
+        return redirect(url_for('home'))
 
-    return render_template('login.html')
+    return render_template('auth/login.html')
 
 
 @app.route('/logout')
@@ -120,6 +220,7 @@ def cadastro():
 
 
 @app.route('/usuarios/listar')
+@login_required
 def listar_usuarios():
     sql = '''
         SELECT id_usuario,
@@ -138,6 +239,7 @@ def listar_usuarios():
 
 
 @app.route('/usuarios/inserir', methods=['GET', 'POST'])
+@login_required
 def inserir_usuario():
     if request.method == 'POST':
         nome = request.form.get('nome', '').strip()
@@ -212,6 +314,7 @@ def inserir_usuario():
 
 
 @app.route('/usuarios/alterar/<int:id>', methods=['GET', 'POST'])
+@login_required
 def usuarios_alterar(id):
     if request.method == 'POST':
         nome = request.form.get('nome', '').strip()
@@ -273,6 +376,7 @@ def usuarios_alterar(id):
 
 
 @app.route('/usuarios/excluir/<int:id>', methods=['POST'])
+@login_required
 def excluir_usuario(id):
     try:
         execute_query('DELETE FROM usuarios WHERE id_usuario = %s', params=(id,))
@@ -284,6 +388,7 @@ def excluir_usuario(id):
 # ─── Rotas protegidas — Autores ───────────────────────────────────────────────
 
 @app.route('/autores/listar')
+@login_required
 def listar_autores():
     sql = '''
         SELECT id_autor, 
@@ -302,6 +407,7 @@ def listar_autores():
 
 
 @app.route('/autores/inserir', methods=['GET', 'POST'])
+@login_required
 def inserir_autor():
     if request.method == 'POST':
         nome = request.form.get('nome', '').strip()
@@ -353,6 +459,7 @@ def inserir_autor():
 
 
 @app.route('/autores/alterar/<int:id>', methods=['GET', 'POST'])
+@login_required
 def autores_alterar(id):
     if request.method == 'POST':
         nome           = request.form.get('nome', '').strip()
@@ -387,6 +494,7 @@ def autores_alterar(id):
 
 
 @app.route('/autores/excluir/<int:id>', methods=['POST'])
+@login_required
 def excluir_autor(id):
     try:
         execute_query('DELETE FROM autores WHERE id_autor = %s', params=(id,))
@@ -397,6 +505,7 @@ def excluir_autor(id):
 
 # -- #
 @app.route('/funcoes/cadastrar', methods=['GET', 'POST'])
+@login_required
 def cadastrar_funcao():
     if request.method == 'POST':
         titulo = request.form.get('titulo', '').strip()
@@ -452,8 +561,9 @@ def cadastrar_funcao():
     return render_template('funcoes/cadastrar_funcao.html')
     
 
-# -- #
+# - Funcções Listar - #
 @app.route('/funcoes/listar', methods=['GET', 'POST'])
+@login_required
 def listar_funcao():
     sql = '''
         SELECT id_livro, 
@@ -471,6 +581,7 @@ def listar_funcao():
 
 
 @app.route('/funcoes/alterar/<int:id>', methods=['GET', 'POST'])
+@login_required
 def funcoes_alterar(id):
     if request.method == 'POST':
         titulo = request.form.get('titulo', '').strip()
@@ -522,6 +633,7 @@ def funcoes_alterar(id):
 
 
 @app.route('/funcoes/excluir/<int:id>', methods=['POST'])
+@login_required
 def excluir_livro(id):
     try:
         execute_query('DELETE FROM livros WHERE id_livro = %s', params=(id,))
@@ -532,6 +644,7 @@ def excluir_livro(id):
 # ─── Equipe ───────────────────────────────────────────────────────────────────
 
 @app.route('/equipe')
+@login_required
 def equipe():
     return render_template('sobre_equipe.html')
 
