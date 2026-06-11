@@ -48,12 +48,12 @@ def garantir_admin():
         execute_query(
             """INSERT INTO usuarios
                    (nome, email, senha, status, funcao_id)
-               VALUES (%s, %s, %s, %s, %s, %s, 'Ativo', %s)""",
+               VALUES (%s, %s, %s, 'Ativo', 1)""",
             (
                 'Administrador',
-                '000.000.000-00',
+                '000.000.000-01 ',
                 'admin@casagestor.com',
-                '(00) 00000-0000',
+                '(14) 99182-2978',
                 'SP',
                 generate_password_hash('1234'),
                 funcao['id_funcao']
@@ -163,7 +163,7 @@ def login():
             'email':               usuario['email'],
             'funcao':              usuario['funcao'],
             'iniciais':            iniciais,
-            'gerenciar_funcoes':   usuario['gerenciar_autores'],
+            'gerenciar_funcoes':   usuario['gerenciar_funcoes'],
             'gerenciar_usuarios':  usuario['gerenciar_usuarios'],   
         }
 
@@ -225,11 +225,7 @@ def listar_usuarios():
     sql = '''
         SELECT id_usuario,
         nome,
-        cpf,
-        data_nascimento,
         email,
-        cidade,
-        estado,
         status
         FROM usuarios
         ORDER BY id_usuario DESC;
@@ -243,12 +239,8 @@ def listar_usuarios():
 def inserir_usuario():
     if request.method == 'POST':
         nome = request.form.get('nome', '').strip()
-        cpf = request.form.get('cpf', '').strip()
         data_nascimento = request.form.get('data_nascimento', '').strip()
         email = request.form.get('email', '').strip()
-        pais = request.form.get('pais', 'Brasil').strip()
-        estado = request.form.get('estado', '').strip()
-        cidade = request.form.get('cidade', '').strip()
         senha = request.form.get('senha', '').strip()
         status = request.form.get('status', 'Ativo').strip()
         situacao = request.form.get('situacao', '').strip()
@@ -259,28 +251,12 @@ def inserir_usuario():
             flash('O campo <b>NOME<b> é obrigatório', 'danger')
             return redirect(url_for('inserir_usuario'))
 
-        if not cpf:
-            flash('O campo <b>CPF<b> é obrigatório', 'danger')
-            return redirect(url_for('inserir_usuario'))
-
         if not data_nascimento:
             flash('O campo <b>DATA<b> DE NASCIMENTO é obrigatório', 'danger')
             return redirect(url_for('inserir_usuario'))
 
         if not senha:
             flash('O campo <b>SENHA<b> é obrigatório', 'danger')
-            return redirect(url_for('inserir_usuario'))
-        
-        if not pais:
-            flash('O campo <b>PAIS<b> é obrigatório', 'danger')
-            return redirect(url_for('inserir_usuario'))
-        
-        if not estado:
-            flash('O campo <b>ESTADO<b> é obrigatório', 'danger')
-            return redirect(url_for('inserir_usuario'))
-        
-        if not cidade:
-            flash('O campo <b>CIDADE<b> é obrigatório', 'danger')
             return redirect(url_for('inserir_usuario'))
         
         if not status:
@@ -297,13 +273,11 @@ def inserir_usuario():
 
         sql = '''
             INSERT INTO usuarios
-                (nome, cpf, data_nascimento, email, pais,
-                 estado, cidade, senha, status, situacao, livro_id )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                (nome, data_nascimento, email, senha, status, situacao, livro_id )
+            VALUES (%s, %s, %s, %s, 'Ativo', 1, 1)
         '''
         execute_query(sql, params=(
-            nome, cpf, data_nascimento, email, pais,
-            estado, cidade, senha, status, situacao, livro_id
+            nome, data_nascimento, email, senha, status, situacao, livro_id
         ))
 
         flash('Usuário cadastrado com sucesso!', 'success')
@@ -318,18 +292,14 @@ def inserir_usuario():
 def usuarios_alterar(id):
     if request.method == 'POST':
         nome = request.form.get('nome', '').strip()
-        cpf = request.form.get('cpf', '').strip()
         data_nascimento = request.form.get('data_nascimento', '').strip() or None
         email = request.form.get('email', '').strip()
-        pais = request.form.get('pais', 'Brasil').strip()
-        estado = request.form.get('estado', '').strip()
-        cidade = request.form.get('cidade', '').strip()
         senha = request.form.get('senha', '').strip()
         status = request.form.get('status', '').strip()
         situacao = request.form.get('situacao', '').strip()
         livro_id = request.form.get('livro_id', '').strip()
 
-        if not all([nome, cpf, estado, cidade, status, situacao]):
+        if not all([nome, status, situacao]):
             flash('Preencha todos os campos obrigatórios.', 'danger')
             return redirect(url_for('usuarios_alterar', id=id))
 
@@ -337,8 +307,8 @@ def usuarios_alterar(id):
             if senha:
                 sql = '''
                     UPDATE usuarios SET
-                        nome = %s, cpf = %s, data_nascimento = %s,
-                        email = %s, pais = %s, estado = %s, cidade = %s,
+                        nome = %s, data_nascimento = %s,
+                        email = %s, pais = %s,
                         senha = %s, status = %s, situacao = %s, livro_id = %s
                     WHERE id_usuario = %s
                 '''
@@ -347,13 +317,12 @@ def usuarios_alterar(id):
             else:
                 sql = '''
                     UPDATE usuarios SET
-                        nome = %s, cpf = %s, data_nascimento = %s,
-                        email = %s, pais = %s, estado = %s, cidade = %s,
+                        nome = %s, data_nascimento = %s,
+                        email = %s, pais = %s, 
                         status = %s, situacao = %s, livro_id = %s
                     WHERE id_usuario = %s
                 '''
-                dados = (nome, cpf, data_nascimento, email, pais,
-                         estado, cidade, status, situacao, livro_id, id)
+                dados = (nome, data_nascimento, status, situacao, livro_id, id)
 
             execute_query(sql, dados)
             flash(f'Usuário {nome} alterado com sucesso!', 'success')
@@ -383,7 +352,7 @@ def excluir_usuario(id):
         flash('Usuario excluído com sucesso.', 'success')
     except Exception as e:
         flash(f'Erro ao excluir usuario: {e}', 'danger')
-    return redirect(url_for('listar_usuario'))
+    return redirect(url_for('listar_usuarios'))
 
 # ─── Rotas protegidas — Autores ───────────────────────────────────────────────
 
@@ -419,30 +388,30 @@ def inserir_autor():
         situacao = request.form.get('situacao', '').strip()
         genero = request.form.get('genero', '').strip()
 
-
+       
         if not nome:
             flash('O campo <b>NOME<b> é obrigatório', 'danger')
-            return redirect(url_for('cadastrar_funcao'))
+            return redirect(url_for('inserir_autor'))
 
         if not nacionalidade:
             flash('O campo <b>NACIONALIDADE<b> é obrigatório', 'danger')
-            return redirect(url_for('cadastrar_funcao'))
+            return redirect(url_for('inserir_autor'))
 
         if not genero:
             flash('O campo <b>GENERO<b> é obrigatório', 'danger')
-            return redirect(url_for('cadastrar_funcao'))
+            return redirect(url_for('inserir_autor'))
 
         if not nascimento:
             flash('O campo <b>NASCIMENTO<b> é obrigatório', 'danger')
-            return redirect(url_for('cadastrar_funcao'))
+            return redirect(url_for('inserir_autor'))
 
         if not biografia:
             flash('O campo <b>BIOGRAFIA<b> é obrigatório', 'danger')
-            return redirect(url_for('cadastrar_funcao'))
+            return redirect(url_for('inserir_autor'))
         
         if not situacao:
             flash('O campo <b>SITUACAO<b> é obrigatório', 'danger')
-            return redirect(url_for('cadastrar_funcao'))
+            return redirect(url_for('inserir_autor'))
 
         sql = '''
             INSERT INTO autores 
@@ -602,12 +571,12 @@ def funcoes_alterar(id):
         try:
             sql = '''
                 UPDATE funcoes SET
-                    titulo               = %s,
-                    genero             = %s,
+                    titulo = %s,
+                    genero = %s,
                     ano  = %s,
                     autor = %s,
                     paginas = %s,
-                    sinopse          = %s,
+                    sinopse = %s,
                     perm_cadastrar  = %s,
                     perm_editar = %s,
                     perm_excluir  = %s,
@@ -626,7 +595,7 @@ def funcoes_alterar(id):
     item = execute_one('SELECT * FROM funcoes WHERE id_funcao = %s', (id,))
     if not item:
         flash('Função não encontrada.', 'danger')
-        return redirect(url_for('funcoes_listar'))
+        return redirect(url_for('listar_funcao'))
 
     return render_template('dashboard/funcoes/form.html',
                            titulo='Alterar Função', modo='alterar', item=item)
