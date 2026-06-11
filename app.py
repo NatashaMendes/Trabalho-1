@@ -548,7 +548,7 @@ def funcoes_alterar(id):
         paginas = request.form.get('paginas', '').strip()
         sinopse = request.form.get('sinopse', '').strip()
         perm_cadastrar = 1 if request.form.get('perm_cadastrar') else 0
-        perm_editar = 1 if request.form.get('perm_editar')    else 0
+        perm_editar  = 1 if request.form.get('perm_editar')    else 0
         perm_excluir = 1 if request.form.get('perm_excluir')   else 0
         perm_listar = 1 if request.form.get('perm_listar')    else 0
 
