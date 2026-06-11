@@ -38,9 +38,10 @@
           <td>{{ a.genero }}</td>
           <td>{{ a.situacao }}</td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-secondary me-1" title="Editar">
-              <i class="bi bi-pencil"></i>
-            </button>
+            <a href="{{ url_for('autores_alterar', id=a.id_autor) }}"
+              class="btn btn-sm btn-outline-secondary me-1" title="Editar">
+                <i class="bi bi-pencil"></i>
+            </a>
             <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                     data-bs-toggle="modal"
                     data-bs-target="#modalExcluir"
@@ -90,7 +91,7 @@
         const id    = botao.getAttribute('data-id');
         const nome  = botao.getAttribute('data-nome');
         document.getElementById('excluirNome').textContent = nome;
-        document.getElementById('formExcluir').action = '/funcoes/excluir/' + id;
+        document.getElementById('formExcluir').action = '/autores/excluir/' + id;
     });
 </script>
 {% endblock %}

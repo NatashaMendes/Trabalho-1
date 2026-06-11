@@ -10,12 +10,17 @@
 
 <div class="card form-card shadow-sm">
     <div class="card-body">
+        {% if item %}
+        <form method="POST" action="{{ url_for('alterar_livro', id=item.id_livro) }}">
+        {% else %}
         <form method="POST" action="{{ url_for('cadastrar_funcao') }}">
+        {% endif %}
             <div class="row g-3">
                 
                 <div class="col-md-8">
                     <label for="titulo" class="form-label">Titulo do Livro</label>
                     <input type="text" id="titulo" name="titulo" class="form-control" 
+                            value="{{ item.titulo if item else '' }}" required>
                            placeholder="Ex: O nome do vento, Senhor dos anéis..." required>
                 </div>
 
@@ -32,24 +37,28 @@
                 <div class="col-md-2">
                     <label for="ano" class="form-label">Ano de lançamento</label>
                     <input type="number" id="ano" name="ano" class="form-control" 
+                            value="{{ item.ano if item else '' }}" required>
                             placeholder="Ex: 2024" min="1000" max="2027" required>
                 </div>
 
                 <div class="col-md-8">
                     <label for="autor" class="form-label">Autor</label>
                     <input type="text" id="autor" name="autor" class="form-control" 
+                            value="{{ item.autor if item else '' }}" required>
                            placeholder="Ex: Machado de Assis, Clarice Lispector..." required>
                 </div>
 
                 <div class="col-md-2">
                     <label for="paginas" class="form-label">Páginas</label>
                     <input type="number" id="paginas" name="paginas" class="form-control" 
+                            value="{{ item.paginas if item else '' }}" required>
                             placeholder="Ex: 256" min="10" max="2027" required>
                 </div>
 
                 <div class="col-md-12">
                     <label for="sinopse" class="form-label">Sinopse</label>
                     <input type="text" id="sinopse" name="sinopse" class="form-control" 
+                            value="{{ item.sinopse if item else '' }}" required>
                            placeholder="Ex:  Um defunto autor decide narrar sua vida após a morte, relembrando..." required>
                 </div>
 

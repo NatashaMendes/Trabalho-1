@@ -1,4 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+# session permite armazenar dados entre requisições do mesmo usuário,
+# como as informações de quem está logado.
+# wraps é necessário para criar o decorator login_required corretamente.
+from functools import wraps
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from db import iniciar_bd, execute_query, execute_one
 
@@ -10,10 +14,11 @@ iniciar_bd()
 @app.context_processor
 def injetar_usuario():
     """
-    Injeta a variável usuario_logado em todos os templates.
-    Por enquanto retorna None. Na Etapa 09 virá da sessão do Flask.
+    Disponibiliza o usuário logado em todos os templates automaticamente.
+    Agora retorna os dados reais da sessão em vez de None fixo.
+    O template acessa com: usuario_logado.nome, usuario_logado.iniciais, etc.
     """
-    return dict(usuario_logado=None)
+    return dict(usuario_logado=session.get('usuario'))
 
 # ─── Rotas públicas ──────────────────────────────────────────────────────────
 
@@ -21,28 +26,59 @@ def injetar_usuario():
 def index():
     return render_template('index.html')
 
+
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
         senha = request.form.get('senha', '').strip()
+
         if not email or not senha:
             flash('Preencha e-mail e senha.', 'danger')
-            return render_template('login.html')
-        # Simulação: qualquer combinação não-vazia é aceita
-        #session['usuario'] = email
-        #flash('Login realizado com sucesso!', 'success')
-        #return redirect(url_for('listar_usuarios'))
-    return render_template('base.html')
+            return redirect(url_for('login'))
+
+        usuario = execute_query(
+            'SELECT * FROM usuarios WHERE email = %s',
+            params=(email,), fetch=True
+        )
+
+        if not usuario:
+            flash('E-mail ou senha inválidos.', 'danger')
+            return redirect(url_for('login'))
+
+        usuario = usuario[0]
+
+        if usuario['senha'] != senha:
+            flash('E-mail ou senha inválidos.', 'danger')
+            return redirect(url_for('login'))
+
+        if usuario['status'] != 'Ativo':
+            flash('Usuário inativo. Contate o administrador.', 'warning')
+            return redirect(url_for('login'))
+
+        session['usuario'] = {
+            'id':       usuario['id_usuario'],
+            'nome':     usuario['nome'],
+            'email':    usuario['email'],
+        }
+
+        flash(f'Bem-vindo, {usuario["nome"]}!', 'success')
+        return redirect(url_for('listar_funcao'))
+
+    return render_template('login.html')
 
 
 @app.route('/logout')
 def logout():
-    # Redireciona para a página de login. A lógica de logout virá na Etapa 09.
+    # session.clear() remove todos os dados da sessão,
+    # efetivamente deslogando o usuário.
+    session.clear()
+    flash('Sessão encerrada com sucesso.', 'info')
     return redirect(url_for('login'))
 
 
@@ -59,14 +95,21 @@ def cadastro():
         senha = request.form.get('senha', '').strip()
         conf  = request.form.get('confirmacao', '').strip()
         erros = []
-        if not nome:   erros.append('Nome é obrigatório.')
-        if not email:  erros.append('E-mail é obrigatório.')
-        if not senha:  erros.append('Senha é obrigatória.')
+        if not nome:      erros.append('Nome é obrigatório.')
+        if not email:     erros.append('E-mail é obrigatório.')
+        if not senha:     erros.append('Senha é obrigatória.')
         if senha != conf: erros.append('As senhas não coincidem.')
         if erros:
             for e in erros:
                 flash(e, 'danger')
             return render_template('cadastro.html')
+
+        sql = '''
+            INSERT INTO usuarios (nome, email, senha)
+            VALUES (%s, %s, %s)
+        '''
+        execute_query(sql, params=(nome, email, senha))
+
         flash('Cadastro realizado! Faça o login.', 'success')
         return redirect(url_for('login'))
     return render_template('cadastro.html')
@@ -309,9 +352,39 @@ def inserir_autor():
     return render_template('autores/inserir_autor.html')
 
 
-@app.route('/autores/alterar/<int:id>')
+@app.route('/autores/alterar/<int:id>', methods=['GET', 'POST'])
 def autores_alterar(id):
-    return '<h1>Alterar Autores — em breve</h1>'
+    if request.method == 'POST':
+        nome           = request.form.get('nome', '').strip()
+        nacionalidade  = request.form.get('nacionalidade', '').strip()
+        nascimento     = request.form.get('nascimento', '').strip()
+        falecimento    = request.form.get('falecimento', '').strip() or None
+        biografia      = request.form.get('biografia', '').strip()
+        situacao       = request.form.get('situacao', '').strip()
+        genero         = request.form.get('genero', '').strip()
+
+        sql = '''
+            UPDATE autores SET
+                nome = %s, nacionalidade = %s, nascimento = %s,
+                falecimento = %s, biografia = %s, situacao = %s, genero = %s
+            WHERE id_autor = %s
+        '''
+        execute_query(sql, params=(
+            nome, nacionalidade, nascimento, falecimento,
+            biografia, situacao, genero, id
+        ))
+        flash('Autor alterado com sucesso!', 'success')
+        return redirect(url_for('listar_autores'))
+
+    item = execute_query(
+        'SELECT * FROM autores WHERE id_autor = %s', params=(id,), fetch=True
+    )
+    if not item:
+        flash('Autor não encontrado.', 'danger')
+        return redirect(url_for('listar_autores'))
+
+    return render_template('autores/inserir_autor.html', item=item[0])
+
 
 @app.route('/autores/excluir/<int:id>', methods=['POST'])
 def excluir_autor(id):

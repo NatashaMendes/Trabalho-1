@@ -30,6 +30,7 @@
 
           <!-- Campo obrigatório para o nome completo do autor. -->
           <input type="text" id="nome" name="nome" class="form-control"
+                value="{{ item.nome if item else '' }}" required>
                  placeholder="Nome do autor" required>
         </div>
 
@@ -45,6 +46,7 @@
 
           <!-- Campo obrigatório para nacionalidade. -->
           <input type="text" id="nacionalidade" name="nacionalidade" class="form-control"
+                  value="{{ item.nacionalidade if item else '' }}" required>
                  placeholder="Ex: Brasileira, Francesa..." required>
         </div>
 
@@ -70,17 +72,20 @@
 
           <!-- Campo obrigatório para data de nascimento. -->
           <input type="date" id="nascimento" name="nascimento" class="form-control" required>
+              value="{{ item.nascimento if item else '' }}" required>
         </div>
         <div class="col-md-6">
           <label for="falecimento" class="form-label">Data de falecimento</label>
 
           <!-- Campo opcional para data de falecimento, com instrução explicativa. -->
           <input type="date" id="falecimento" name="falecimento" class="form-control">
+              value="{{ item.falecimento if item else '' }}" required>
           <div class="form-text">Deixe em branco se o autor ainda é vivo.</div>
         </div>
         <div class="col-md-12">
           <label for="biografia" class="form-label">Biografia</label>
           <textarea id="biografia" name="biografia" class="form-control" rows="4"
+                  value="{{ item.biografia if item else '' }}" required></textarea>
                     placeholder="Breve biografia do autor..."></textarea>
         </div>
       </div>

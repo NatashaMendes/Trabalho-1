@@ -53,10 +53,10 @@
           <td>{{ l.paginas }}</td> <!-- Mostra o número de páginas -->
           <td class="text-center">
             <!-- Coluna de ações (editar/excluir) -->
-            <button class="btn btn-sm btn-outline-secondary me-1" title="Editar">
-              <!-- Botão de editar (ainda sem ação definida) -->
-              <i class="bi bi-pencil"></i>
-            </button>
+            <a href="{{ url_for('alterar_livro', id=l.id_livro) }}"
+              class="btn btn-sm btn-outline-secondary me-1" title="Editar">
+                <i class="bi bi-pencil"></i>
+            </a>
             <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                     data-bs-toggle="modal"
                     data-bs-target="#modalExcluir"
