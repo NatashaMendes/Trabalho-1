@@ -57,10 +57,12 @@
               <!-- Botão de editar (ainda sem ação definida) -->
               <i class="bi bi-pencil"></i>
             </button>
-            <button class="btn btn-sm btn-outline-danger" title="Excluir"
-                    onclick="confirmarExclusao(event, '{{ l.titulo }}')">
-              <!-- Botão de excluir que chama a função JavaScript 'confirmarExclusao' passando o título do livro -->
-              <i class="bi bi-trash"></i>
+            <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalExcluir"
+                    data-id="{{ l.id_usuario }}"
+                    data-nome="{{ l.nome }}">
+                <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
@@ -70,5 +72,44 @@
     </table>
   </div>
 </div>
+
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                    Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir o livro
+                <strong id="excluirNome"></strong>?
+                <br>Esta ação não poderá ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">Cancelar</button>
+                <form id="formExcluir" method="POST">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modalExcluir = document.getElementById('modalExcluir');
+    modalExcluir.addEventListener('show.bs.modal', function (event) {
+        const botao = event.relatedTarget;
+        const id    = botao.getAttribute('data-id');
+        const nome  = botao.getAttribute('data-nome');
+        document.getElementById('excluirNome').textContent = nome;
+        document.getElementById('formExcluir').action = '/funcoes/excluir/' + id;
+    });
+</script>
 {% endblock %}
 <!-- Fim do bloco de conteúdo -->

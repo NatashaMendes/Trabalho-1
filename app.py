@@ -1,12 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
-from db import iniciar_bd, execute_query
-
+from flask import Flask, render_template, redirect, url_for, request, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+from db import iniciar_bd, execute_query, execute_one
 
 app = Flask(__name__)
-app.secret_key = 'chave_secreta_123'
+app.secret_key = '123'
 
-iniciar_bd() #inicia o BD e as tabelas
+iniciar_bd()
 
+@app.context_processor
+def injetar_usuario():
+    """
+    Injeta a variável usuario_logado em todos os templates.
+    Por enquanto retorna None. Na Etapa 09 virá da sessão do Flask.
+    """
+    return dict(usuario_logado=None)
 
 # ─── Rotas públicas ──────────────────────────────────────────────────────────
 
@@ -14,6 +21,9 @@ iniciar_bd() #inicia o BD e as tabelas
 def index():
     return render_template('index.html')
 
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -28,6 +38,17 @@ def login():
         #flash('Login realizado com sucesso!', 'success')
         #return redirect(url_for('listar_usuarios'))
     return render_template('base.html')
+
+
+@app.route('/logout')
+def logout():
+    # Redireciona para a página de login. A lógica de logout virá na Etapa 09.
+    return redirect(url_for('login'))
+
+
+@app.route('/recuperar-senha')
+def recuperar_senha():
+    return render_template('forgot_password.html')
 
 
 @app.route('/cadastro', methods=['GET', 'POST'])
@@ -51,11 +72,6 @@ def cadastro():
     return render_template('cadastro.html')
 
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    flash('Você saiu da sessão.', 'info')
-    return redirect(url_for('login'))
 
 # ─── Rotas protegidas — Usuários ─────────────────────────────────────────────
 
@@ -150,6 +166,78 @@ def inserir_usuario():
 
     livros = execute_query('SELECT id_livro, titulo FROM livros ORDER BY titulo', fetch=True)
     return render_template('usuarios/inserir_usuario.html', livros=livros)
+
+
+@app.route('/usuarios/alterar/<int:id>', methods=['GET', 'POST'])
+def usuarios_alterar(id):
+    if request.method == 'POST':
+        nome = request.form.get('nome', '').strip()
+        cpf = request.form.get('cpf', '').strip()
+        data_nascimento = request.form.get('data_nascimento', '').strip() or None
+        email = request.form.get('email', '').strip()
+        pais = request.form.get('pais', 'Brasil').strip()
+        estado = request.form.get('estado', '').strip()
+        cidade = request.form.get('cidade', '').strip()
+        senha = request.form.get('senha', '').strip()
+        status = request.form.get('status', '').strip()
+        situacao = request.form.get('situacao', '').strip()
+        livro_id = request.form.get('livro_id', '').strip()
+
+        if not all([nome, cpf, estado, cidade, status, situacao]):
+            flash('Preencha todos os campos obrigatórios.', 'danger')
+            return redirect(url_for('usuarios_alterar', id=id))
+
+        try:
+            if senha:
+                sql = '''
+                    UPDATE usuarios SET
+                        nome = %s, cpf = %s, data_nascimento = %s,
+                        email = %s, pais = %s, estado = %s, cidade = %s,
+                        senha = %s, status = %s, situacao = %s, livro_id = %s
+                    WHERE id_usuario = %s
+                '''
+                dados = (nome, cpf, data_nascimento, email, pais,
+                         estado, cidade, senha, status, situacao, livro_id, id)
+            else:
+                sql = '''
+                    UPDATE usuarios SET
+                        nome = %s, cpf = %s, data_nascimento = %s,
+                        email = %s, pais = %s, estado = %s, cidade = %s,
+                        status = %s, situacao = %s, livro_id = %s
+                    WHERE id_usuario = %s
+                '''
+                dados = (nome, cpf, data_nascimento, email, pais,
+                         estado, cidade, status, situacao, livro_id, id)
+
+            execute_query(sql, dados)
+            flash(f'Usuário {nome} alterado com sucesso!', 'success')
+            return redirect(url_for('listar_usuarios'))
+
+        except Exception as e:
+            flash(f'Erro ao alterar usuário: {e}', 'danger')
+            return redirect(url_for('usuarios_alterar', id=id))
+
+    item = execute_query(
+        'SELECT * FROM usuarios WHERE id_usuario = %s', params=(id,), fetch=True
+    )
+    if not item:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('listar_usuarios'))
+
+    livros = execute_query('SELECT id_livro, titulo FROM livros ORDER BY titulo', fetch=True)
+    return render_template('usuarios/inserir_usuario.html', 
+                           item=item[0], livros=livros)
+
+
+@app.route('/usuarios/excluir/<int:id>', methods=['POST'])
+def excluir_usuario(id):
+    try:
+        execute_query('DELETE FROM usuarios WHERE id_usuario = %s', params=(id,))
+        flash('Usuario excluído com sucesso.', 'success')
+    except Exception as e:
+        flash(f'Erro ao excluir usuario: {e}', 'danger')
+    return redirect(url_for('listar_usuario'))
+
 # ─── Rotas protegidas — Autores ───────────────────────────────────────────────
 
 @app.route('/autores/listar')
@@ -220,6 +308,19 @@ def inserir_autor():
         return redirect(url_for('listar_autores'))
     return render_template('autores/inserir_autor.html')
 
+
+@app.route('/autores/alterar/<int:id>')
+def autores_alterar(id):
+    return '<h1>Alterar Autores — em breve</h1>'
+
+@app.route('/autores/excluir/<int:id>', methods=['POST'])
+def excluir_autor(id):
+    try:
+        execute_query('DELETE FROM autores WHERE id_autor = %s', params=(id,))
+        flash('Autor excluído com sucesso.', 'success')
+    except Exception as e:
+        flash(f'Erro ao excluir autor: {e}', 'danger')
+    return redirect(url_for('listar_autores'))
 
 # -- #
 @app.route('/funcoes/cadastrar', methods=['GET', 'POST'])
@@ -295,6 +396,66 @@ def listar_funcao():
     lista_dados = execute_query(sql, fetch=True)
     return render_template('funcoes/listar_funcao.html', dados=lista_dados)
 
+
+@app.route('/funcoes/alterar/<int:id>', methods=['GET', 'POST'])
+def funcoes_alterar(id):
+    if request.method == 'POST':
+        titulo = request.form.get('titulo', '').strip()
+        genero = request.form.get('genero', '').strip()
+        ano = request.form.get('ano', '').strip()
+        autor = request.form.get('autor', '').strip()
+        paginas = request.form.get('paginas', '').strip()
+        sinopse = request.form.get('sinopse', '').strip()
+        perm_cadastrar = 1 if request.form.get('perm_cadastrar') else 0
+        perm_editar = 1 if request.form.get('perm_editar') else 0
+        perm_excluir = 1 if request.form.get('perm_excluir') else 0
+        perm_listar = 1 if request.form.get('perm_listar') else 0
+
+        if not titulo:
+            flash('O campo <b>Titulo</b> é obrigatório.', 'danger')
+            return redirect(url_for('funcoes_alterar', id=id))
+
+        try:
+            sql = '''
+                UPDATE funcoes SET
+                    titulo               = %s,
+                    genero             = %s,
+                    ano  = %s,
+                    autor = %s,
+                    paginas = %s,
+                    sinopse          = %s,
+                    perm_cadastrar  = %s,
+                    perm_editar = %s,
+                    perm_excluir  = %s,
+                    perm_listar = %s
+                WHERE id_funcao = %s
+            '''
+            dados = (titulo, genero, ano,
+                     autor, paginas, sinopse, perm_cadastrar, perm_editar, perm_excluir, perm_listar, id)
+            execute_query(sql, dados)
+            flash(f'Função <b>{titulo}</b> alterada com sucesso!', 'success')
+            return redirect(url_for('funcoes_listar'))
+        except Exception as e:
+            flash(f'Erro ao alterar função: {e}', 'danger')
+            return redirect(url_for('funcoes_alterar', id=id))
+
+    item = execute_one('SELECT * FROM funcoes WHERE id_funcao = %s', (id,))
+    if not item:
+        flash('Função não encontrada.', 'danger')
+        return redirect(url_for('funcoes_listar'))
+
+    return render_template('dashboard/funcoes/form.html',
+                           titulo='Alterar Função', modo='alterar', item=item)
+
+
+@app.route('/funcoes/excluir/<int:id>', methods=['POST'])
+def excluir_livro(id):
+    try:
+        execute_query('DELETE FROM livros WHERE id_livro = %s', params=(id,))
+        flash('Livro excluído com sucesso.', 'success')
+    except Exception as e:
+        flash(f'Erro ao excluir livro: {e}', 'danger')
+    return redirect(url_for('listar_funcao'))
 # ─── Equipe ───────────────────────────────────────────────────────────────────
 
 @app.route('/equipe')
